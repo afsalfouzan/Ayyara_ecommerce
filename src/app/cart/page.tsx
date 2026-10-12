@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 export default function CartPage() {
   return (
     <Container className="pt-10 pb-24 sm:pt-14">
-      <h1 className="text-5xl">Your bag</h1>
+      <p className="eyebrow">Atelier Selection</p>
+      <h1 className="mt-3 font-serif text-4xl sm:text-5xl font-light tracking-wide text-white">Your Shopping Bag</h1>
       <CartView />
     </Container>
   );

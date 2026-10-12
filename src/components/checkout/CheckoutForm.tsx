@@ -26,13 +26,14 @@ export function CheckoutForm() {
   // One id per checkout attempt (created on first submit): double-clicks and retries return the same order.
   const checkoutId = useRef<string | null>(null);
 
-  if (!ready) return <div className="mt-12 h-96 animate-pulse bg-surface" aria-busy="true" />;
+  if (!ready) return <div className="mt-12 h-96 animate-pulse rounded-sm border border-white/10 bg-[#141414]" aria-busy="true" />;
 
   if (items.length === 0) {
     return (
-      <div className="mt-12 border-y border-line py-24 text-center">
-        <p className="font-display text-3xl">Your bag is empty.</p>
-        <ButtonLink href="/shop" className="mt-8">
+      <div className="mt-12 rounded-sm border border-white/10 bg-[#141414] py-24 px-6 text-center shadow-xl">
+        <p className="font-serif text-3xl font-light text-white">Your bag is empty.</p>
+        <p className="mt-3 text-stone-400">Discover our signature fragrances to begin.</p>
+        <ButtonLink href="/shop" variant="gold" className="mt-8">
           Shop the collection
         </ButtonLink>
       </div>
@@ -102,18 +103,18 @@ export function CheckoutForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="mt-10 grid gap-12 lg:grid-cols-[1fr_24rem] lg:gap-16">
-      <div className="space-y-12">
-        <fieldset>
-          <legend className="font-display text-3xl">Contact</legend>
-          <p className="mt-2 text-sm text-mute">We’ll send your order confirmation and updates here.</p>
+      <div className="space-y-8">
+        <fieldset className="rounded-sm border border-white/10 bg-[#141414] p-6 sm:p-8 shadow-xl">
+          <legend className="font-serif text-2xl sm:text-3xl font-light tracking-wide text-white border-b border-white/10 pb-3 block w-full">Contact details</legend>
+          <p className="mt-2 text-xs uppercase tracking-widest text-stone-400 font-light">We’ll send your order confirmation and tracking updates here.</p>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <InputField id="email" label="Email" type="email" autoComplete="email" inputMode="email" required error={errors.email} />
             <InputField id="phone" label="Mobile number" type="tel" autoComplete="tel-national" inputMode="tel" required error={errors.phone} hint="10-digit Indian mobile number" />
           </div>
         </fieldset>
 
-        <fieldset>
-          <legend className="font-display text-3xl">Delivery address</legend>
+        <fieldset className="rounded-sm border border-white/10 bg-[#141414] p-6 sm:p-8 shadow-xl">
+          <legend className="font-serif text-2xl sm:text-3xl font-light tracking-wide text-white border-b border-white/10 pb-3 block w-full">Delivery address</legend>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <InputField id="fullName" label="Full name" autoComplete="name" required error={errors.fullName} className="sm:col-span-2" />
             <InputField id="addressLine1" label="House / flat, street" autoComplete="address-line1" required error={errors.addressLine1} className="sm:col-span-2" />
@@ -126,48 +127,48 @@ export function CheckoutForm() {
         </fieldset>
       </div>
 
-      <aside aria-labelledby="checkout-summary" className="h-fit bg-surface p-6 sm:p-8 lg:sticky lg:top-28">
-        <h2 id="checkout-summary" className="text-2xl">
+      <aside aria-labelledby="checkout-summary" className="h-fit rounded-sm border border-white/10 bg-[#141414] p-6 sm:p-8 shadow-xl lg:sticky lg:top-28">
+        <h2 id="checkout-summary" className="font-serif text-2xl font-light text-white border-b border-white/10 pb-4">
           Your order
         </h2>
-        {issues.length > 0 && <p className="mt-4 border border-gold/50 bg-gold-soft/40 p-3 text-xs text-fg-soft">{issues.join(' ')}</p>}
+        {issues.length > 0 && <p className="mt-4 rounded-sm border border-[#c5a059]/40 bg-[#c5a059]/10 p-3 text-xs text-stone-200">{issues.join(' ')}</p>}
         <ul className="mt-6 space-y-4">
           {items.map((item) => (
             <li key={item.variantId} className="grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 text-sm">
               <LineThumb line={item} sizes="56px" />
               <div>
-                <p className="font-display text-lg leading-tight">{item.name}</p>
-                <p className="text-mute">
+                <p className="font-serif text-base text-white leading-tight">{item.name}</p>
+                <p className="text-xs text-stone-400 mt-0.5">
                   {item.sizeMl} ml · Qty {item.quantity}
                 </p>
               </div>
-              <span className="tabular-nums">{formatPrice(item.unitPrice * item.quantity)}</span>
+              <span className="tabular-nums text-white font-medium">{formatPrice(item.unitPrice * item.quantity)}</span>
             </li>
           ))}
         </ul>
-        <dl className="mt-6 space-y-2 border-t border-line pt-6 text-sm">
+        <dl className="mt-6 space-y-2 border-t border-white/10 pt-6 text-sm">
           <div className="flex justify-between">
-            <dt className="text-mute">Subtotal</dt>
-            <dd className="tabular-nums">{formatPrice(subtotal)}</dd>
+            <dt className="text-stone-400">Subtotal</dt>
+            <dd className="tabular-nums text-white">{formatPrice(subtotal)}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-mute">Delivery</dt>
-            <dd>Free</dd>
+            <dt className="text-stone-400">Delivery</dt>
+            <dd className="text-emerald-400 font-medium">Free</dd>
           </div>
-          <div className="flex justify-between pt-2 text-base">
+          <div className="flex justify-between pt-2 text-base font-medium text-white border-t border-white/5">
             <dt>Total</dt>
-            <dd className="tabular-nums">{formatPrice(subtotal)}</dd>
+            <dd className="tabular-nums text-lg">{formatPrice(subtotal)}</dd>
           </div>
         </dl>
 
-        <Button type="submit" size="lg" className="mt-8 w-full" disabled={submitting}>
+        <Button type="submit" variant="gold" size="lg" className="mt-8 w-full" disabled={submitting}>
           <Lock className="size-3.5" strokeWidth={1.5} aria-hidden />
           {submitting ? 'Processing…' : 'Place order & pay'}
         </Button>
         <div role="alert" aria-live="assertive">
-          {formError && <p className="mt-4 border border-danger/40 bg-danger/5 p-3 text-sm text-danger">{formError}</p>}
+          {formError && <p className="mt-4 rounded-sm border border-rose-500/40 bg-rose-950/20 p-3 text-sm text-rose-300">{formError}</p>}
         </div>
-        <p className="mt-4 text-center text-xs text-mute">Secure payment by Razorpay — UPI, cards, net banking. Your items are reserved for 30 minutes while you pay.</p>
+        <p className="mt-4 text-center text-xs text-stone-500">Secure payment by Razorpay — UPI, cards, net banking. Your items are reserved for 30 minutes while you pay.</p>
       </aside>
     </form>
   );

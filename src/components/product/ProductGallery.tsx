@@ -23,7 +23,7 @@ export function ProductGallery({ product }: { product: Pick<Product, 'name' | 's
                 onClick={() => setActive(index)}
                 aria-label={`Show photo ${index + 1} of ${product.images.length}`}
                 aria-current={index === active}
-                className={clsx('relative block aspect-[4/5] w-full overflow-hidden border transition-colors', index === active ? 'border-fg' : 'border-transparent opacity-75 hover:opacity-100')}
+                className={clsx('relative block aspect-[4/5] w-full overflow-hidden rounded-sm border transition-all duration-200', index === active ? 'border-[#c5a059] ring-1 ring-[#c5a059]' : 'border-white/10 opacity-60 hover:opacity-100 hover:border-white/30')}
               >
                 <Image src={photo.src} alt="" fill sizes="120px" className="object-cover" />
               </button>

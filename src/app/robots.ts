@@ -1,7 +1,9 @@
 import type { MetadataRoute } from 'next';
-import { absoluteUrl, site } from '@/lib/site';
+import { absoluteUrl, isLiveSite, site } from '@/lib/site';
 
 export default function robots(): MetadataRoute.Robots {
+  // Staging and preview copies must never compete with the real site in search results.
+  if (!isLiveSite) return { rules: [{ userAgent: '*', disallow: '/' }] };
   return {
     rules: [
       {

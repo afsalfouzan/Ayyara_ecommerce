@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { ContentPage } from '@/components/content/ContentPage';
 import { site } from '@/lib/site';
+import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
   description: 'Terms that apply to purchases from the Ayyara Rebirth online store.',
   alternates: { canonical: '/terms' },
+  openGraph: shareMeta('/terms'),
 };
 
 export default function TermsPage() {

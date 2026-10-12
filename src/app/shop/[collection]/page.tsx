@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { CatalogPage, EmptyMessage } from '@/components/product/CatalogPage';
 import { getProducts, inCollection, listingsOf } from '@/lib/catalog';
 import { collections } from '@/lib/site';
+import { shareMeta } from '@/lib/seo';
 
 export function generateStaticParams() {
   return collections.map((c) => ({ collection: c.slug }));
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<'/shop/[collection]
     title: collection.title,
     description: `${collection.line} Shop Ayyara Rebirth ${collection.label.toLowerCase()}’s fragrances online.`,
     alternates: { canonical: `/shop/${collection.slug}` },
-    openGraph: { url: `/shop/${collection.slug}`, title: `${collection.title} | Ayyara Rebirth` },
+    openGraph: shareMeta(`/shop/${collection.slug}`, { title: `${collection.title} | Ayyara Rebirth` }),
   };
 }
 

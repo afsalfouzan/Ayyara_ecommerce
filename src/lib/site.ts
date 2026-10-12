@@ -25,7 +25,6 @@ export const site = {
     instagram: 'https://www.instagram.com/',
   },
 
-  credit: 'Digitalroots',
 
   policies: {
     freeShippingThresholdPaise: 0,
@@ -67,6 +66,22 @@ export const footerNav = {
     { href: '/terms', label: 'Terms & Conditions' },
   ],
 } as const;
+
+/** Social profiles that have a real page address (the bare placeholders are left out). */
+export const socialProfiles = Object.values(site.social).filter((url) => new URL(url).pathname.length > 1);
+
+/**
+ * True only for the live site. Everything else tells search engines to stay
+ * away, so a test copy can never compete with the real shop in search results:
+ * Vercel previews, a build that was never given its public address, and any
+ * address that starts with a testing name such as staging.ayyararebirth.com.
+ */
+export const isLiveSite = (() => {
+  if ((process.env.VERCEL_ENV ?? 'production') !== 'production') return false;
+  const { hostname } = new URL(site.url);
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.endsWith('.vercel.app')) return false;
+  return !/^(staging|stage|preview|dev|test|demo)[.-]/i.test(hostname);
+})();
 
 export function absoluteUrl(path = '/') {
   return `${site.url}${path.startsWith('/') ? path : `/${path}`}`;

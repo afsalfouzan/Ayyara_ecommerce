@@ -1,5 +1,9 @@
 import { z } from 'zod';
 
+// Zod speeds itself up by generating code at runtime, which the site's security
+// policy forbids (and reports). The form is tiny, so plain validation is used.
+z.config({ jitless: true });
+
 export const INDIAN_STATES = [
   'Andaman and Nicobar Islands',
   'Andhra Pradesh',

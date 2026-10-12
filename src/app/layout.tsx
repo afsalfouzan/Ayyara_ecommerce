@@ -3,7 +3,7 @@ import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { absoluteUrl, site } from '@/lib/site';
+import { absoluteUrl, isLiveSite, site, socialProfiles } from '@/lib/site';
 import './globals.css';
 
 const display = Cormorant_Garamond({
@@ -28,17 +28,13 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
-  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: site.name,
     locale: site.locale,
-    url: '/',
-    title: `${site.name} | Fine Fragrances For Modern You`,
-    description: site.description,
   },
   twitter: { card: 'summary_large_image' },
-  robots: { index: true, follow: true },
+  robots: isLiveSite ? { index: true, follow: true } : { index: false, follow: false },
   formatDetection: { telephone: false },
 };
 
@@ -70,7 +66,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             url: site.url,
             logo: absoluteUrl('/brand/ayyara-logo.png'),
             email: site.contact.email,
-            sameAs: Object.values(site.social),
+            telephone: site.contact.phone.replace(/\s/g, ''),
+            address: { '@type': 'PostalAddress', streetAddress: 'Veliyamthode, Chandakunnu', addressLocality: 'Malappuram', addressRegion: 'Kerala', postalCode: '679329', addressCountry: 'IN' },
+            ...(socialProfiles.length ? { sameAs: socialProfiles } : {}),
           }}
         />
       </body>

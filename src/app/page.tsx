@@ -1,10 +1,12 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
 import { ListingCard } from '@/components/product/ListingCard';
-import { featuredListings, getProducts } from '@/lib/catalog';
+import { bestSellerListings, getBestSellerIds, getProducts } from '@/lib/catalog';
 import { imagery } from '@/lib/imagery';
 import { collections } from '@/lib/site';
+import { shareMeta } from '@/lib/seo';
 
 /*
  * Home page, built to the design mock-up class for class. Tailwind 3 values the
@@ -12,19 +14,21 @@ import { collections } from '@/lib/site';
  * differs. In Tailwind 3 a responsive text size also resets line height, so
  * those breakpoints carry an explicit sm:leading-* to render identically.
  */
+export const metadata: Metadata = { alternates: { canonical: '/' }, openGraph: shareMeta('/') };
+
 const dropShadowMd = '[filter:drop-shadow(0_4px_3px_rgb(0_0_0/0.07))_drop-shadow(0_2px_2px_rgb(0_0_0/0.06))]';
 const dropShadow = '[filter:drop-shadow(0_1px_2px_rgb(0_0_0/0.1))_drop-shadow(0_1px_1px_rgb(0_0_0/0.06))]';
 
 export default async function HomePage() {
-  const products = await getProducts();
-  const bestSellers = featuredListings(products, 2);
+  const [products, rankedIds] = await Promise.all([getProducts(), getBestSellerIds()]);
+  const bestSellers = bestSellerListings(products, rankedIds);
 
   return (
     <>
       {/* Hero */}
       <section className="relative flex min-h-[500px] items-center justify-center overflow-hidden bg-black sm:min-h-[580px] md:min-h-[640px]">
         <div className="absolute inset-0 z-0">
-          <Image src={imagery.hero.src} alt={imagery.hero.alt} fill priority sizes="100vw" className="h-full w-full object-cover object-center brightness-[0.88]" />
+          <Image src={imagery.hero.src} alt={imagery.hero.alt} fill loading="eager" fetchPriority="high" sizes="100vw" className="h-full w-full object-cover object-center brightness-[0.88]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/30" />
         </div>
         <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 py-20 text-center">

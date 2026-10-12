@@ -85,9 +85,9 @@ export function OrderStatus({ orderNumber }: { orderNumber: string }) {
 
   if (error) {
     return (
-      <div className="mt-10 border-y border-line py-16 text-center">
-        <p className="font-display text-3xl">{error === 'missing' ? 'Your order has been received.' : 'We couldn’t open this order.'}</p>
-        <p className="mx-auto mt-4 max-w-md text-mute">
+      <div className="mt-10 rounded-sm border border-white/10 bg-[#141414] py-16 px-6 text-center shadow-xl">
+        <p className="font-serif text-3xl font-light text-white">{error === 'missing' ? 'Your order has been received.' : 'We couldn’t open this order.'}</p>
+        <p className="mx-auto mt-4 max-w-md text-stone-400">
           {error === 'missing'
             ? `Your order number is ${orderNumber}. Use the link in your confirmation email to see its status.`
             : 'Please use the link from your confirmation email, or contact us with your order number.'}
@@ -99,78 +99,78 @@ export function OrderStatus({ orderNumber }: { orderNumber: string }) {
     );
   }
 
-  if (!order) return <div className="mt-10 h-96 animate-pulse bg-surface" aria-busy="true" aria-label="Loading order" />;
+  if (!order) return <div className="mt-10 h-96 animate-pulse rounded-sm border border-white/10 bg-[#141414]" aria-busy="true" aria-label="Loading order" />;
 
   const state = describe(order);
   const Icon = state.icon;
 
   return (
     <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_22rem] lg:gap-16">
-      <div className="space-y-10">
-        <div className="flex gap-4 border-y border-line py-8">
-          <Icon className={`mt-1 size-7 shrink-0 ${state.tone}`} strokeWidth={1.25} aria-hidden />
-          <div>
-            <h2 className="text-3xl">{state.title}</h2>
-            <p className="mt-2 max-w-lg leading-relaxed text-fg-soft">{state.body}</p>
+      <div className="space-y-8">
+        <div className="flex gap-5 rounded-sm border border-white/10 bg-[#141414] p-6 sm:p-8 shadow-xl">
+          <Icon className={`mt-1 size-8 shrink-0 ${state.tone}`} strokeWidth={1.5} aria-hidden />
+          <div className="flex-1">
+            <h2 className="font-serif text-2xl sm:text-3xl font-light tracking-wide text-white">{state.title}</h2>
+            <p className="mt-2 max-w-lg leading-relaxed text-stone-300 text-sm">{state.body}</p>
             {order.status === 'pending_payment' && order.canPay && (
-              <div className="mt-5 space-y-3">
-                {justPaid && <p className="text-sm text-fg-soft">Confirming your payment with the bank… this page updates automatically.</p>}
-                <Button size="lg" onClick={payNow} disabled={paying}>
+              <div className="mt-6 space-y-3">
+                {justPaid && <p className="text-sm text-[#c5a059]">Confirming your payment with the bank… this page updates automatically.</p>}
+                <Button variant="gold" size="lg" onClick={payNow} disabled={paying}>
                   {paying ? 'Opening secure payment…' : `Pay ${formatPrice(order.totalPaise)} now`}
                 </Button>
-                <p className="text-xs text-mute">
+                <p className="text-xs text-stone-500">
                   Items held until {order.reservationExpiresAt ? new Date(order.reservationExpiresAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'the reservation ends'}. Secure payment by Razorpay.
                 </p>
-                {payError && <p className="text-sm text-danger">{payError}</p>}
+                {payError && <p className="text-sm text-rose-400">{payError}</p>}
               </div>
             )}
             {order.status === 'pending_payment' && !order.canPay && (
-              <p className="mt-4 border border-gold/50 bg-gold-soft/40 p-3 text-sm text-fg-soft">
-                <strong className="label block text-gold-bright">Development build</strong>
+              <p className="mt-4 rounded-sm border border-[#c5a059]/40 bg-[#c5a059]/10 p-3 text-sm text-stone-200">
+                <strong className="label block text-[#c5a059]">Development build</strong>
                 Online payment (Razorpay) is not configured on this server, so no payment has been taken.
               </p>
             )}
             {order.trackingNumber && (
-              <p className="mt-3 text-sm">
-                {order.courier} · tracking <strong>{order.trackingNumber}</strong>
+              <p className="mt-4 text-sm text-stone-300">
+                {order.courier} · tracking <strong className="text-white">{order.trackingNumber}</strong>
               </p>
             )}
           </div>
         </div>
 
-        <section aria-labelledby="delivery-heading">
-          <h2 id="delivery-heading" className="text-2xl">
+        <section aria-labelledby="delivery-heading" className="rounded-sm border border-white/10 bg-[#141414] p-6 sm:p-8 shadow-xl">
+          <h2 id="delivery-heading" className="font-serif text-2xl font-light text-white border-b border-white/10 pb-3">
             Delivery to
           </h2>
-          <p className="mt-3 text-fg-soft">
-            {order.shipping.name}
+          <p className="mt-4 text-stone-300 text-sm leading-relaxed">
+            <span className="font-medium text-white">{order.shipping.name}</span>
             <br />
             {order.shipping.city}, {order.shipping.state} {order.shipping.pincode}
           </p>
-          <p className="mt-3 text-sm text-mute">Updates will be sent to {order.email}.</p>
+          <p className="mt-3 text-xs text-stone-500">Updates will be sent to {order.email}.</p>
         </section>
       </div>
 
-      <aside className="h-fit bg-surface p-6 sm:p-8">
-        <p className="label text-mute">Order {order.orderNumber}</p>
+      <aside className="h-fit rounded-sm border border-white/10 bg-[#141414] p-6 sm:p-8 shadow-xl lg:sticky lg:top-28">
+        <p className="label text-[#c5a059]">Order {order.orderNumber}</p>
         <ul className="mt-5 space-y-3 text-sm">
           {order.items.map((item) => (
-            <li key={`${item.productName}-${item.sizeMl}`} className="flex justify-between gap-4">
+            <li key={`${item.productName}-${item.sizeMl}`} className="flex justify-between gap-4 text-stone-300">
               <span>
                 {item.productName} · {item.sizeMl} ml × {item.quantity}
               </span>
-              <span className="tabular-nums">{formatPrice(item.lineTotalPaise)}</span>
+              <span className="tabular-nums text-white font-medium">{formatPrice(item.lineTotalPaise)}</span>
             </li>
           ))}
         </ul>
-        <dl className="mt-5 space-y-2 border-t border-line pt-5 text-sm">
+        <dl className="mt-5 space-y-2 border-t border-white/10 pt-5 text-sm">
           <div className="flex justify-between">
-            <dt className="text-mute">Delivery</dt>
-            <dd>{order.shippingPaise ? formatPrice(order.shippingPaise) : 'Free'}</dd>
+            <dt className="text-stone-400">Delivery</dt>
+            <dd className="text-emerald-400 font-medium">{order.shippingPaise ? formatPrice(order.shippingPaise) : 'Free'}</dd>
           </div>
-          <div className="flex justify-between text-base">
+          <div className="flex justify-between text-base font-medium text-white pt-2 border-t border-white/5">
             <dt>Total</dt>
-            <dd className="tabular-nums">{formatPrice(order.totalPaise)}</dd>
+            <dd className="tabular-nums text-lg">{formatPrice(order.totalPaise)}</dd>
           </div>
         </dl>
       </aside>
@@ -179,11 +179,11 @@ export function OrderStatus({ orderNumber }: { orderNumber: string }) {
 }
 
 function describe(order: Order) {
-  if (order.status === 'cancelled') return { icon: XCircle, tone: 'text-danger', title: 'This order was cancelled', body: 'If you were charged, a refund is on its way to your original payment method.' };
-  if (order.status === 'expired') return { icon: XCircle, tone: 'text-mute', title: 'Payment time ran out', body: 'We didn’t receive payment in time, so the items were released. You can place the order again from the shop.' };
-  if (order.status === 'pending_payment') return { icon: Clock, tone: 'text-gold-bright', title: 'Order received — awaiting payment', body: 'Your items are reserved. Once payment is confirmed we will start preparing your order.' };
-  if (order.fulfilmentStatus === 'delivered') return { icon: CheckCircle2, tone: 'text-success', title: 'Delivered', body: 'We hope you love your fragrance.' };
-  if (order.fulfilmentStatus === 'dispatched') return { icon: Truck, tone: 'text-success', title: 'On its way', body: 'Your order has been dispatched.' };
-  if (order.fulfilmentStatus === 'packed' || order.fulfilmentStatus === 'processing') return { icon: Package, tone: 'text-success', title: 'Being prepared', body: 'We are carefully packing your order.' };
-  return { icon: CheckCircle2, tone: 'text-success', title: 'Thank you — payment received', body: 'Your order is confirmed. We will email you when it is dispatched.' };
+  if (order.status === 'cancelled') return { icon: XCircle, tone: 'text-rose-400', title: 'This order was cancelled', body: 'If you were charged, a refund is on its way to your original payment method.' };
+  if (order.status === 'expired') return { icon: XCircle, tone: 'text-stone-500', title: 'Payment time ran out', body: 'We didn’t receive payment in time, so the items were released. You can place the order again from the shop.' };
+  if (order.status === 'pending_payment') return { icon: Clock, tone: 'text-[#c5a059]', title: 'Order received — awaiting payment', body: 'Your items are reserved. Once payment is confirmed we will start preparing your order.' };
+  if (order.fulfilmentStatus === 'delivered') return { icon: CheckCircle2, tone: 'text-emerald-400', title: 'Delivered', body: 'We hope you love your fragrance.' };
+  if (order.fulfilmentStatus === 'dispatched') return { icon: Truck, tone: 'text-emerald-400', title: 'On its way', body: 'Your order has been dispatched.' };
+  if (order.fulfilmentStatus === 'packed' || order.fulfilmentStatus === 'processing') return { icon: Package, tone: 'text-emerald-400', title: 'Being prepared', body: 'We are carefully packing your order.' };
+  return { icon: CheckCircle2, tone: 'text-emerald-400', title: 'Thank you — payment received', body: 'Your order is confirmed. We will email you when it is dispatched.' };
 }

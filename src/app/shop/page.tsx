@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { CatalogPage, EmptyMessage } from '@/components/product/CatalogPage';
 import { getProducts, listingsOf } from '@/lib/catalog';
+import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Shop All Perfumes',
   description: 'Shop the Ayyara Rebirth collection of fine fragrances. Secure online payment and delivery across India.',
   alternates: { canonical: '/shop' },
-  openGraph: { url: '/shop', title: 'Shop All Perfumes | Ayyara Rebirth' },
+  openGraph: shareMeta('/shop', { title: 'Shop All Perfumes | Ayyara Rebirth' }),
 };
 
 export default async function ShopPage() {

@@ -15,10 +15,10 @@ export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, 
       <div className="mx-auto max-w-7xl">
         <Breadcrumbs items={[{ name: 'Home', href: '/' }, ...crumbs]} />
         <div className="mt-10 text-center">
-          <p className="text-[11px] font-medium tracking-[0.3em] text-mute uppercase">{eyebrow}</p>
-          <h1 className="mt-3 font-display text-4xl font-light tracking-wider text-white sm:text-5xl">{title}</h1>
-          <div className="mx-auto mt-4 h-px w-12 bg-stone-700" aria-hidden />
-          {intro && <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed font-light text-mute sm:text-base">{intro}</p>}
+          <p className="text-xs font-medium tracking-[0.25em] text-[#c5a059] uppercase">{eyebrow}</p>
+          <h1 className="mt-3 font-serif text-4xl font-light tracking-wider text-white sm:text-5xl">{title}</h1>
+          <div className="mx-auto mt-4 h-px w-12 bg-[#c5a059]/40" aria-hidden />
+          {intro && <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed font-light text-stone-400 sm:text-base">{intro}</p>}
         </div>
 
         {current !== undefined && (
@@ -29,7 +29,12 @@ export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, 
                   <Link
                     href={tab.href}
                     aria-current={current === tab.href ? 'page' : undefined}
-                    className={clsx('block rounded-full border px-5 py-2 text-xs tracking-widest whitespace-nowrap uppercase transition-colors', current === tab.href ? 'border-white bg-white text-stone-900' : 'border-white/15 text-fg-soft hover:border-white/40 hover:text-white')}
+                    className={clsx(
+                      'block rounded-full border px-5 py-2 text-xs tracking-widest whitespace-nowrap uppercase transition-all duration-200',
+                      current === tab.href
+                        ? 'border-[#c5a059] bg-[#c5a059]/15 text-[#e6c98f] font-medium shadow-sm'
+                        : 'border-white/10 bg-[#141414]/70 text-stone-400 hover:border-white/30 hover:text-white',
+                    )}
                   >
                     {tab.label}
                   </Link>
@@ -41,7 +46,7 @@ export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, 
 
         {children}
 
-        <p className="mt-10 border-b border-line pb-4 text-sm text-mute">
+        <p className="mt-10 border-b border-white/10 pb-4 text-xs tracking-widest uppercase text-stone-400">
           {listings.length} {listings.length === 1 ? 'perfume' : 'perfumes'}
         </p>
         {listings.length === 0 ? (

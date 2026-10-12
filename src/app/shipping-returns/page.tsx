@@ -2,11 +2,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ContentPage } from '@/components/content/ContentPage';
 import { site } from '@/lib/site';
+import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Delivery & Returns',
   description: 'Delivery times, dispatch and return policy for Ayyara Rebirth orders across India.',
   alternates: { canonical: '/shipping-returns' },
+  openGraph: shareMeta('/shipping-returns'),
 };
 
 export default function ShippingReturnsPage() {

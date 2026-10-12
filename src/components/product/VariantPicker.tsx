@@ -72,13 +72,15 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
                     setAdded(false);
                   }}
                   className={clsx(
-                    'min-w-24 border px-4 py-2.5 text-left transition-colors',
-                    option.id === variant.id ? 'border-fg bg-fg text-canvas' : 'border-line hover:border-fg',
-                    out && option.id !== variant.id && 'text-mute line-through decoration-1',
+                    'min-w-24 rounded-sm border px-4 py-2.5 text-left transition-all duration-200',
+                    option.id === variant.id
+                      ? 'border-[#c5a059] bg-[#c5a059]/15 text-white ring-1 ring-[#c5a059]'
+                      : 'border-white/10 bg-[#141414] text-stone-300 hover:border-white/30',
+                    out && option.id !== variant.id && 'text-stone-600 line-through decoration-1',
                   )}
                 >
                   <span className="block text-sm font-medium">{option.sizeMl} ml</span>
-                  <span className={clsx('block text-xs tabular-nums', option.id === variant.id ? 'text-canvas/75' : 'text-mute')}>
+                  <span className={clsx('block text-xs tabular-nums', option.id === variant.id ? 'text-[#c5a059]' : 'text-stone-400')}>
                     {out ? 'Sold out' : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(option.pricePaise / 100)}
                   </span>
                 </button>
@@ -93,22 +95,22 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
           <Button size="lg" disabled className="w-full">
             Sold out
           </Button>
-          <p className="text-sm text-mute">This size is currently unavailable. {product.variants.length > 1 ? 'Try another size or check back soon.' : 'Please check back soon.'}</p>
+          <p className="text-sm text-stone-400">This size is currently unavailable. {product.variants.length > 1 ? 'Try another size or check back soon.' : 'Please check back soon.'}</p>
         </div>
       ) : (
         <div className="space-y-4">
           <div className="flex gap-3">
             <QuantityStepper label="Quantity" value={Math.min(quantity, Math.max(1, remaining))} max={Math.max(1, remaining)} onChange={setQuantity} />
-            <Button size="lg" onClick={add} disabled={remaining === 0} className="flex-1">
+            <Button variant="gold" size="lg" onClick={add} disabled={remaining === 0} className="flex-1 font-medium tracking-widest uppercase">
               {remaining === 0 ? 'Maximum in bag' : 'Add to bag'}
             </Button>
           </div>
           <p role="status" aria-live="polite" className="min-h-5 text-sm">
             {added && (
-              <span className="inline-flex animate-fade-up items-center gap-2 text-success">
+              <span className="inline-flex animate-fade-up items-center gap-2 text-emerald-400">
                 <Check className="size-4" strokeWidth={1.5} />
                 Added to your bag.
-                <Link href="/cart" className="text-fg underline underline-offset-4">
+                <Link href="/cart" className="text-white underline underline-offset-4 hover:text-[#c5a059]">
                   View bag
                 </Link>
               </span>

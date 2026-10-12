@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CatalogPage, EmptyMessage } from '@/components/product/CatalogPage';
 import { getProducts, isOnOffer, listingsOf } from '@/lib/catalog';
+import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Offers',
   description: 'Ayyara Rebirth fragrances at special prices — save on fine perfumes with delivery across India.',
   alternates: { canonical: '/offers' },
-  openGraph: { url: '/offers', title: 'Offers | Ayyara Rebirth' },
+  openGraph: shareMeta('/offers', { title: 'Offers | Ayyara Rebirth' }),
 };
 
 export default async function OffersPage() {

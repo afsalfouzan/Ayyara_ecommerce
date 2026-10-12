@@ -28,7 +28,7 @@ export async function SiteFooter() {
         <div className="grid grid-cols-1 gap-10 pb-12 md:grid-cols-3 md:gap-8">
           {linkColumns.map((column) => (
             <nav key={column.title} aria-label={column.title} className="space-y-4">
-              <h3 className="font-sans text-lg font-medium tracking-wide text-white">{column.title}</h3>
+              <h2 className="font-sans text-lg font-medium tracking-wide text-white">{column.title}</h2>
               <ul className="space-y-2.5 text-sm font-light text-stone-400">
                 {column.links.map((link) => (
                   <li key={link.href}>
@@ -41,7 +41,7 @@ export async function SiteFooter() {
             </nav>
           ))}
           <div className="space-y-4">
-            <h3 className="font-sans text-lg font-medium tracking-wide text-white">Contact Us</h3>
+            <h2 className="font-sans text-lg font-medium tracking-wide text-white">Contact Us</h2>
             <ul className="space-y-3 text-sm font-light text-stone-400">
               <li className="flex items-center space-x-3">
                 <Icon name="phone" className="h-4 w-4 shrink-0 text-stone-400" />
@@ -82,7 +82,7 @@ export async function SiteFooter() {
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-stone-400 sm:flex-row">
           <p className="text-center sm:text-left">
-            Copyright © {year} <strong className="font-medium text-white">Ayyara rebirth</strong> All Rights Reserved | Designed by <span className="font-semibold text-white">{site.credit}</span>
+            © {year} {site.name}. All rights reserved.
           </p>
           <a href="#" aria-label="Scroll back to top" className="touch-ripple flex items-center justify-center rounded border border-stone-700 bg-stone-900 p-2.5 text-white transition-all hover:border-white">
             <Icon name="chevronUp" strokeWidth={2} className="h-4 w-4" />

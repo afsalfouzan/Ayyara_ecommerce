@@ -12,7 +12,8 @@ const variants: Record<Variant, string> = {
   primary: 'bg-fg text-canvas hover:bg-fg-soft',
   outline: 'border border-fg text-fg hover:bg-fg hover:text-canvas',
   ghost: 'text-fg hover:text-gold-bright',
-  gold: 'bg-gold text-fg hover:bg-gold-bright hover:text-canvas',
+  // Dark text: ivory on gold is too faint to read (contrast 2.2:1).
+  gold: 'bg-gold text-canvas hover:bg-gold-bright',
 };
 
 const sizes: Record<Size, string> = {

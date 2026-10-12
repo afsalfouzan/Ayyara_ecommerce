@@ -9,19 +9,21 @@ import { VariantPicker } from '@/components/product/VariantPicker';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Container } from '@/components/ui/Container';
-import { cheapestVariant, getProductBySlug, getProducts, getRelatedProducts, listingsOf, paragraphs } from '@/lib/catalog';
+import { cheapestVariant, getProductBySlug, getProducts, getRelatedProducts, listingsOf, paragraphs, PLACEHOLDER_SLUG } from '@/lib/catalog';
 import { toRupeeString } from '@/lib/format';
 import { absoluteUrl, site } from '@/lib/site';
 import type { Product } from '@/lib/types';
+import { shareMeta } from '@/lib/seo';
 
 export async function generateStaticParams() {
   try {
     const products = await getProducts();
-    return products.map((product) => ({ slug: product.slug }));
+    if (products.length > 0) return products.map((product) => ({ slug: product.slug }));
   } catch {
-    // API unavailable at build time: pages are rendered on first request instead.
-    return [];
+    // API unavailable at build time: real product pages are rendered on first request instead.
   }
+  // Nothing to list: give the build one stand-in address (it renders "not found").
+  return [{ slug: PLACEHOLDER_SLUG }];
 }
 
 function seoTitle(product: Product) {
@@ -37,18 +39,12 @@ export async function generateMetadata({ params }: PageProps<'/products/[slug]'>
   const product = await getProductBySlug(slug);
   if (!product) return { title: 'Fragrance not found', robots: { index: false } };
   const url = `/products/${product.slug}`;
-  const image = product.images[0];
   return {
     title: seoTitle(product),
     description: seoDescription(product),
     alternates: { canonical: url },
-    openGraph: {
-      type: 'website',
-      url,
-      title: seoTitle(product),
-      description: seoDescription(product),
-      images: image ? [{ url: image.src, width: image.width, height: image.height, alt: image.alt }] : undefined,
-    },
+    // The share image is the generated card in ./opengraph-image.tsx.
+    openGraph: { ...shareMeta(url, { title: seoTitle(product), image: false }), description: seoDescription(product) },
   };
 }
 

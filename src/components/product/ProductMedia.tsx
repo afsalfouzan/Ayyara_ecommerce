@@ -23,8 +23,8 @@ export function ProductMedia({
     return <ProductArt art={artFor(product.slug)} name={product.name} className={clsx('aspect-[4/5]', className)} />;
   }
   return (
-    <div className={clsx('relative aspect-[4/5] overflow-hidden bg-surface', className)}>
-      <Image src={photo.src} alt={photo.alt} fill sizes={sizes} priority={priority} className="object-cover" />
+    <div className={clsx('relative aspect-[4/5] overflow-hidden rounded-sm border border-white/10 bg-[#181818]', className)}>
+      <Image src={photo.src} alt={photo.alt} fill sizes={sizes} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} className="object-cover" />
     </div>
   );
 }

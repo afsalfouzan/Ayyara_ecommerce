@@ -16,10 +16,18 @@ export async function getProducts(): Promise<Product[]> {
   return items;
 }
 
+/**
+ * Stand-in product address used only while building, when the shop has no
+ * perfumes yet (a new staging site) or the API can't be reached. Next.js needs
+ * at least one address to check the product page; this one answers "not found".
+ */
+export const PLACEHOLDER_SLUG = '__no-products-yet__';
+
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   'use cache';
   cacheLife('minutes');
   cacheTag('products', `product:${slug}`);
+  if (slug === PLACEHOLDER_SLUG) return null;
   try {
     const { product } = await storeApi<{ product: Product }>(`/store/products/${encodeURIComponent(slug)}`);
     return product;
@@ -66,11 +74,33 @@ export function isOnOffer(listing: Listing) {
   return listing.variant.mrpPaise > listing.variant.pricePaise;
 }
 
-/** Home-page picks: sizes in stock first, keeping catalogue order. */
-export function featuredListings(products: Product[], limit = 4) {
+/** Sizes ranked by units sold (online + offline, net of returns), best first. */
+export async function getBestSellerIds(): Promise<number[]> {
+  'use cache';
+  cacheLife('minutes');
+  cacheTag('products', 'bestsellers');
+  try {
+    const { items } = await storeApi<{ items: { variantId: number }[] }>('/store/bestsellers?limit=8');
+    return items.map((item) => item.variantId);
+  } catch {
+    // Ranking is a nice-to-have; the section still renders from the catalogue.
+    return [];
+  }
+}
+
+/**
+ * Home-page best sellers: real top sellers that can still be bought, then sold-out
+ * top sellers. Shows 4 when there are that many sellers, otherwise 2, topping
+ * up with other in-stock sizes so the section always has at least two cards.
+ */
+export function bestSellerListings(products: Product[], rankedIds: number[], { min = 2, max = 4 } = {}) {
   const all = listingsOf(products);
-  const inStock = all.filter((l) => l.variant.stockStatus !== 'out_of_stock');
-  return [...inStock, ...all.filter((l) => !inStock.includes(l))].slice(0, limit);
+  const byId = new Map(all.map((listing) => [listing.variant.id, listing]));
+  const ranked = rankedIds.flatMap((id) => byId.get(id) ?? []);
+  const sellers = [...ranked.filter((l) => l.variant.stockStatus !== 'out_of_stock'), ...ranked.filter((l) => l.variant.stockStatus === 'out_of_stock')];
+  const count = sellers.length >= max ? max : min;
+  const fillers = [...all.filter((l) => l.variant.stockStatus !== 'out_of_stock'), ...all].filter((l) => !sellers.includes(l));
+  return [...new Set([...sellers, ...fillers])].slice(0, count);
 }
 
 /** Case-insensitive match on the perfume's name, tagline and description. */

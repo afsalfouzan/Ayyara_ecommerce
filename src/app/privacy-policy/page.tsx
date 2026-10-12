@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { ContentPage } from '@/components/content/ContentPage';
 import { site } from '@/lib/site';
+import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'How Ayyara Rebirth collects, uses and protects your personal information.',
   alternates: { canonical: '/privacy-policy' },
+  openGraph: shareMeta('/privacy-policy'),
 };
 
 export default function PrivacyPolicyPage() {

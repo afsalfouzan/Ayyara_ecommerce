@@ -22,7 +22,15 @@ npm run build && npm start
 
 - Product photography (illustrated bottles are shown until images exist)
 - Contact details and policy figures in `lib/site.ts`; policy page copy (marked *Draft* in dev)
-- WooCommerce redirect list in `next.config.ts` — extend with the exact URLs from the live site
+- Home-page photography in `lib/imagery.ts` and the social links in `lib/site.ts`
+
+## Launch notes
+
+- **Old links.** `redirects()` in `next.config.ts` covers every address in the WooCommerce sitemap. The two old product links map to `ayyara-one` and `ayyara-legacy` by name; update them if those slugs change.
+- **Security headers** are set in `next.config.ts`. The content security policy limits scripts, frames and outgoing requests to this site, the API, photo storage and Razorpay. Add a host there before loading anything from a new service (analytics, chat, fonts), or the browser will block it.
+- **Share images.** `app/opengraph-image.tsx` is the site card; `app/products/[slug]/opengraph-image.tsx` draws one per perfume from its first photo. Pages build their link preview with `shareMeta()` (`lib/seo.ts`); a page that sets `openGraph` by hand loses the site name and image.
+- **Search engines** may index only the real site: `isLiveSite` (`lib/site.ts`) is false on previews, staging and builds without `NEXT_PUBLIC_SITE_URL`, which then answer `noindex`.
+- Hosting variables and the go-live checklist are in the backend's `deploy/README.md`.
 
 ## Brand logo
 

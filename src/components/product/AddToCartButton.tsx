@@ -17,7 +17,7 @@ export function AddToCartButton({ listing }: { listing: Listing }) {
 
   if (soldOut) {
     return (
-      <button type="button" disabled className="flex w-full cursor-not-allowed items-center justify-center rounded-lg bg-stone-200 px-4 py-3 text-xs font-semibold text-stone-500">
+      <button type="button" disabled className="flex w-full cursor-not-allowed items-center justify-center rounded-sm border border-white/10 bg-white/5 px-4 py-3 text-xs font-medium text-stone-500">
         <span className="tracking-widest uppercase">SOLD OUT</span>
       </button>
     );
@@ -25,7 +25,7 @@ export function AddToCartButton({ listing }: { listing: Listing }) {
 
   if (added || atLimit) {
     return (
-      <Link href="/cart" className="touch-ripple flex w-full items-center justify-center space-x-2 rounded-lg bg-stone-800 px-4 py-3 text-xs font-semibold text-white transition-all hover:bg-stone-700">
+      <Link href="/cart" className="touch-ripple flex w-full items-center justify-center space-x-2 rounded-sm border border-[#c5a059] bg-[#c5a059]/15 px-4 py-3 text-xs font-medium text-[#e6c98f] transition-all hover:bg-[#c5a059]/25">
         <Icon name="check" strokeWidth={2} className="h-4 w-4" />
         <span className="tracking-widest uppercase">{atLimit && !added ? 'IN YOUR CART' : 'ADDED · VIEW CART'}</span>
       </Link>
@@ -49,7 +49,7 @@ export function AddToCartButton({ listing }: { listing: Listing }) {
         });
         setAdded(true);
       }}
-      className="touch-ripple flex w-full items-center justify-center space-x-2 rounded-lg bg-black px-4 py-3 text-xs font-semibold text-white transition-all hover:bg-stone-800"
+      className="touch-ripple flex w-full items-center justify-center space-x-2 rounded-sm border border-white/20 bg-transparent px-4 py-3 text-xs font-medium tracking-widest text-white uppercase transition-all duration-300 hover:border-[#c5a059] hover:bg-[#c5a059] hover:text-black"
     >
       <Icon name="cart" strokeWidth={2} className="h-4 w-4" />
       <span className="tracking-widest uppercase">ADD TO CART</span>

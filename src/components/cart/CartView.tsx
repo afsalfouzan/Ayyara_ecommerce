@@ -23,10 +23,10 @@ export function CartView() {
     return (
       <div className="mt-12 space-y-6">
         {issues.length > 0 && <Notices issues={issues} />}
-        <div className="border-y border-line py-24 text-center">
-          <p className="font-display text-3xl">Your bag is empty.</p>
-          <p className="mt-3 text-mute">Discover a fragrance to begin.</p>
-          <ButtonLink href="/shop" className="mt-10">
+        <div className="rounded-sm border border-white/10 bg-[#141414] py-24 px-6 text-center shadow-xl">
+          <p className="font-serif text-3xl font-light text-white">Your bag is empty.</p>
+          <p className="mt-3 text-stone-400">Discover our signature fragrances to begin.</p>
+          <ButtonLink href="/shop" variant="gold" className="mt-8">
             Shop the collection
           </ButtonLink>
         </div>
@@ -38,7 +38,7 @@ export function CartView() {
     <div className="mt-12 space-y-8">
       {issues.length > 0 && <Notices issues={issues} />}
       <div className="grid gap-12 lg:grid-cols-[1fr_22rem] lg:gap-16">
-        <ul className="divide-y divide-line border-y border-line">
+        <ul className="divide-y divide-white/10 border-y border-white/10">
           {items.map((item) => (
             <li key={item.variantId} className="grid grid-cols-[5.5rem_1fr] gap-5 py-6 sm:grid-cols-[7rem_1fr] sm:gap-8">
               <Link href={`/products/${item.slug}`} tabIndex={-1} aria-hidden>
@@ -47,18 +47,18 @@ export function CartView() {
               <div className="flex min-w-0 flex-col">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
-                    <h2 className="text-2xl leading-tight">
-                      <Link href={`/products/${item.slug}`} className="hover:text-gold-bright">
+                    <h2 className="font-serif text-2xl font-light leading-tight">
+                      <Link href={`/products/${item.slug}`} className="text-white hover:text-[#c5a059] transition-colors">
                         {item.name}
                       </Link>
                     </h2>
-                    <p className="mt-1 text-sm text-mute">{item.sizeMl} ml</p>
+                    <p className="mt-1 text-sm text-stone-400">{item.sizeMl} ml</p>
                   </div>
-                  <Price price={item.unitPrice * item.quantity} mrp={item.mrp * item.quantity} showSaving={false} className="shrink-0 justify-end pt-1 text-right" />
+                  <Price price={item.unitPrice * item.quantity} mrp={item.mrp * item.quantity} showSaving={false} className="shrink-0 justify-end pt-1 text-right text-white" />
                 </div>
                 <div className="mt-auto flex items-center justify-between gap-4 pt-5">
                   <QuantityStepper size="sm" label={`Quantity of ${item.name} ${item.sizeMl} ml`} value={item.quantity} max={item.maxQuantity} onChange={(value) => cart.setQuantity(item.variantId, value)} />
-                  <button type="button" onClick={() => cart.remove(item.variantId)} className="label link-underline text-mute hover:text-fg">
+                  <button type="button" onClick={() => cart.remove(item.variantId)} className="text-xs uppercase tracking-widest text-stone-400 hover:text-rose-400 transition-colors">
                     Remove
                   </button>
                 </div>
@@ -67,36 +67,36 @@ export function CartView() {
           ))}
         </ul>
 
-        <aside aria-labelledby="summary-heading" className="h-fit bg-surface p-6 sm:p-8 lg:sticky lg:top-28">
-          <h2 id="summary-heading" className="text-2xl">
+        <aside aria-labelledby="summary-heading" className="h-fit rounded-sm border border-white/10 bg-[#141414] p-6 sm:p-8 shadow-xl lg:sticky lg:top-28">
+          <h2 id="summary-heading" className="font-serif text-2xl font-light text-white border-b border-white/10 pb-4">
             Order summary
           </h2>
           <dl className="mt-6 space-y-3 text-sm">
             <div className="flex justify-between">
-              <dt className="text-mute">Subtotal</dt>
-              <dd className="tabular-nums">{formatPrice(subtotal)}</dd>
+              <dt className="text-stone-400">Subtotal</dt>
+              <dd className="tabular-nums text-white">{formatPrice(subtotal)}</dd>
             </div>
             {savings > 0 && (
-              <div className="flex justify-between text-gold-bright">
+              <div className="flex justify-between text-[#c5a059]">
                 <dt>You save</dt>
-                <dd className="tabular-nums">{formatPrice(savings)}</dd>
+                <dd className="tabular-nums font-medium">{formatPrice(savings)}</dd>
               </div>
             )}
             <div className="flex justify-between">
-              <dt className="text-mute">Delivery</dt>
-              <dd>Free</dd>
+              <dt className="text-stone-400">Delivery</dt>
+              <dd className="text-emerald-400 font-medium">Free</dd>
             </div>
           </dl>
-          <div className="mt-6 flex justify-between border-t border-line pt-6 text-base">
+          <div className="mt-6 flex justify-between border-t border-white/10 pt-6 text-base font-medium text-white">
             <span>Total</span>
-            <span className="tabular-nums" aria-busy={checking}>
+            <span className="tabular-nums text-lg" aria-busy={checking}>
               {formatPrice(subtotal)}
             </span>
           </div>
-          <ButtonLink href="/checkout" size="lg" className="mt-8 w-full">
+          <ButtonLink href="/checkout" variant="gold" size="lg" className="mt-8 w-full">
             Proceed to checkout
           </ButtonLink>
-          <p className="mt-4 text-center text-xs text-mute">Prices and availability are confirmed when you place the order.</p>
+          <p className="mt-4 text-center text-xs text-stone-500">Prices and availability are confirmed when you place the order.</p>
         </aside>
       </div>
     </div>
@@ -105,8 +105,8 @@ export function CartView() {
 
 function Notices({ issues }: { issues: string[] }) {
   return (
-    <div role="status" className="flex gap-3 border border-gold/50 bg-gold-soft/40 p-4 text-sm text-fg-soft">
-      <Info className="mt-0.5 size-4 shrink-0 text-gold-bright" strokeWidth={1.5} aria-hidden />
+    <div role="status" className="flex gap-3 rounded-sm border border-[#c5a059]/40 bg-[#c5a059]/10 p-4 text-sm text-stone-200">
+      <Info className="mt-0.5 size-4 shrink-0 text-[#c5a059]" strokeWidth={1.5} aria-hidden />
       <ul className="space-y-1">
         {issues.map((issue) => (
           <li key={issue}>{issue}</li>

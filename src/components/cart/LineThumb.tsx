@@ -6,7 +6,7 @@ import type { CartLine } from './cart-store';
 export function LineThumb({ line, sizes }: { line: Pick<CartLine, 'image' | 'slug' | 'name'>; sizes: string }) {
   if (!line.image) return <ProductArt art={artFor(line.slug)} name={line.name} className="aspect-[4/5]" />;
   return (
-    <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+    <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-white/10 bg-[#181818]">
       <Image src={line.image.src} alt="" fill sizes={sizes} className="object-cover" />
     </div>
   );

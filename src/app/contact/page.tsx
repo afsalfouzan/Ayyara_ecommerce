@@ -2,11 +2,13 @@ import type { Metadata } from 'next';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { ContentPage } from '@/components/content/ContentPage';
 import { site } from '@/lib/site';
+import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
   description: 'Get in touch with Ayyara Rebirth client care for help with fragrances and orders.',
   alternates: { canonical: '/contact' },
+  openGraph: shareMeta('/contact'),
 };
 
 export default function ContactPage() {
