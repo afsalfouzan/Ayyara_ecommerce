@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { CampaignFilm } from '@/components/home/CampaignFilm';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Icon } from '@/components/ui/icons';
 import { bestSellerListings, getBestSellerIds, getProducts } from '@/lib/catalog';
-import { imagery } from '@/lib/imagery';
+import { film, imagery } from '@/lib/imagery';
 import { shareMeta } from '@/lib/seo';
 import { site } from '@/lib/site';
 
@@ -16,7 +17,8 @@ import { site } from '@/lib/site';
  * own composition so the page has a rhythm:
  *   hero          the campaign photo beside (or above) a few words
  *   collections   three photos of different shapes, numbered like chapters
- *   best sellers  a heading column beside the product tiles, on white
+ *   the film      the ONE campaign film, as a still that opens in a popup, on white
+ *   best sellers  a heading column beside the product tiles
  *   the house     one large line of text on the deeper beige
  *   service       three plain facts from the shop's own policies
  *   sign-up       a narrow, centred form
@@ -42,6 +44,8 @@ const services = [
 export default async function HomePage() {
   const [products, rankedIds] = await Promise.all([getProducts(), getBestSellerIds()]);
   const bestSellers = bestSellerListings(products, rankedIds);
+  // The film is about ONE: link to that perfume if the shop has it, otherwise to the shop.
+  const one = products.find((product) => /\bone\b/i.test(product.name));
 
   return (
     <>
@@ -101,8 +105,27 @@ export default async function HomePage() {
         </ul>
       </Container>
 
-      {/* Best sellers: a heading column beside the product tiles, on white. */}
+      {/* The campaign film: a portrait still with a play button, beside a few words. */}
       <section className="bg-surface">
+        <Container className="grid grid-cols-1 items-center gap-8 py-14 md:py-24 lg:grid-cols-12 lg:gap-12">
+          <div className="mx-auto w-full max-w-sm lg:col-span-4 lg:col-start-2 lg:max-w-none">
+            {/* The bottle sits in the middle of the frame, so a shorter crop on phones keeps it whole. */}
+            <CampaignFilm src={film.src} poster={film.poster} posterAlt={film.posterAlt} title={film.title} width={film.width} height={film.height} frameClassName="aspect-[4/5] sm:aspect-[9/16]" />
+          </div>
+          <div className="lg:col-span-5 lg:col-start-7">
+            <p className="eyebrow">The film</p>
+            <h2 className="mt-2 font-display text-[2.5rem] text-fg md:text-6xl">ONE</h2>
+            <p className="mt-1 text-sm tracking-[0.08em] text-mute">by Ayyara Rebirth</p>
+            <p className="mt-5 max-w-sm text-base leading-relaxed text-mute">Watch the campaign film for ONE.</p>
+            <Link href={one ? `/products/${one.slug}` : '/shop'} className={`${exploreLink} mt-7 border-b border-fg pb-0.5`}>
+              {one ? 'Discover ONE' : 'Explore fragrances'}
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* Best sellers: a heading column beside the product tiles. */}
+      <section>
         <Container className="grid grid-cols-1 gap-8 py-14 md:py-24 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-4 lg:pt-2">
             <p className="eyebrow">Most loved</p>
