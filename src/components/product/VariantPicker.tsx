@@ -136,7 +136,7 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
       </div>
 
       {/* Phones: the price and Add to bag stay in reach at the bottom of the screen. */}
-      <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-line bg-canvas/95 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur-md md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-line bg-canvas/95 px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur-md md:hidden">
         <div className="flex min-w-0 flex-col">
           <span className="truncate text-xs text-mute">
             {product.name} · {variant.sizeMl} ml

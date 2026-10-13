@@ -16,7 +16,7 @@ export function Container<T extends ElementType = 'div'>({
   return (
     <Component
       className={clsx(
-        'mx-auto w-full px-4 sm:px-6 lg:px-10',
+        'mx-auto w-full px-5 sm:px-8 lg:px-12',
         size === 'narrow' && 'max-w-3xl',
         size === 'default' && 'max-w-7xl',
         size === 'wide' && 'max-w-[1600px]',

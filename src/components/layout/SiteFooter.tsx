@@ -26,7 +26,7 @@ export async function SiteFooter() {
   const year = await currentYear();
   return (
     <footer className="mt-auto border-t border-line bg-raised">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:py-16 lg:px-10">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-5 py-12 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:py-16 lg:px-12">
         <div className="col-span-2 md:col-span-1">
           <Link href="/" aria-label="Ayyara Rebirth — home" className="inline-flex">
             <Wordmark className="items-start" />
@@ -74,7 +74,7 @@ export async function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-line">
-        <p className="mx-auto max-w-7xl px-4 py-5 text-xs text-mute sm:px-6 lg:px-10">
+        <p className="mx-auto max-w-7xl px-5 py-5 text-xs text-mute sm:px-8 lg:px-12">
           © {year} {site.name}. All rights reserved.
         </p>
       </div>

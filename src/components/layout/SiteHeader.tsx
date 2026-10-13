@@ -52,7 +52,7 @@ export function SiteHeader() {
         <RouteWatcher onNavigate={close} />
       </Suspense>
       {/* Phones: menu · logo (centred) · icons. Desktop: logo (left) · navigation (centred) · icons. */}
-      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 lg:h-20">
+      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 sm:px-8 lg:h-20 lg:px-12">
         <div className="flex items-center">
           <button
             type="button"

@@ -114,7 +114,7 @@ export default async function ProductPage({
         />
 
         <div className="mt-5 grid grid-cols-1 gap-8 md:mt-8 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <div className="-mx-4 sm:mx-0 lg:sticky lg:top-28 lg:self-start">
+          <div className="-mx-5 sm:mx-0 lg:sticky lg:top-28 lg:self-start">
             <ProductGallery product={product} />
           </div>
 

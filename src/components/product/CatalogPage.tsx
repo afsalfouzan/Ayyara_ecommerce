@@ -25,8 +25,8 @@ export async function CatalogPage({ eyebrow, title, intro, listings, current, cr
       {children}
 
       {current !== undefined && (
-        <nav aria-label="Collections" className="-mx-4 mt-6 overflow-x-auto border-b border-line [scrollbar-width:none] sm:mx-0 md:mt-8 [&::-webkit-scrollbar]:hidden">
-          <ul className="flex min-w-max gap-6 px-4 sm:px-0">
+        <nav aria-label="Collections" className="-mx-5 mt-6 overflow-x-auto border-b border-line [scrollbar-width:none] sm:mx-0 md:mt-8 [&::-webkit-scrollbar]:hidden">
+          <ul className="flex min-w-max gap-6 px-5 sm:px-0">
             {TABS.map((tab) => {
               const active = current === tab.href;
               return (
