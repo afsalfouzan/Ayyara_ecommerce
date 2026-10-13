@@ -20,6 +20,16 @@ export const imagery = {
 } as const;
 
 /**
+ * The film that opens the home page, as supplied (portrait, 720 × 1280, about 14 seconds).
+ * It plays silently on a loop; the poster is its first frame, so there is no jump when it starts.
+ */
+export const heroFilm = {
+  src: '/media/ayyara-hero-film.mp4',
+  poster: '/media/ayyara-hero-film-poster.jpg',
+  label: 'Ayyara Rebirth campaign film: unboxing and wearing ONE',
+} as const;
+
+/**
  * The ONE campaign film, as supplied (portrait, 720 × 1280, about 9 seconds, with sound).
  * The file is served from /public unchanged; the poster is a frame taken from it.
  */

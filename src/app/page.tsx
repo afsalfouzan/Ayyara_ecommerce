@@ -2,20 +2,21 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CampaignFilm } from '@/components/home/CampaignFilm';
+import { HeroVideo } from '@/components/home/HeroVideo';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Icon } from '@/components/ui/icons';
 import { bestSellerListings, getBestSellerIds, getProducts } from '@/lib/catalog';
-import { film, imagery } from '@/lib/imagery';
+import { film, heroFilm, imagery } from '@/lib/imagery';
 import { shareMeta } from '@/lib/seo';
 import { site } from '@/lib/site';
 
 /*
  * Home page, laid out like a short fragrance editorial. Each section has its
  * own composition so the page has a rhythm:
- *   hero          the campaign photo beside (or above) a few words
+ *   hero          the campaign film, playing silently, with a few words
  *   collections   three photos of different shapes, numbered like chapters
  *   the film      the ONE campaign film, as a still that opens in a popup, on white
  *   best sellers  a heading column beside the product tiles
@@ -50,25 +51,25 @@ export default async function HomePage() {
   return (
     <>
       {/*
-       * Hero. Phone: the photo edge to edge, then the words. Laptop: an uneven split, with the
-       * words in the narrower column and the photo running to the edge of the screen.
+       * Hero: the campaign film, playing by itself, silent and on a loop.
+       * Phone: the film fills the screen between the header and the bar of shortcuts (4rem each),
+       * with the words laid over its foot; the page scrolls on beneath it.
+       * Laptop: an uneven split. The film is tall, so it takes the wider right-hand column at the
+       * full height of the screen, where it stays sharp, and the words sit on ivory beside it.
        */}
-      <section className="lg:grid lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[6fr_7fr] lg:items-stretch">
-        {/* On a short phone the photo gives up some height (36% of the screen at most) so the button below stays in view. */}
-        <div className="relative aspect-[5/4] max-h-[36svh] w-full sm:aspect-[16/9] sm:max-h-none lg:order-2 lg:aspect-auto lg:min-h-[620px]">
-          {/* A square photo: cropped a little top and bottom on a phone, shown nearly whole on a laptop. */}
-          <Image src={imagery.hero.src} alt={imagery.hero.alt} fill loading="eager" fetchPriority="high" sizes="(min-width: 1024px) 75vw, 125vw" quality={85} placeholder="blur" className="object-cover object-[50%_42%]" />
-        </div>
-        <div className="flex flex-col justify-center px-5 pt-7 pb-9 sm:px-8 sm:py-14 lg:order-1 lg:pr-8 lg:pl-12 xl:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
-          <p className="eyebrow">{site.name}</p>
-          <h1 className="mt-3 text-[2.375rem] whitespace-nowrap text-fg sm:text-6xl lg:text-[3.25rem] xl:text-[4.25rem]">
+      <section className="relative lg:grid lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[6fr_7fr] lg:items-stretch">
+        <HeroVideo src={heroFilm.src} poster={heroFilm.poster} label={heroFilm.label} className="relative h-[calc(100svh-8rem-env(safe-area-inset-bottom,0px))] min-h-[480px] w-full overflow-hidden bg-raised lg:order-2 lg:h-auto lg:min-h-[620px]" />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent lg:hidden" />
+        <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col px-5 pb-7 text-white sm:px-8 sm:pb-10 lg:static lg:order-1 lg:justify-center lg:py-14 lg:pr-8 lg:pl-12 lg:text-fg xl:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
+          <p className="eyebrow text-white/85! lg:text-mute!">{site.name}</p>
+          <h1 className="mt-3 text-[2.375rem] whitespace-nowrap sm:text-6xl lg:text-[3.25rem] xl:text-[4.25rem]">
             Fine Fragrance.
             <br />
             Distinctly Yours.
           </h1>
-          <p className="mt-4 max-w-sm text-base leading-relaxed text-mute lg:mt-6 lg:text-lg">Discover a fragrance that expresses your individuality.</p>
-          <div className="mt-6 lg:mt-9">
-            <ButtonLink href="/shop" size="lg" className="w-full sm:w-auto">
+          <p className="mt-3 max-w-sm text-base leading-relaxed text-white/85 lg:mt-6 lg:text-lg lg:text-mute">Discover a fragrance that expresses your individuality.</p>
+          <div className="mt-5 lg:mt-9">
+            <ButtonLink href="/shop" size="lg" className="w-full bg-white! text-fg! hover:bg-white/90! sm:w-auto lg:bg-fg! lg:text-white! lg:hover:bg-fg-soft!">
               Explore fragrances
             </ButtonLink>
           </div>
