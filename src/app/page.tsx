@@ -12,7 +12,8 @@ import { shareMeta } from '@/lib/seo';
  * Home page, built to the "L'Élixir Noir" design: near-black surfaces, warm
  * champagne accents, Playfair Display headings. The design was drawn for a
  * phone, and every card keeps its phone size (335 px wide) on all screens:
- * wider screens fit more cards in a row instead of stretching them. The header
+ * wider screens fit more cards in a row instead of stretching them. Collection
+ * and product cards are compact, about a third of a phone screen tall. The header
  * and its navigation are the site's own, not the design's.
  */
 export const metadata: Metadata = { alternates: { canonical: '/' }, openGraph: shareMeta('/') };
@@ -97,37 +98,33 @@ export default async function HomePage() {
             <div className="mt-3 h-px w-10 bg-champagne/20" />
           </div>
 
-          {/* Cards keep their phone size on every screen; wider screens simply fit more of them in a row. */}
+          {/* Compact cards, about a third of a phone screen tall, photo beside the text. They keep this size on every screen; wider screens fit more in a row. */}
           <div className="flex flex-wrap justify-center gap-8 md:gap-6">
             {collectionCards.map((card) => (
-              <article key={card.title} className="card-noir group relative flex w-full max-w-[335px] flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_50px_rgba(0,0,0,0.9)]">
-                <div className="relative aspect-square w-full overflow-hidden">
-                  {/* A square crop of a 4:3 photo: it needs about a third more pixels than the card is wide. */}
-                  <Image src={card.photo.src} alt={card.photo.alt} fill sizes="(min-width: 480px) 470px, 134vw" quality={85} placeholder="blur" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#100f0e] via-[#100f0e]/35 to-transparent" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,transparent_45%,rgba(10,10,10,0.65)_100%)]" />
-                  <div className="chip-noir absolute top-4 left-4 flex max-w-[calc(100%-2rem)] items-center gap-1.5 rounded-xl px-3.5 py-1 shadow-lg">
-                    <Icon name="sparkle" strokeWidth={2} className="h-3 w-3 shrink-0 text-champagne/90" />
-                    <span className="truncate text-[9px] font-medium tracking-[0.22em] text-[#eae7df] uppercase">{card.edition}</span>
-                  </div>
-                  <span className="chip-noir absolute right-4 bottom-4 rounded-xl px-2.5 py-1 text-[9px] font-semibold tracking-wider text-champagne/90 uppercase shadow-sm">28% Extrait</span>
+              <article key={card.title} className="card-noir group relative flex h-[clamp(260px,33svh,300px)] w-full max-w-[335px] overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_50px_rgba(0,0,0,0.9)]">
+                <div className="relative w-[120px] shrink-0 overflow-hidden">
+                  {/* A tall, narrow crop of a 4:3 photo: it is drawn at the card's height, about 400 px wide before cropping. */}
+                  <Image src={card.photo.src} alt={card.photo.alt} fill sizes="400px" quality={85} placeholder="blur" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#100f0e]/70" />
+                  <span className="chip-noir absolute bottom-3 left-1/2 -translate-x-1/2 rounded-xl px-2.5 py-1 text-[9px] font-semibold tracking-wider whitespace-nowrap text-champagne/90 uppercase shadow-sm">28% Extrait</span>
                 </div>
-                <div className="flex flex-1 flex-col p-6">
-                  <h3 className="font-playfair text-[26px] leading-tight tracking-tight text-ivory">{card.title}</h3>
-                  <p className="mt-2 text-[13px] leading-relaxed font-light text-ash">{card.line}</p>
-                  <div className="rule-champagne my-4" />
-                  <div className="mt-auto flex flex-col items-start gap-4">
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                      <span className="text-[10px] tracking-[0.22em] text-champagne/70 uppercase">Concentration</span>
-                      <span className="h-1 w-1 rounded-full bg-champagne/30" />
-                      <span className="font-playfair text-sm tracking-wide whitespace-nowrap text-[#eae7df]">Rare Extrait 28%</span>
-                    </div>
-                    <Link href={card.href} className="btn-champagne group/btn inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[11px] font-semibold tracking-[0.2em] uppercase">
-                      <span className="relative z-10">Explore Collection</span>
-                      <Icon name="arrowRight" strokeWidth={2} className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                      <span className="sr-only">: {card.title}</span>
-                    </Link>
+                <div className="flex min-w-0 flex-1 flex-col p-4">
+                  <div className="flex items-center gap-1.5">
+                    <Icon name="sparkle" strokeWidth={2} className="h-3 w-3 shrink-0 text-champagne/90" />
+                    <span className="truncate text-[9px] font-medium tracking-[0.18em] text-[#eae7df] uppercase">{card.edition}</span>
                   </div>
+                  <h3 className="mt-2 font-playfair text-[22px] leading-tight tracking-tight text-ivory">{card.title}</h3>
+                  <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed font-light text-ash">{card.line}</p>
+                  <div className="rule-champagne my-3 shrink-0" />
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                    <span className="text-[9px] tracking-[0.2em] text-champagne/70 uppercase">Concentration</span>
+                    <span className="font-playfair text-[13px] tracking-wide whitespace-nowrap text-[#eae7df]">Rare Extrait 28%</span>
+                  </div>
+                  <Link href={card.href} className="btn-champagne group/btn mt-auto inline-flex w-full items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-[10px] font-semibold tracking-[0.08em] whitespace-nowrap uppercase">
+                    <span className="relative z-10">Explore Collection</span>
+                    <Icon name="arrowRight" strokeWidth={2} className="relative z-10 h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                    <span className="sr-only">: {card.title}</span>
+                  </Link>
                 </div>
               </article>
             ))}
