@@ -89,7 +89,7 @@ export default async function HomePage() {
       </section>
 
       {/* Collections */}
-      <section className="relative bg-[#0e0e0e]/60 px-5 py-10 sm:px-8 md:py-16 lg:px-12">
+      <section id="collections" className="relative scroll-mt-20 bg-[#0e0e0e]/60 px-5 py-10 sm:px-8 md:py-16 lg:px-12">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 md:gap-12">
           <div className="flex flex-col items-center text-center">
             <Eyebrow>Curated Portfolios</Eyebrow>

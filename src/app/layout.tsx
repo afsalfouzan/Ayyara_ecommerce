@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
 import { SiteFooter } from '@/components/layout/SiteFooter';
+import { MobileTabBar } from '@/components/layout/MobileTabBar';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { absoluteUrl, isLiveSite, site, socialProfiles } from '@/lib/site';
@@ -55,7 +56,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en-IN" className={`${display.variable} ${playfair.variable} ${sans.variable} antialiased`}>
-      <body className="flex min-h-dvh flex-col pb-6 font-sans text-stone-200 antialiased">
+      {/* The extra space at the bottom on phones keeps the footer clear of the fixed bar of shortcuts. */}
+      <body className="flex min-h-dvh flex-col pb-[calc(4rem+env(safe-area-inset-bottom,0px))] font-sans text-stone-200 antialiased md:pb-6">
         <a
           href="#main"
           className="label sr-only z-50 bg-fg px-4 py-3 text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -67,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           {children}
         </main>
         <SiteFooter />
+        <MobileTabBar />
         <JsonLd
           data={{
             '@context': 'https://schema.org',
