@@ -18,7 +18,7 @@ import { site } from '@/lib/site';
  * own composition so the page has a rhythm:
  *   hero          the campaign film, playing silently, with a few words
  *   collections   three photos of different shapes, numbered like chapters
- *   the film      the ONE campaign film, as a still that opens in a popup, on white
+ *   the film      the ONE campaign film, as a still that plays in place, on white
  *   best sellers  a heading column beside the product tiles
  *   the house     one large line of text on the deeper beige
  *   service       three plain facts from the shop's own policies
@@ -111,7 +111,7 @@ export default async function HomePage() {
         <Container className="grid grid-cols-1 items-center gap-8 py-14 md:py-24 lg:grid-cols-12 lg:gap-12">
           <div className="mx-auto w-full max-w-sm lg:col-span-4 lg:col-start-2 lg:max-w-none">
             {/* The bottle sits in the middle of the frame, so a shorter crop on phones keeps it whole. */}
-            <CampaignFilm src={film.src} poster={film.poster} posterAlt={film.posterAlt} title={film.title} width={film.width} height={film.height} frameClassName="aspect-[4/5] sm:aspect-[9/16]" />
+            <CampaignFilm src={film.src} poster={film.poster} posterAlt={film.posterAlt} title={film.title} frameClassName="aspect-[4/5] sm:aspect-[9/16]" />
           </div>
           <div className="lg:col-span-5 lg:col-start-7">
             <p className="eyebrow">The film</p>
