@@ -11,8 +11,9 @@ import { shareMeta } from '@/lib/seo';
 /*
  * Home page, built to the "L'Élixir Noir" design: near-black surfaces, warm
  * champagne accents, Playfair Display headings. The design was drawn for a
- * phone; from the `sm` and `lg` breakpoints the same sections open out into
- * columns. The header and its navigation are the site's own, not the design's.
+ * phone, and every card keeps its phone size (350 px wide) on all screens:
+ * wider screens fit more cards in a row instead of stretching them. The header
+ * and its navigation are the site's own, not the design's.
  */
 export const metadata: Metadata = { alternates: { canonical: '/' }, openGraph: shareMeta('/') };
 
@@ -96,13 +97,13 @@ export default async function HomePage() {
             <div className="mt-3 h-px w-10 bg-champagne/20" />
           </div>
 
-          {/* One column on phones, three from tablets up, so no card is left on a row of its own. */}
-          <div className="mx-auto grid w-full max-w-md grid-cols-1 gap-8 md:max-w-none md:grid-cols-3 md:gap-4 lg:gap-6">
+          {/* Cards keep their phone size on every screen; wider screens simply fit more of them in a row. */}
+          <div className="flex flex-wrap justify-center gap-8 md:gap-6">
             {collectionCards.map((card) => (
-              <article key={card.title} className="card-noir group relative flex flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_50px_rgba(0,0,0,0.9)]">
+              <article key={card.title} className="card-noir group relative flex w-full max-w-[350px] flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_50px_rgba(0,0,0,0.9)]">
                 <div className="relative aspect-square w-full overflow-hidden">
                   {/* A square crop of a 4:3 photo: it needs about a third more pixels than the card is wide. */}
-                  <Image src={card.photo.src} alt={card.photo.alt} fill sizes="(min-width: 768px) 44vw, (min-width: 480px) 600px, 134vw" quality={85} placeholder="blur" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                  <Image src={card.photo.src} alt={card.photo.alt} fill sizes="(min-width: 480px) 470px, 134vw" quality={85} placeholder="blur" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#100f0e] via-[#100f0e]/35 to-transparent" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,transparent_45%,rgba(10,10,10,0.65)_100%)]" />
                   <div className="chip-noir absolute top-4 left-4 flex max-w-[calc(100%-2rem)] items-center gap-1.5 rounded-xl px-3.5 py-1 shadow-lg">
@@ -111,8 +112,8 @@ export default async function HomePage() {
                   </div>
                   <span className="chip-noir absolute right-4 bottom-4 rounded-xl px-2.5 py-1 text-[9px] font-semibold tracking-wider text-champagne/90 uppercase shadow-sm">28% Extrait</span>
                 </div>
-                <div className="flex flex-1 flex-col p-6 md:p-4 lg:p-6">
-                  <h3 className="font-playfair text-[26px] leading-tight tracking-tight text-ivory md:text-[22px] lg:text-[26px]">{card.title}</h3>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="font-playfair text-[26px] leading-tight tracking-tight text-ivory">{card.title}</h3>
                   <p className="mt-2 text-[13px] leading-relaxed font-light text-ash">{card.line}</p>
                   <div className="rule-champagne my-4" />
                   <div className="mt-auto flex flex-col items-start gap-4">
@@ -121,7 +122,7 @@ export default async function HomePage() {
                       <span className="h-1 w-1 rounded-full bg-champagne/30" />
                       <span className="font-playfair text-sm tracking-wide whitespace-nowrap text-[#eae7df]">Rare Extrait 28%</span>
                     </div>
-                    <Link href={card.href} className="btn-champagne group/btn inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[11px] font-semibold tracking-[0.2em] uppercase md:px-3.5 md:tracking-[0.14em] lg:px-5 lg:tracking-[0.2em]">
+                    <Link href={card.href} className="btn-champagne group/btn inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[11px] font-semibold tracking-[0.2em] uppercase">
                       <span className="relative z-10">Explore Collection</span>
                       <Icon name="arrowRight" strokeWidth={2} className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                       <span className="sr-only">: {card.title}</span>
@@ -146,7 +147,7 @@ export default async function HomePage() {
           {bestSellers.length === 0 ? (
             <p className="card-noir mx-auto max-w-xl rounded-2xl p-10 text-center text-sm text-mist">The collection is being restocked. Please check back soon.</p>
           ) : (
-            <div className={`mx-auto grid grid-cols-1 gap-8 ${bestSellers.length === 1 ? 'max-w-md' : bestSellers.length === 2 ? 'max-w-4xl sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
+            <div className="flex flex-wrap justify-center gap-8 md:gap-6">
               {bestSellers.map((listing) => (
                 <HomeProductCard key={listing.variant.id} listing={listing} />
               ))}
@@ -186,15 +187,15 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-3 md:mt-12 lg:grid-cols-3 lg:gap-5">
+          <div className="mt-8 flex flex-wrap justify-center gap-3 md:mt-12 md:gap-5">
             {notePyramid.map((note) => (
-              <div key={note.stage} className={`flex flex-col gap-1 rounded-xl border border-[rgb(207_190_158/0.12)] p-4 shadow-md lg:p-6 ${note.surface}`}>
+              <div key={note.stage} className={`flex w-full max-w-[350px] flex-col gap-1 rounded-xl border border-[rgb(207_190_158/0.12)] p-4 shadow-md ${note.surface}`}>
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-[10px] font-semibold tracking-[0.25em] text-champagne uppercase">{note.stage}</span>
                   <span className="shrink-0 text-[11px] font-medium text-sand">{note.time}</span>
                 </div>
-                <p className="font-playfair text-[17px] leading-snug text-[#f7f5f0] lg:mt-1 lg:text-xl">{note.title}</p>
-                <p className="text-xs leading-relaxed font-light text-mist lg:text-[13px]">{note.text}</p>
+                <p className="font-playfair text-[17px] leading-snug text-[#f7f5f0]">{note.title}</p>
+                <p className="text-xs leading-relaxed font-light text-mist">{note.text}</p>
               </div>
             ))}
           </div>
@@ -205,15 +206,15 @@ export default async function HomePage() {
       <section className="relative px-5 py-10 sm:px-8 md:py-16 lg:px-12">
         <div className="mx-auto flex max-w-7xl flex-col gap-3">
           <h2 className="mb-4 border border-[rgb(200_182_155/0.15)] bg-[linear-gradient(rgb(26,25,24)_0%,rgb(19,18,17)_100%)] py-1.5 text-center text-[10px] font-semibold tracking-[0.3em] text-champagne uppercase">The Atelier Standard</h2>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-5">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-5">
             {tenets.map((tenet) => (
-              <div key={tenet.title} className="flex items-center gap-4 rounded-xl border border-[rgb(200_182_155/0.14)] bg-[linear-gradient(rgb(25,24,23)_0%,rgb(18,17,16)_100%)] p-4 shadow-md md:flex-col md:items-start md:p-6">
+              <div key={tenet.title} className="flex w-full max-w-[350px] items-center gap-4 rounded-xl border border-[rgb(200_182_155/0.14)] bg-[linear-gradient(rgb(25,24,23)_0%,rgb(18,17,16)_100%)] p-4 shadow-md">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#201f1f] text-champagne shadow-[0_0_15px_rgba(219,195,161,0.15)]">
                   <Icon name={tenet.icon} strokeWidth={1.6} className="h-6 w-6" />
                 </div>
                 <div className="flex flex-col">
-                  <h3 className="font-playfair text-base font-medium text-white md:text-lg">{tenet.title}</h3>
-                  <p className="mt-0.5 text-xs leading-relaxed text-mist md:mt-1 md:text-[13px]">{tenet.text}</p>
+                  <h3 className="font-playfair text-base font-medium text-white">{tenet.title}</h3>
+                  <p className="mt-0.5 text-xs leading-relaxed text-mist">{tenet.text}</p>
                 </div>
               </div>
             ))}
@@ -223,13 +224,13 @@ export default async function HomePage() {
 
       {/* Sign-up */}
       <section className="relative px-5 py-12 sm:px-8 md:py-16 lg:px-12">
-        <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-xl bg-[#201f1f] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(219,195,161,0.06)] sm:p-8 md:p-10">
+        <div className="relative mx-auto w-full max-w-[350px] overflow-hidden rounded-xl bg-[#201f1f] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(219,195,161,0.06)]">
           <div aria-hidden className="pointer-events-none absolute -top-12 -right-12 h-48 w-48 bg-[radial-gradient(circle,rgba(219,195,161,0.12)_0%,transparent_70%)]" />
           <div className="flex flex-col items-center text-center">
             <Icon name="lockOpen" strokeWidth={1.6} className="h-7 w-7 text-champagne" />
             <span className="mt-2 text-[11px] font-semibold tracking-[0.3em] text-champagne uppercase">The Private Circle</span>
-            <h2 className="mt-1 font-playfair text-[22px] leading-[30px] font-medium text-white md:text-[28px] md:leading-9">Invitations to Rare Extraits</h2>
-            <p className="mt-2 max-w-xs text-[13px] leading-5 text-mist md:max-w-sm">Reserve priority access to bespoke barrel aged releases and private salon samplings.</p>
+            <h2 className="mt-1 font-playfair text-[22px] leading-[30px] font-medium text-white">Invitations to Rare Extraits</h2>
+            <p className="mt-2 max-w-xs text-[13px] leading-5 text-mist">Reserve priority access to bespoke barrel aged releases and private salon samplings.</p>
           </div>
           <div className="relative mt-6">
             <NewsletterForm look="circle" />

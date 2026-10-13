@@ -22,10 +22,10 @@ export function HomeProductCard({ listing }: { listing: Listing }) {
   const notes = product.notes ? [product.notes.top[0], product.notes.heart[0], product.notes.base[0]].filter(Boolean) : [];
   const line = notes.length ? notes.join(' • ') : product.tagline;
   return (
-    <article className="card-noir group relative flex flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_60px_rgba(207,190,158,0.12)]">
+    <article className="card-noir group relative flex w-full max-w-[350px] flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_60px_rgba(207,190,158,0.12)]">
       <Link href={href} tabIndex={-1} aria-hidden className="relative block aspect-square w-full overflow-hidden bg-[#0e0e0e]">
         {photo ? (
-          <Image src={photo.src} alt="" fill sizes="(min-width: 1024px) 34vw, (min-width: 640px) 50vw, 100vw" quality={85} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+          <Image src={photo.src} alt="" fill sizes="(min-width: 400px) 350px, 100vw" quality={85} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
         ) : (
           <ProductArt art={artFor(product.slug)} name={product.name} className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-105" />
         )}
