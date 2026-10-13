@@ -78,9 +78,10 @@ export async function CatalogPage({ eyebrow, title, intro, listings, current, cr
         <div className="mt-10 flex flex-wrap items-stretch justify-center gap-4">
           <section className="relative w-full max-w-[350px] overflow-hidden rounded-xl border border-[#c8b69b]/20 bg-[#161514] p-4">
             <div aria-hidden className="pointer-events-none absolute -top-12 -right-12 h-44 w-44 rounded-full bg-[#c8b69b]/10 blur-3xl" />
-            <div className="relative flex items-center gap-4">
-              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-white/[0.06] bg-[#0e0e0e]">
-                <Image src={discovery} alt="A gift box holding three small Ayyara Rebirth bottles" fill sizes="192px" quality={85} placeholder="blur" className="h-full w-full object-cover" />
+            {/* Beside the other card (tablets up) it takes the same shape, photo band on top, so the pair is the same height with no empty space. */}
+            <div className="relative flex items-center gap-4 md:flex-col md:items-stretch md:gap-2">
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-white/[0.06] bg-[#0e0e0e] md:h-36 md:w-full">
+                <Image src={discovery} alt="A gift box holding three small Ayyara Rebirth bottles" fill sizes="(min-width: 768px) 640px, 192px" quality={85} placeholder="blur" className="h-full w-full object-cover" />
               </div>
               <div className="flex flex-col gap-1">
                 <p className="flex items-center gap-1 text-[10px] font-semibold tracking-widest text-[#cbb596] uppercase">
