@@ -130,6 +130,11 @@
   summary::-webkit-details-marker {
     display: none;
   }
+
+  /* Razorpay's payment window is a light page; on this dark site the browser would paint it solid white instead of see-through. */
+  iframe.razorpay-checkout-frame {
+    color-scheme: light;
+  }
 }
 
 @layer components {
