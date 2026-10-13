@@ -36,7 +36,7 @@ npm run build && npm start
 
 ## Brand logo
 
-The official logo is traced to vector paths in `components/brand/logo-paths.ts`; `Logo` renders the `wordmark` (header) or `full` stacked version (footer) in ink or ivory. `app/icon.svg` and `app/apple-icon.png` are the favicon. `public/brand/ayyara-logo.png` (ink) is used in structured data, and `ayyara-logo-white.png` is the header image in customer emails, so keep both deployed at the storefront URL.
+The official logo is traced to vector paths in `components/brand/logo-paths.ts`; `Logo` renders the `wordmark` (header) or `full` stacked version (footer) in ink or ivory. `app/icon.svg` and `app/apple-icon.png` are the favicon. `public/brand/ayyara-logo.png` (ink) is used in structured data, and `ayyara-email-header.png` (the logo on its dark band, as one opaque image so dark-mode mail apps cannot hide it) is the header of customer emails; `ayyara-logo-white.png` is kept for emails already sent. Keep all three deployed at the storefront URL.
 
 ## Notes
 
