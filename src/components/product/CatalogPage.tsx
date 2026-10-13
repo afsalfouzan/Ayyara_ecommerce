@@ -25,7 +25,8 @@ const promises: { icon: IconName; title: string; text: string }[] = [
 /**
  * Shared layout for the shop, collection, offers and search pages, in the same
  * near-black and champagne style as the home page. The design was drawn for a
- * phone; on wider screens the cards keep their phone size and more fit in a row.
+ * phone; on wider screens the product cards grow with the screen, while the
+ * feature cards and the row of promises keep their phone size.
  */
 export async function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, empty, children }: { eyebrow: string; title: string; intro?: string; listings: Listing[]; current?: string; crumbs: { name: string; href: string }[]; empty: ReactNode; children?: ReactNode }) {
   const rankedIds = await getBestSellerIds();

@@ -96,12 +96,10 @@ export function CatalogListings({ listings, rankedIds, empty }: { listings: List
       {listings.length === 0 ? (
         <div className="py-20 text-center">{empty}</div>
       ) : (
-        // Two across on a phone. From there up the cards keep that size and more fit in a row.
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center">
+        // The cards grow with the screen: two across on a phone, three on a tablet, four on a laptop.
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {sorted.map((listing, index) => (
-            <div key={listing.variant.id} className="min-w-0 sm:w-[180px]">
-              <ShopProductCard listing={listing} priority={index < 4} />
-            </div>
+            <ShopProductCard key={listing.variant.id} listing={listing} priority={index < 4} />
           ))}
         </div>
       )}

@@ -11,7 +11,7 @@ import type { Listing } from '@/lib/catalog';
  * "Add to cart" for one size, with a short confirmation and a link to the bag.
  * `tone="champagne"` is the rounded gold button used on the home page.
  */
-export function AddToCartButton({ listing, tone = 'outline', compact = false }: { listing: Listing; tone?: 'outline' | 'champagne'; compact?: boolean }) {
+export function AddToCartButton({ listing, tone = 'outline', compact = false, className }: { listing: Listing; tone?: 'outline' | 'champagne'; compact?: boolean; className?: string }) {
   const champagne = tone === 'champagne';
   // The compact champagne button fits the short home page cards.
   const size = compact ? 'px-2 py-2.5 text-[10px] tracking-[0.1em]' : 'px-6 py-3.5 text-[11px] tracking-[0.2em]';
@@ -58,7 +58,7 @@ export function AddToCartButton({ listing, tone = 'outline', compact = false }: 
       }}
       className={
         champagne
-          ? clsx('btn-champagne flex w-full items-center justify-center gap-2 rounded-xl font-semibold whitespace-nowrap uppercase', size)
+          ? clsx('btn-champagne flex w-full items-center justify-center gap-2 rounded-xl font-semibold whitespace-nowrap uppercase', size, className)
           : 'touch-ripple flex w-full items-center justify-center space-x-2 rounded-sm border border-white/20 bg-transparent px-4 py-3 text-xs font-medium tracking-widest text-white uppercase transition-all duration-300 hover:border-[#c5a059] hover:bg-[#c5a059] hover:text-black'
       }
     >
