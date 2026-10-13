@@ -57,8 +57,12 @@ export default async function HomePage() {
       <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 aspect-square w-[140%] max-w-[1400px] -translate-x-1/2 bg-[radial-gradient(circle_at_50%_20%,rgba(219,195,161,0.18)_0%,rgba(219,195,161,0.03)_45%,transparent_70%)] blur-2xl" />
       <div aria-hidden className="pointer-events-none absolute top-[40%] right-[-20%] h-[480px] w-[320px] bg-[radial-gradient(ellipse_at_center,rgba(78,72,63,0.35)_0%,transparent_75%)] blur-3xl lg:right-0 lg:w-[520px]" />
 
-      {/* Hero: the photo fills the screen on a phone and takes the right half on a laptop, where it stays sharp. */}
-      <section className="relative flex min-h-[620px] w-full flex-col justify-end overflow-hidden px-5 pb-12 sm:px-8 lg:min-h-[680px] lg:justify-center lg:bg-[#131313] lg:px-12 lg:pb-0">
+      {/*
+       * Hero: the photo fills the screen on a phone and takes the right half on a laptop, where it stays sharp.
+       * On a phone it is exactly as tall as the space between the header and the bar of shortcuts (4rem each),
+       * so the whole banner, button included, shows without scrolling.
+       */}
+      <section className="relative flex h-[calc(100svh-8rem-env(safe-area-inset-bottom,0px))] max-h-[620px] min-h-[440px] w-full flex-col justify-end overflow-hidden px-5 pb-6 sm:px-8 md:h-auto md:max-h-none md:min-h-[620px] md:pb-12 lg:min-h-[680px] lg:justify-center lg:bg-[#131313] lg:px-12 lg:pb-0">
         <div className="absolute inset-y-0 right-0 z-0 w-full overflow-hidden lg:w-[52%]">
           <Image src={imagery.hero.src} alt={imagery.hero.alt} fill loading="eager" fetchPriority="high" sizes="(min-width: 1024px) 52vw, 160vw" quality={85} placeholder="blur" className="h-full w-full scale-[1.02] object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#131313] via-[#0e0e0e]/70 to-[#131313]/85 lg:via-transparent lg:to-transparent" />
@@ -67,17 +71,17 @@ export default async function HomePage() {
         </div>
 
         <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col lg:flex-none">
-          <div className="mb-auto flex flex-col items-center pt-6 text-center lg:mb-8 lg:items-start lg:pt-0 lg:text-left">
+          <div className="mb-auto flex flex-col items-center pt-5 text-center md:pt-6 lg:mb-8 lg:items-start lg:pt-0 lg:text-left">
             <span className="text-[10px] font-semibold tracking-[0.35em] text-champagne uppercase drop-shadow-md">A House of Luxury Perfumes</span>
             <div className="mt-2 h-px w-8 bg-champagne/40" />
           </div>
 
-          <div className="mx-auto mt-32 flex w-full max-w-sm flex-col items-center text-center lg:mx-0 lg:mt-0 lg:max-w-xl lg:items-start lg:text-left">
+          <div className="mx-auto mt-6 flex w-full max-w-sm flex-col items-center text-center lg:mx-0 lg:mt-0 lg:max-w-xl lg:items-start lg:text-left">
             <span className="text-[10px] font-semibold tracking-[0.3em] text-sand uppercase drop-shadow">N° 05 Extrait Édition • Epic Scent Alchemy</span>
             <span className="mt-1 text-[9px] font-semibold tracking-[0.25em] text-champagne/80 uppercase">Pure Extrait Concentration</span>
             <h1 className="mt-3 font-playfair text-[28px] leading-9 tracking-tight text-white drop-shadow-md sm:text-4xl sm:leading-[44px] lg:text-[56px] lg:leading-[64px] lg:tracking-[-0.02em]">REBIRTH OF THE SENSES</h1>
             <p className="mt-3 text-[13px] leading-relaxed text-mist drop-shadow lg:mt-5 lg:text-lg lg:leading-7 lg:font-light">For the modern vanguard. Fine fragrances forged through artisanal distillation, ancient resins, and luminous shadows.</p>
-            <Link href="/shop" className="btn-champagne mt-6 w-full rounded-xl px-8 py-3.5 text-center text-[11px] font-medium tracking-[0.22em] uppercase lg:mt-8 lg:w-auto lg:px-10">
+            <Link href="/shop" className="btn-champagne mt-5 w-full rounded-xl px-8 py-3.5 text-center text-[11px] font-medium tracking-[0.22em] uppercase lg:mt-8 lg:w-auto lg:px-10">
               <span className="relative z-10">SHOP NOW — THE COLLECTION</span>
             </Link>
             <div className="mt-4 flex items-center gap-2 text-[11px] font-medium tracking-wide text-sand drop-shadow">
