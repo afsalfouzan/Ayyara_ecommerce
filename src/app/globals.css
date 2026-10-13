@@ -50,6 +50,16 @@
   --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-sans: var(--font-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  /* Headings on the home page and in the footer. */
+  --font-playfair: var(--font-playfair-display), "Playfair Display", Georgia, serif;
+
+  /* Home page palette: warm champagne on near-black. */
+  --color-champagne: #dbc3a1;
+  --color-ivory: #f5f4ef;
+  --color-ash: #9b9891;
+  --color-mist: #c4c7c4;
+  --color-sand: #cec5b9;
+  --color-ink: #151311;
 
   --tracking-display: 0.18em;
 
@@ -138,6 +148,53 @@
 }
 
 @layer components {
+  /* The champagne button from the home page, with a light that sweeps across on hover. */
+  .btn-champagne {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgb(200 182 155) 0%, rgb(216 202 167) 50%, rgb(186 166 137) 100%);
+    color: var(--color-ink);
+    border: 1px solid rgb(200 182 155 / 0.28);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.45), 0 2px 8px rgb(200 182 155 / 0.12);
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+  .btn-champagne::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(255 255 255 / 0.2);
+    transform: translateX(-100%);
+    transition: transform 0.7s ease-in-out;
+    pointer-events: none;
+  }
+  .btn-champagne:hover::after {
+    transform: translateX(100%);
+  }
+  .btn-champagne:active {
+    transform: scale(0.98);
+  }
+  .btn-champagne:disabled {
+    opacity: 0.6;
+  }
+
+  /* Dark card with a hairline champagne edge. */
+  .card-noir {
+    background: linear-gradient(rgb(24 23 22) 0%, rgb(16 15 14) 100%);
+    border: 1px solid rgb(200 182 155 / 0.15);
+    box-shadow: 0 20px 50px rgb(0 0 0 / 0.85);
+  }
+  /* Small frosted label laid over a photo. */
+  .chip-noir {
+    background: rgb(14 13 12 / 0.72);
+    border: 1px solid rgb(203 179 144 / 0.22);
+    backdrop-filter: blur(12px);
+  }
+  .rule-champagne {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, rgb(203 179 144 / 0.18) 0%, rgb(203 179 144 / 0.02) 100%);
+  }
+
   /* Press feedback from the design. */
   .touch-ripple:active {
     transform: scale(0.985);

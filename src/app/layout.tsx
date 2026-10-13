@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
+import { Cormorant_Garamond, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -10,6 +10,15 @@ const display = Cormorant_Garamond({
   variable: '--font-cormorant',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
+
+/** Headings on the home page and in the footer. */
+const playfair = Playfair_Display({
+  variable: '--font-playfair-display',
+  subsets: ['latin'],
+  weight: ['400', '500'],
   style: ['normal', 'italic'],
   display: 'swap',
 });
@@ -45,7 +54,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en-IN" className={`${display.variable} ${sans.variable} antialiased`}>
+    <html lang="en-IN" className={`${display.variable} ${playfair.variable} ${sans.variable} antialiased`}>
       <body className="flex min-h-dvh flex-col pb-6 font-sans text-stone-200 antialiased">
         <a
           href="#main"
