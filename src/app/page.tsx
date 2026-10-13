@@ -1,244 +1,158 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { HomeProductCard } from '@/components/home/HomeProductCard';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
+import { ProductCard } from '@/components/product/ProductCard';
+import { ButtonLink } from '@/components/ui/Button';
+import { Container } from '@/components/ui/Container';
 import { Icon, type IconName } from '@/components/ui/icons';
 import { bestSellerListings, getBestSellerIds, getProducts } from '@/lib/catalog';
 import { imagery } from '@/lib/imagery';
 import { shareMeta } from '@/lib/seo';
+import { collections, site } from '@/lib/site';
 
 /*
- * Home page, built to the "L'Élixir Noir" design: near-black surfaces, warm
- * champagne accents, Playfair Display headings. The design was drawn for a
- * phone, and every card keeps its phone size (335 px wide) on all screens:
- * wider screens fit more cards in a row instead of stretching them. Collection
- * and product cards are compact, about a third of a phone screen tall. The header
- * and its navigation are the site's own, not the design's.
+ * Home page: a hero, the three collections, the best sellers, a short brand
+ * note, what every order comes with, and the sign-up. Light and quiet, with the
+ * photography carrying the colour.
  */
 export const metadata: Metadata = { alternates: { canonical: '/' }, openGraph: shareMeta('/') };
 
-const collectionCards = [
-  { href: '/shop/men', photo: imagery.men, edition: 'Édition Noir // Pour Homme', title: 'For Him', line: 'Bold, refined fragrances that leave a lasting impression.' },
-  { href: '/shop/women', photo: imagery.women, edition: 'Édition Florale // Pour Femme', title: 'For Her', line: 'Elegant, captivating scents that express your individuality.' },
-  { href: '/shop', photo: imagery.unisex, edition: 'Édition Universelle // Non-Genrée', title: 'Unisex Collection', line: 'Distinctive fragrances beyond labels, made for anyone who wears them their way.' },
-] as const;
-
-const notePyramid = [
-  { stage: 'I. Top Notes — The Awakening', time: '0 - 30 Mins', title: 'Crisp Bergamot, Honey Nectar & Wild Pome', text: 'A luminous opening sparkle bursting with Mediterranean citrus zest and raw comb nectar.', surface: 'bg-[#201f1f]' },
-  { stage: 'II. Heart Notes — The Soul', time: '2 - 6 Hours', title: 'White Magnolia & Roasted Almond', text: 'Intoxicating floral radiance infused with warm roasted creaminess and crushed velvety buds.', surface: 'bg-[#2a2a2a]' },
-  { stage: 'III. Base Notes — The Sillage', time: '8 - 24+ Hours', title: 'Smoked Cedar, Amber Noir & Bourbon Vanilla', text: 'Rich dark woods cured with ancient resins, radiating an indelible trail of quiet power.', surface: 'bg-[#353534]' },
-] as const;
-
-const tenets: { icon: IconName; title: string; text: string }[] = [
-  { icon: 'shield', title: '100% Satisfaction Guarantee', text: 'Test the included 2ml discovery vial first; full return if unboxed flacon is untouched.' },
-  { icon: 'flask', title: '28% Extrait de Parfum', text: 'Uncompromising maceration grade yielding 14+ hours of rich skin intimacy.' },
-  { icon: 'truck', title: 'Swift & Secure Delivery', text: 'Insured velvet padded dispatch directly from our Veliyamthode atelier across India.' },
+/** What is true of every order, taken from the shop's own policies. */
+const services: { icon: IconName; title: string; text: string }[] = [
+  { icon: 'truck', title: 'Free delivery', text: `Across India, in ${site.policies.deliveryWindow.replace(' across India', '')}.` },
+  { icon: 'returnArrow', title: `${site.policies.returnWindowDays}-day returns`, text: 'On unopened products.' },
+  { icon: 'lock', title: 'Secure payment', text: 'UPI, cards and net banking.' },
 ];
-
-/** Small spaced-out label with a hairline on each side, used above section headings. */
-function Eyebrow({ children }: { children: string }) {
-  return (
-    <div className="mb-1.5 flex items-center gap-2">
-      <span className="h-px w-5 bg-champagne/30" />
-      <span className="text-[10px] font-semibold tracking-[0.35em] text-champagne/90 uppercase">{children}</span>
-      <span className="h-px w-5 bg-champagne/30" />
-    </div>
-  );
-}
 
 export default async function HomePage() {
   const [products, rankedIds] = await Promise.all([getProducts(), getBestSellerIds()]);
   const bestSellers = bestSellerListings(products, rankedIds);
 
   return (
-    <div className="relative w-full overflow-hidden bg-[#131313] text-[#e5e2e1]">
-      {/* Ambient glows behind the page */}
-      <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 aspect-square w-[140%] max-w-[1400px] -translate-x-1/2 bg-[radial-gradient(circle_at_50%_20%,rgba(219,195,161,0.18)_0%,rgba(219,195,161,0.03)_45%,transparent_70%)] blur-2xl" />
-      <div aria-hidden className="pointer-events-none absolute top-[40%] right-[-20%] h-[480px] w-[320px] bg-[radial-gradient(ellipse_at_center,rgba(78,72,63,0.35)_0%,transparent_75%)] blur-3xl lg:right-0 lg:w-[520px]" />
-
-      {/*
-       * Hero: the photo fills the screen on a phone and takes the right half on a laptop, where it stays sharp.
-       * On a phone it is exactly as tall as the space between the header and the bar of shortcuts (4rem each),
-       * so the whole banner, button included, shows without scrolling.
-       */}
-      <section className="relative flex h-[calc(100svh-8rem-env(safe-area-inset-bottom,0px))] max-h-[620px] min-h-[440px] w-full flex-col justify-end overflow-hidden px-5 pb-6 sm:px-8 md:h-auto md:max-h-none md:min-h-[620px] md:pb-12 lg:min-h-[680px] lg:justify-center lg:bg-[#131313] lg:px-12 lg:pb-0">
-        <div className="absolute inset-y-0 right-0 z-0 w-full overflow-hidden lg:w-[52%]">
-          <Image src={imagery.hero.src} alt={imagery.hero.alt} fill loading="eager" fetchPriority="high" sizes="(min-width: 1024px) 52vw, 160vw" quality={85} placeholder="blur" className="h-full w-full scale-[1.02] object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#131313] via-[#0e0e0e]/70 to-[#131313]/85 lg:via-transparent lg:to-transparent" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent_35%,rgba(14,14,14,0.85)_95%)] lg:hidden" />
-          <div className="absolute inset-0 hidden bg-gradient-to-r from-[#131313] via-[#131313]/25 to-transparent lg:block" />
-        </div>
-
-        <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col lg:flex-none">
-          <div className="mb-auto flex flex-col items-center pt-5 text-center md:pt-6 lg:mb-8 lg:items-start lg:pt-0 lg:text-left">
-            <span className="text-[10px] font-semibold tracking-[0.35em] text-champagne uppercase drop-shadow-md">A House of Luxury Perfumes</span>
-            <div className="mt-2 h-px w-8 bg-champagne/40" />
+    <>
+      {/* Hero: words on ivory beside the photo; on a phone the photo comes first. */}
+      <section className="bg-surface">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
+          <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:order-2 lg:aspect-auto lg:min-h-[600px]">
+            {/* A wide crop of a square photo on phones; about half the screen on a laptop. */}
+            <Image src={imagery.hero.src} alt={imagery.hero.alt} fill loading="eager" fetchPriority="high" sizes="(min-width: 1024px) 60vw, 100vw" quality={85} placeholder="blur" className="object-cover" />
           </div>
-
-          <div className="mx-auto mt-6 flex w-full max-w-sm flex-col items-center text-center lg:mx-0 lg:mt-0 lg:max-w-xl lg:items-start lg:text-left">
-            <span className="text-[10px] font-semibold tracking-[0.3em] text-sand uppercase drop-shadow">N° 05 Extrait Édition • Epic Scent Alchemy</span>
-            <span className="mt-1 text-[9px] font-semibold tracking-[0.25em] text-champagne/80 uppercase">Pure Extrait Concentration</span>
-            <h1 className="mt-3 font-playfair text-[28px] leading-9 tracking-tight text-white drop-shadow-md sm:text-4xl sm:leading-[44px] lg:text-[56px] lg:leading-[64px] lg:tracking-[-0.02em]">REBIRTH OF THE SENSES</h1>
-            <p className="mt-3 text-[13px] leading-relaxed text-mist drop-shadow lg:mt-5 lg:text-lg lg:leading-7 lg:font-light">For the modern vanguard. Fine fragrances forged through artisanal distillation, ancient resins, and luminous shadows.</p>
-            <Link href="/shop" className="btn-champagne mt-5 w-full rounded-xl px-8 py-3.5 text-center text-[11px] font-medium tracking-[0.22em] uppercase lg:mt-8 lg:w-auto lg:px-10">
-              <span className="relative z-10">SHOP NOW — THE COLLECTION</span>
-            </Link>
-            <div className="mt-4 flex items-center gap-2 text-[11px] font-medium tracking-wide text-sand drop-shadow">
-              <Icon name="badgeCheck" className="h-3.5 w-3.5 shrink-0 text-champagne" />
-              <span>Complimentary 2ml discovery vial with every flacon</span>
+          <div className="flex flex-col items-start justify-center px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-20">
+            <p className="eyebrow">{site.name}</p>
+            <h1 className="mt-3 text-4xl leading-[1.1] font-medium text-fg sm:text-5xl lg:text-6xl">Fine fragrances for modern you</h1>
+            <p className="mt-4 max-w-md text-base leading-relaxed text-fg-soft sm:text-lg">Refined perfumes for those who wear fragrance as a signature. Find the one that speaks for you.</p>
+            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <ButtonLink href="/shop" size="lg">
+                Shop perfumes
+              </ButtonLink>
+              <ButtonLink href="/our-story" variant="ghost">
+                Our story
+              </ButtonLink>
             </div>
           </div>
         </div>
       </section>
 
       {/* Collections */}
-      <section id="collections" className="relative scroll-mt-20 bg-[#0e0e0e]/60 px-5 py-10 sm:px-8 md:py-16 lg:px-12">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 md:gap-12">
-          <div className="flex flex-col items-center text-center">
-            <Eyebrow>Curated Portfolios</Eyebrow>
-            <h2 className="font-playfair text-[30px] leading-tight font-normal tracking-wide text-ivory md:text-[40px] md:leading-[48px]">Discover Your Signature Scent</h2>
-            <p className="mt-1.5 max-w-sm text-[13px] leading-relaxed text-ash md:max-w-md md:text-[15px]">Explore fragrances crafted for every identity, every mood, and every moment.</p>
-            <div className="mt-3 h-px w-10 bg-champagne/20" />
+      <Container as="section" id="collections" className="scroll-mt-20 py-12 md:py-20">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="eyebrow">Collections</p>
+            <h2 className="mt-2 text-2xl text-fg md:text-3xl">Find your signature</h2>
           </div>
-
-          {/* Compact cards, about a third of a phone screen tall, photo beside the text. They keep this size on every screen; wider screens fit more in a row. */}
-          <div className="flex flex-wrap justify-center gap-8 md:gap-6">
-            {collectionCards.map((card) => (
-              <article key={card.title} className="card-noir group relative flex h-[clamp(260px,33svh,300px)] w-full max-w-[335px] overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_50px_rgba(0,0,0,0.9)]">
-                <div className="relative w-[120px] shrink-0 overflow-hidden">
-                  {/* A tall, narrow crop of a 4:3 photo: it is drawn at the card's height, about 400 px wide before cropping. */}
-                  <Image src={card.photo.src} alt={card.photo.alt} fill sizes="400px" quality={85} placeholder="blur" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#100f0e]/70" />
-                  <span className="chip-noir absolute bottom-3 left-1/2 -translate-x-1/2 rounded-xl px-2.5 py-1 text-[9px] font-semibold tracking-wider whitespace-nowrap text-champagne/90 uppercase shadow-sm">28% Extrait</span>
-                </div>
-                <div className="flex min-w-0 flex-1 flex-col p-4">
-                  <div className="flex items-center gap-1.5">
-                    <Icon name="sparkle" strokeWidth={2} className="h-3 w-3 shrink-0 text-champagne/90" />
-                    <span className="truncate text-[9px] font-medium tracking-[0.18em] text-[#eae7df] uppercase">{card.edition}</span>
-                  </div>
-                  <h3 className="mt-2 font-playfair text-[22px] leading-tight tracking-tight text-ivory">{card.title}</h3>
-                  <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed font-light text-ash">{card.line}</p>
-                  <div className="rule-champagne my-3 shrink-0" />
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                    <span className="text-[9px] tracking-[0.2em] text-champagne/70 uppercase">Concentration</span>
-                    <span className="font-playfair text-[13px] tracking-wide whitespace-nowrap text-[#eae7df]">Rare Extrait 28%</span>
-                  </div>
-                  <Link href={card.href} className="btn-champagne group/btn mt-auto inline-flex w-full items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-[10px] font-semibold tracking-[0.08em] whitespace-nowrap uppercase">
-                    <span className="relative z-10">Explore Collection</span>
-                    <Icon name="arrowRight" strokeWidth={2} className="relative z-10 h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                    <span className="sr-only">: {card.title}</span>
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
+          <Link href="/shop" className="shrink-0 text-xs font-medium tracking-[0.12em] text-fg uppercase underline underline-offset-4 hover:text-gold">
+            View all
+          </Link>
         </div>
-      </section>
+        <ul className="mt-6 grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-3 md:mt-8">
+          {collections.map((collection) => {
+            const photo = imagery[collection.slug];
+            return (
+              <li key={collection.slug}>
+                <Link href={`/shop/${collection.slug}`} className="group block">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-surface sm:aspect-[4/5]">
+                    {/* A tall crop of a 4:3 photo from tablets up, so it needs about 1.7 times its own width in pixels. */}
+                    <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 640px) 56vw, 100vw" quality={85} placeholder="blur" className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+                  </div>
+                  <div className="mt-3 flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-base font-medium tracking-normal text-fg md:text-lg">{collection.title}</h3>
+                      <p className="mt-0.5 text-sm text-mute">{collection.line}</p>
+                    </div>
+                    <Icon name="arrowRight" strokeWidth={1.6} className="h-5 w-5 shrink-0 text-fg transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </Container>
 
       {/* Best sellers */}
-      <section id="collection" className="relative bg-[#0e0e0e]/40 px-5 py-12 sm:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-10 flex flex-col items-center text-center md:mb-14">
-            <Eyebrow>Permanent Exhibition</Eyebrow>
-            <h2 className="font-playfair text-[32px] leading-tight font-normal tracking-wide text-[#f7f5f0] md:text-[40px] md:leading-[48px]">Rare Extraits</h2>
-            <p className="mt-1.5 max-w-sm text-[13px] font-light tracking-wide text-champagne/80 md:text-[15px]">Hand-poured 60ml bottles in numbered micro-batches</p>
-            <div className="mt-3.5 h-px w-12 bg-champagne/30" />
-          </div>
-          {bestSellers.length === 0 ? (
-            <p className="card-noir mx-auto max-w-xl rounded-2xl p-10 text-center text-sm text-mist">The collection is being restocked. Please check back soon.</p>
-          ) : (
-            <div className="flex flex-wrap justify-center gap-8 md:gap-6">
-              {bestSellers.map((listing) => (
-                <HomeProductCard key={listing.variant.id} listing={listing} />
-              ))}
+      <section className="bg-surface">
+        <Container className="py-12 md:py-20">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow">Most loved</p>
+              <h2 className="mt-2 text-2xl text-fg md:text-3xl">Best sellers</h2>
             </div>
-          )}
-          <div className="mt-10 text-center">
-            <Link href="/shop" className="text-[11px] font-semibold tracking-[0.25em] text-champagne uppercase underline decoration-champagne/40 underline-offset-8 transition-colors hover:text-white">
-              View all perfumes
+            <Link href="/shop" className="shrink-0 text-xs font-medium tracking-[0.12em] text-fg uppercase underline underline-offset-4 hover:text-gold">
+              Shop all
             </Link>
           </div>
-        </div>
+          {bestSellers.length === 0 ? (
+            <p className="mt-8 border border-line bg-canvas p-10 text-center text-sm text-mute">The collection is being restocked. Please check back soon.</p>
+          ) : (
+            <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-5 md:mt-8 md:grid-cols-3 lg:grid-cols-4">
+              {bestSellers.map((listing, index) => (
+                <li key={listing.variant.id} className="bg-canvas p-3 sm:p-4">
+                  <ProductCard listing={listing} priority={index === 0} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </Container>
       </section>
 
-      {/* Philosophy and the three stages of a fragrance */}
-      <section className="relative bg-[linear-gradient(rgb(20,19,18)_0%,rgb(26,25,23)_50%,rgb(20,19,18)_100%)] px-5 py-12 sm:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-14">
-            <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-              <span className="text-[11px] font-semibold tracking-[0.3em] text-champagne uppercase">Provenance &amp; Philosophy</span>
-              <h2 className="mt-1 font-playfair text-[28px] leading-9 text-[#f7f5f0] md:text-[40px] md:leading-[48px]">More Than A Fragrance, An Identity</h2>
-              <div className="my-4 h-px w-12 bg-[#4e483f]" />
-              <p className="max-w-sm text-[15px] leading-relaxed font-light text-mist lg:max-w-lg lg:text-lg lg:leading-7">
-                We believe a perfume is your invisible, unforgettable signature. Crafted to capture memories and evoke deep emotions, our collections bridge the gap between ancient botanical distillation and modern luxury.
-              </p>
-              <Link href="/our-story" className="mt-6 text-[11px] font-semibold tracking-[0.25em] text-champagne uppercase underline decoration-champagne/40 underline-offset-8 transition-colors hover:text-white">
-                Discover our story
-              </Link>
-            </div>
-            <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-[rgb(200_182_155/0.15)] bg-[#2a2a2a] shadow-xl">
-              {/* A wide crop of a square photo, so it is drawn at the box's full width. */}
-              <Image src={imagery.hero.src} alt="" fill sizes="(min-width: 1024px) 50vw, 100vw" quality={85} placeholder="blur" className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/30 to-transparent" />
-              <div className="absolute right-4 bottom-4 left-4 flex items-center justify-between gap-4 text-[11px] font-semibold tracking-widest text-[#ede9df] uppercase">
-                <span>Kerala Atelier Reserve</span>
-                <span className="text-right">Zero Synthetic Fillers</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-3 md:mt-12 md:gap-5">
-            {notePyramid.map((note) => (
-              <div key={note.stage} className={`flex w-full max-w-[335px] flex-col gap-1 rounded-xl border border-[rgb(207_190_158/0.12)] p-4 shadow-md ${note.surface}`}>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-[10px] font-semibold tracking-[0.25em] text-champagne uppercase">{note.stage}</span>
-                  <span className="shrink-0 text-[11px] font-medium text-sand">{note.time}</span>
-                </div>
-                <p className="font-playfair text-[17px] leading-snug text-[#f7f5f0]">{note.title}</p>
-                <p className="text-xs leading-relaxed font-light text-mist">{note.text}</p>
-              </div>
-            ))}
-          </div>
+      {/* A short note about the house */}
+      <Container as="section" className="py-14 text-center md:py-24">
+        <div className="mx-auto max-w-2xl">
+          <p className="eyebrow">Our story</p>
+          <h2 className="mt-2 text-2xl text-fg md:text-4xl">More than a fragrance, an identity</h2>
+          <p className="mt-4 text-base leading-relaxed text-fg-soft md:text-lg">We believe a perfume is your invisible, unforgettable signature. Each fragrance is crafted to capture memories and stir emotion, bridging tradition and modern luxury.</p>
+          <ButtonLink href="/our-story" variant="outline" className="mt-7">
+            Discover our story
+          </ButtonLink>
         </div>
-      </section>
+      </Container>
 
-      {/* What the house promises */}
-      <section className="relative px-5 py-10 sm:px-8 md:py-16 lg:px-12">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3">
-          <h2 className="mb-4 border border-[rgb(200_182_155/0.15)] bg-[linear-gradient(rgb(26,25,24)_0%,rgb(19,18,17)_100%)] py-1.5 text-center text-[10px] font-semibold tracking-[0.3em] text-champagne uppercase">The Atelier Standard</h2>
-          <div className="flex flex-wrap justify-center gap-3 md:gap-5">
-            {tenets.map((tenet) => (
-              <div key={tenet.title} className="flex w-full max-w-[335px] items-center gap-4 rounded-xl border border-[rgb(200_182_155/0.14)] bg-[linear-gradient(rgb(25,24,23)_0%,rgb(18,17,16)_100%)] p-4 shadow-md">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#201f1f] text-champagne shadow-[0_0_15px_rgba(219,195,161,0.15)]">
-                  <Icon name={tenet.icon} strokeWidth={1.6} className="h-6 w-6" />
-                </div>
-                <div className="flex flex-col">
-                  <h3 className="font-playfair text-base font-medium text-white">{tenet.title}</h3>
-                  <p className="mt-0.5 text-xs leading-relaxed text-mist">{tenet.text}</p>
-                </div>
+      {/* What every order comes with */}
+      <section className="border-y border-line">
+        <Container as="ul" className="grid grid-cols-1 gap-6 py-8 sm:grid-cols-3 md:py-10">
+          {services.map((service) => (
+            <li key={service.title} className="flex items-start gap-3">
+              <Icon name={service.icon} strokeWidth={1.5} className="mt-0.5 h-5 w-5 shrink-0 text-fg" />
+              <div>
+                <p className="text-sm font-medium text-fg">{service.title}</p>
+                <p className="mt-0.5 text-sm text-mute">{service.text}</p>
               </div>
-            ))}
-          </div>
-        </div>
+            </li>
+          ))}
+        </Container>
       </section>
 
       {/* Sign-up */}
-      <section className="relative px-5 py-12 sm:px-8 md:py-16 lg:px-12">
-        {/* Unlike the cards above, the form grows with the screen so its fields are comfortable to type in. */}
-        <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-xl bg-[#201f1f] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(219,195,161,0.06)] sm:p-8 md:p-10">
-          <div aria-hidden className="pointer-events-none absolute -top-12 -right-12 h-48 w-48 bg-[radial-gradient(circle,rgba(219,195,161,0.12)_0%,transparent_70%)]" />
-          <div className="flex flex-col items-center text-center">
-            <Icon name="lockOpen" strokeWidth={1.6} className="h-7 w-7 text-champagne" />
-            <span className="mt-2 text-[11px] font-semibold tracking-[0.3em] text-champagne uppercase">The Private Circle</span>
-            <h2 className="mt-1 font-playfair text-[22px] leading-[30px] font-medium text-white md:text-[28px] md:leading-9">Invitations to Rare Extraits</h2>
-            <p className="mt-2 max-w-xs text-[13px] leading-5 text-mist md:max-w-md md:text-[15px] md:leading-6">Reserve priority access to bespoke barrel aged releases and private salon samplings.</p>
-          </div>
-          <div className="relative mt-6 md:mt-8">
-            <NewsletterForm look="circle" />
-          </div>
+      <Container as="section" className="grid grid-cols-1 gap-6 py-12 md:py-20 lg:grid-cols-2 lg:gap-16">
+        <div className="max-w-md">
+          <p className="eyebrow">Stay updated</p>
+          <h2 className="mt-2 text-2xl text-fg md:text-3xl">New launches and offers, first</h2>
+          <p className="mt-3 text-base leading-relaxed text-fg-soft">Leave your details and we’ll write when a new fragrance arrives or an offer opens.</p>
         </div>
-      </section>
-    </div>
+        <div className="max-w-lg lg:pt-2">
+          <NewsletterForm />
+        </div>
+      </Container>
+    </>
   );
 }

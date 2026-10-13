@@ -2,19 +2,20 @@
 
 import { clsx } from 'clsx';
 import { useState, type FormEvent } from 'react';
+import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/icons';
 import { storeApi, StoreApiError } from '@/lib/api';
 
 const TOPICS = [
-  { value: 'consultation', label: 'Fragrance Consultation' },
-  { value: 'order', label: 'Order Status' },
+  { value: 'consultation', label: 'Choosing a fragrance' },
+  { value: 'order', label: 'An order' },
   { value: 'gifting', label: 'Gifting' },
-  { value: 'general', label: 'General Question' },
+  { value: 'general', label: 'Something else' },
 ] as const;
 type Topic = (typeof TOPICS)[number]['value'];
 
-const field = 'w-full appearance-none rounded-sm bg-[#2a2a2a] px-4 py-3 text-[15px] text-[#e5e2e1] placeholder:text-[#8e918f]/70 transition-colors focus:bg-[#353534] focus:ring-0 focus:outline-none';
-const label = 'mb-1.5 block text-[11px] font-semibold tracking-widest text-[#c4c7c4] uppercase';
+const field = 'field';
+const label = 'mb-1.5 block text-[13px] font-medium text-fg';
 
 /**
  * "Send a Message": the message goes to the shop's inbox through the backend.
@@ -52,21 +53,21 @@ export function ContactForm() {
   if (state === 'done') {
     return (
       <div role="status" className="flex flex-col items-center py-10 text-center">
-        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#cec5b9]/10 text-[#cec5b9]">
+        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-canvas text-success">
           <Icon name="check" strokeWidth={2} className="h-6 w-6" />
         </span>
-        <p className="mt-4 font-playfair text-[22px] leading-[30px] font-medium text-white">Message sent</p>
-        <p className="mt-1 max-w-xs text-[13px] leading-5 text-[#c4c7c4]">Thank you. We’ll reply to your email within one working day.</p>
+        <p className="mt-4 text-xl font-medium text-fg">Message sent</p>
+        <p className="mt-1 max-w-xs text-sm text-fg-soft">Thank you. We’ll reply to your email within one working day.</p>
       </div>
     );
   }
 
-  const errorFor = (name: string) => fieldErrors[name] && <p className="mt-1 text-xs text-[#ffb4ab]">{fieldErrors[name]}</p>;
+  const errorFor = (name: string) => fieldErrors[name] && <p className="mt-1 text-xs text-danger">{fieldErrors[name]}</p>;
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
       <fieldset>
-        <legend className={label}>Inquiry Type</legend>
+        <legend className={label}>What is it about?</legend>
         <div className="flex flex-wrap gap-2">
           {TOPICS.map((option) => (
             <button
@@ -74,7 +75,7 @@ export function ContactForm() {
               type="button"
               aria-pressed={topic === option.value}
               onClick={() => setTopic(option.value)}
-              className={clsx('rounded-xl px-3 py-2 text-xs font-medium tracking-wide transition-colors', topic === option.value ? 'bg-[#eae1d5] text-[#1f1b13]' : 'bg-[#2a2a2a] text-[#e5e2e1] hover:bg-[#353534]')}
+              className={clsx('rounded-[2px] border px-3 py-2 text-[13px] transition-colors', topic === option.value ? 'border-fg bg-fg text-canvas' : 'border-line bg-canvas text-fg hover:border-fg')}
             >
               {option.label}
             </button>
@@ -84,14 +85,14 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="contact-name" className={label}>
-          Full Name *
+          Full name *
         </label>
         <input id="contact-name" name="name" required minLength={2} maxLength={120} autoComplete="name" className={field} aria-invalid={Boolean(fieldErrors.name)} />
         {errorFor('name')}
       </div>
       <div>
         <label htmlFor="contact-email" className={label}>
-          Email Address *
+          Email address *
         </label>
         <input id="contact-email" name="email" type="email" required maxLength={254} autoComplete="email" className={field} aria-invalid={Boolean(fieldErrors.email)} />
         {errorFor('email')}
@@ -99,14 +100,14 @@ export function ContactForm() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="contact-phone" className={label}>
-            Phone Number <span className="font-normal tracking-normal text-[#8e918f] normal-case">(optional)</span>
+            Phone number <span className="font-normal text-mute">(optional)</span>
           </label>
           <input id="contact-phone" name="phone" type="tel" maxLength={20} autoComplete="tel" placeholder="+91 00000 00000" className={field} aria-invalid={Boolean(fieldErrors.phone)} />
           {errorFor('phone')}
         </div>
         <div>
           <label htmlFor="contact-order" className={label}>
-            Order Number <span className="font-normal tracking-normal text-[#8e918f] normal-case">(if applicable)</span>
+            Order number <span className="font-normal text-mute">(if applicable)</span>
           </label>
           <input id="contact-order" name="orderNumber" maxLength={24} autoComplete="off" placeholder="AR-13OCT26-07" className={clsx(field, 'uppercase placeholder:normal-case')} aria-invalid={Boolean(fieldErrors.orderNumber)} />
           {errorFor('orderNumber')}
@@ -114,7 +115,7 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="contact-message" className={label}>
-          Your Message *
+          Your message *
         </label>
         <textarea id="contact-message" name="message" required minLength={10} maxLength={3000} rows={5} placeholder="How may we help you?" className={clsx(field, 'resize-y')} aria-invalid={Boolean(fieldErrors.message)} />
         {errorFor('message')}
@@ -127,12 +128,11 @@ export function ContactForm() {
       </div>
 
       <div role="alert" aria-live="assertive">
-        {error && <p className="text-sm text-[#ffb4ab]">{error}</p>}
+        {error && <p className="text-sm text-danger">{error}</p>}
       </div>
-      <button type="submit" disabled={state === 'sending'} className="btn-champagne flex h-12 w-full items-center justify-center gap-2 rounded-sm text-[11px] font-bold tracking-[0.2em] uppercase">
-        <span className="relative z-10">{state === 'sending' ? 'Sending…' : 'Send Message'}</span>
-        <Icon name="arrowRight" strokeWidth={2} className="relative z-10 h-4 w-4" />
-      </button>
+      <Button type="submit" size="lg" disabled={state === 'sending'} className="w-full sm:w-fit">
+        {state === 'sending' ? 'Sending…' : 'Send message'}
+      </Button>
     </form>
   );
 }

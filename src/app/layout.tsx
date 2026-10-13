@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { MobileTabBar } from '@/components/layout/MobileTabBar';
 import { SiteHeader } from '@/components/layout/SiteHeader';
@@ -7,25 +7,9 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { absoluteUrl, isLiveSite, site, socialProfiles } from '@/lib/site';
 import './globals.css';
 
-const display = Cormorant_Garamond({
-  variable: '--font-cormorant',
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-});
-
-/** Headings on the home page and in the footer. */
-const playfair = Playfair_Display({
-  variable: '--font-playfair-display',
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  style: ['normal', 'italic'],
-  display: 'swap',
-});
-
-const sans = Plus_Jakarta_Sans({
-  variable: '--font-jakarta',
+/** One typeface for the whole site. */
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -49,18 +33,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0e0e0e',
-  colorScheme: 'dark',
+  themeColor: '#ffffff',
+  colorScheme: 'light',
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en-IN" className={`${display.variable} ${playfair.variable} ${sans.variable} antialiased`}>
+    <html lang="en-IN" className={`${inter.variable} antialiased`}>
       {/* The extra space at the bottom on phones keeps the footer clear of the fixed bar of shortcuts. */}
-      <body className="flex min-h-dvh flex-col pb-[calc(4rem+env(safe-area-inset-bottom,0px))] font-sans text-stone-200 antialiased md:pb-6">
+      <body className="flex min-h-dvh flex-col pb-[calc(4rem+env(safe-area-inset-bottom,0px))] font-sans text-fg antialiased md:pb-0">
         <a
           href="#main"
-          className="label sr-only z-50 bg-fg px-4 py-3 text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="label sr-only z-[60] bg-fg px-4 py-3 text-canvas focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           Skip to content
         </a>

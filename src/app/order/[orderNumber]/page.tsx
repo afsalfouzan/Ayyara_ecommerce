@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 export default function OrderPage({ params }: PageProps<'/order/[orderNumber]'>) {
   return (
-    <Container className="pt-10 pb-24 sm:pt-14">
-      <p className="eyebrow">Atelier Confirmation</p>
-      <h1 className="mt-3 font-serif text-4xl sm:text-5xl font-light tracking-wide text-white">Your Order Status</h1>
-      <Suspense fallback={<div className="mt-10 h-96 animate-pulse rounded-sm border border-white/10 bg-[#141414]" />}>
+    <Container className="pt-6 pb-16 sm:pt-10 md:pb-24">
+      <p className="eyebrow">Order</p>
+      <h1 className="mt-2 text-3xl text-fg md:text-4xl">Your order</h1>
+      <Suspense fallback={<div className="mt-10 h-96 animate-pulse rounded-sm border border-line bg-surface" />}>
         <OrderStatusLoader params={params} />
       </Suspense>
     </Container>

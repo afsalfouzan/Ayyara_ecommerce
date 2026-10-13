@@ -27,14 +27,14 @@ export function ContentPage({
           { name: title, href: path },
         ]}
       />
-      <header className="mt-12 border-b border-line pb-10">
+      <header className="mt-8 border-b border-line pb-8">
         {eyebrow && <p className="eyebrow mb-4">{eyebrow}</p>}
-        <h1 className="text-5xl leading-[1.05] sm:text-6xl">{title}</h1>
-        {intro && <p className="mt-6 text-lg leading-relaxed text-mute">{intro}</p>}
+        <h1 className="text-3xl text-fg md:text-5xl">{title}</h1>
+        {intro && <p className="mt-4 text-base leading-relaxed text-fg-soft md:text-lg">{intro}</p>}
       </header>
       {draft && process.env.NODE_ENV !== 'production' && (
         <p className="mt-8 border border-gold/60 bg-gold-soft/50 p-4 text-sm text-fg-soft">
-          <strong className="label block text-gold-bright">Draft copy</strong>
+          <strong className="label block text-gold">Draft copy</strong>
           Placeholder text — to be replaced with content approved by Ayyara Rebirth before launch.
         </p>
       )}

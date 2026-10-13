@@ -27,7 +27,7 @@ export default async function OffersPage() {
           body={
             <>
               Check back soon, or browse{' '}
-              <Link href="/shop" className="text-white underline underline-offset-4">
+              <Link href="/shop" className="text-fg underline underline-offset-4">
                 all perfumes
               </Link>
               .

@@ -7,68 +7,40 @@
  * Text colours meet WCAG AA on the canvas.
  */
 @theme {
-  --color-canvas: #0e0e0e;
-  --color-surface: #141414;
-  --color-raised: #1c1b1b;
-  --color-line: #ffffff1a;
-
-  --color-fg: #f5f2ec;
-  --color-fg-soft: #d6d3d1;
-  --color-mute: #a8a29e;
-
-  --color-gold: #c5a059;
-  --color-gold-bright: #e6c98f;
-  --color-gold-soft: #2b2417;
-
-  --color-danger: #f87171;
-  --color-success: #5fd08f;
-  --color-sale: #e11d48;
-
   /*
-   * The design was built with Tailwind 3. Tailwind 4's palette is slightly
-   * different (OKLCH), so pin the shades the design uses to their v3 values.
+   * Ayyara Rebirth storefront design tokens: a light, quiet palette. White
+   * pages, warm ivory panels, charcoal text and one restrained champagne
+   * accent. Text colours meet WCAG AA on white and on ivory.
    */
-  --color-stone-50: #fafaf9;
-  --color-stone-100: #f5f5f4;
-  --color-stone-200: #e7e5e4;
-  --color-stone-300: #d6d3d1;
-  --color-stone-400: #a8a29e;
-  --color-stone-500: #78716c;
-  --color-stone-600: #57534e;
-  --color-stone-700: #44403c;
-  --color-stone-800: #292524;
-  --color-stone-900: #1c1917;
-  --color-stone-950: #0c0a09;
-  --color-rose-600: #e11d48;
-  --color-rose-700: #be123c;
-  --color-amber-200: #fde68a;
-  --color-amber-300: #fcd34d;
+  --color-canvas: #ffffff;
+  --color-surface: #f7f5f1;
+  --color-raised: #efebe4;
+  --color-line: #e5e0d8;
 
-  /* Tailwind 3 shadow values used by the design. */
-  --shadow-v3-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --color-fg: #1a1a1a;
+  --color-fg-soft: #3f3d3a;
+  --color-mute: #6b6761;
 
-  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  /* Headings on the home page and in the footer. */
-  --font-playfair: var(--font-playfair-display), "Playfair Display", Georgia, serif;
+  --color-gold: #8a6d3f;
+  --color-gold-bright: #a8875a;
+  --color-gold-soft: #f3ede2;
 
-  /* Home page palette: warm champagne on near-black. */
-  --color-champagne: #dbc3a1;
-  --color-ivory: #f5f4ef;
-  --color-ash: #9b9891;
-  --color-mist: #c4c7c4;
-  --color-sand: #cec5b9;
-  --color-ink: #151311;
+  --color-danger: #b42318;
+  --color-success: #1f7a4d;
+  --color-sale: #b42318;
 
-  --tracking-display: 0.18em;
+  /* One typeface throughout. The older names point at it so nothing falls back to a serif. */
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-sans);
+  --font-serif: var(--font-sans);
+  --font-playfair: var(--font-sans);
 
-  --tracking-luxe: 0.22em;
-  --tracking-label: 0.16em;
+  --tracking-luxe: 0.18em;
+  --tracking-label: 0.12em;
 
   --ease-luxe: cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  --animate-fade-up: fade-up 0.7s var(--ease-luxe) both;
+  --animate-fade-up: fade-up 0.5s var(--ease-luxe) both;
 
   @keyframes slide-in {
     from {
@@ -91,7 +63,7 @@
   @keyframes fade-up {
     from {
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(8px);
     }
     to {
       opacity: 1;
@@ -108,34 +80,31 @@
 
   body {
     background: var(--color-canvas);
-    /* The design's body uses text-stone-200 (it overrides the #e5e2e1 in its style block). */
-    color: var(--color-stone-200);
+    color: var(--color-fg);
     font-family: var(--font-sans);
-    font-feature-settings: "kern", "liga";
+    font-feature-settings: "kern", "liga", "cv11";
   }
 
   ::selection {
-    background: var(--color-stone-700);
+    background: var(--color-fg);
     color: #fff;
   }
 
-  /* Tailwind 3 behaviour the design relies on. */
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
   }
 
   :focus-visible {
-    outline: 1.5px solid var(--color-fg);
-    outline-offset: 3px;
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
   }
 
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.01em;
+    font-weight: 500;
+    letter-spacing: -0.015em;
     text-wrap: balance;
   }
 
@@ -154,74 +123,12 @@
   body:has([data-purchase-bar]) nav[aria-label='Shortcuts'] {
     display: none;
   }
-
-  /* Razorpay's payment window is a light page; on this dark site the browser would paint it solid white instead of see-through. */
-  iframe.razorpay-checkout-frame {
-    color-scheme: light;
-  }
 }
 
 @layer components {
-  /* The champagne button from the home page, with a light that sweeps across on hover. */
-  .btn-champagne {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, rgb(200 182 155) 0%, rgb(216 202 167) 50%, rgb(186 166 137) 100%);
-    color: var(--color-ink);
-    border: 1px solid rgb(200 182 155 / 0.28);
-    box-shadow: 0 8px 24px rgb(0 0 0 / 0.45), 0 2px 8px rgb(200 182 155 / 0.12);
-    transition: transform 0.2s, box-shadow 0.3s;
-  }
-  .btn-champagne::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgb(255 255 255 / 0.2);
-    transform: translateX(-100%);
-    transition: transform 0.7s ease-in-out;
-    pointer-events: none;
-  }
-  .btn-champagne:hover::after {
-    transform: translateX(100%);
-  }
-  .btn-champagne:active {
-    transform: scale(0.98);
-  }
-  .btn-champagne:disabled {
-    opacity: 0.6;
-  }
-
-  /* Dark card with a hairline champagne edge. */
-  .card-noir {
-    background: linear-gradient(rgb(24 23 22) 0%, rgb(16 15 14) 100%);
-    border: 1px solid rgb(200 182 155 / 0.15);
-    box-shadow: 0 20px 50px rgb(0 0 0 / 0.85);
-  }
-  /* Small frosted label laid over a photo. */
-  .chip-noir {
-    background: rgb(14 13 12 / 0.72);
-    border: 1px solid rgb(203 179 144 / 0.22);
-    backdrop-filter: blur(12px);
-  }
-  .rule-champagne {
-    height: 1px;
-    width: 100%;
-    background: linear-gradient(90deg, rgb(203 179 144 / 0.18) 0%, rgb(203 179 144 / 0.02) 100%);
-  }
-
-  /* Press feedback from the design. */
-  .touch-ripple:active {
-    transform: scale(0.985);
-    opacity: 0.92;
-  }
-
-  .tracking-luxury {
-    letter-spacing: 0.24em;
-  }
-
-  /* Small uppercase label used for eyebrows, buttons and nav. */
+  /* Small uppercase label used for eyebrows, buttons and navigation. */
   .label {
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
@@ -232,7 +139,30 @@
     font-weight: 500;
     letter-spacing: var(--tracking-luxe);
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-mute);
+  }
+
+  /* Text field shared by every form. */
+  .field {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    background: var(--color-canvas);
+    padding: 0.75rem 0.875rem;
+    font-size: 0.9375rem;
+    color: var(--color-fg);
+    transition: border-color 0.2s;
+  }
+  .field::placeholder {
+    color: #a09b93;
+  }
+  .field:focus {
+    border-color: var(--color-fg);
+    outline: none;
+  }
+  .field[aria-invalid='true'] {
+    border-color: var(--color-danger);
   }
 
   /* Hairline underline that grows on hover. */
@@ -241,7 +171,7 @@
     background-size: 0% 1px;
     background-position: 0 100%;
     background-repeat: no-repeat;
-    transition: background-size 0.4s var(--ease-luxe);
+    transition: background-size 0.3s var(--ease-luxe);
   }
   .link-underline:hover,
   .link-underline:focus-visible {
@@ -250,13 +180,13 @@
 
   .prose-luxe {
     color: var(--color-fg-soft);
-    line-height: 1.8;
+    line-height: 1.75;
   }
   .prose-luxe h2 {
-    font-size: 1.75rem;
+    font-size: 1.375rem;
     color: var(--color-fg);
-    margin-top: 2.5rem;
-    margin-bottom: 0.75rem;
+    margin-top: 2.25rem;
+    margin-bottom: 0.625rem;
   }
   .prose-luxe p,
   .prose-luxe ul {

@@ -37,8 +37,9 @@ export const site = {
 
 /** Collections customers can browse; each has its own page under /shop. */
 export const collections = [
-  { slug: 'men', label: 'Men', title: 'Mens Collections', line: 'Strength and refinement, captured in a bottle', sub: 'Discover the scent that speaks for you' },
-  { slug: 'women', label: 'Women', title: 'Womens Collections', line: 'Delicate power that lingers from day to night.', sub: 'The perfect scent to complement your aura' },
+  { slug: 'men', label: 'Men', title: 'For Him', line: 'Strength and refinement, captured in a bottle.', sub: 'Discover the scent that speaks for you' },
+  { slug: 'women', label: 'Women', title: 'For Her', line: 'Delicate power that lingers from day to night.', sub: 'The perfect scent to complement your aura' },
+  { slug: 'unisex', label: 'Unisex', title: 'Unisex', line: 'Fragrances made to be shared.', sub: 'Worn your way, by anyone' },
 ] as const;
 
 export type CollectionSlug = (typeof collections)[number]['slug'];

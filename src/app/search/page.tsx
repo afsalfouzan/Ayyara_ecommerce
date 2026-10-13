@@ -35,7 +35,7 @@ async function Results({ searchParams }: Pick<PageProps<'/search'>, 'searchParam
           body={
             <>
               Try another word, or browse{' '}
-              <Link href="/shop" className="text-white underline underline-offset-4">
+              <Link href="/shop" className="text-fg underline underline-offset-4">
                 all perfumes
               </Link>
               .
@@ -44,12 +44,12 @@ async function Results({ searchParams }: Pick<PageProps<'/search'>, 'searchParam
         />
       }
     >
-      <form action="/search" className="mt-5 flex max-w-xl items-center gap-3 rounded-full border border-[#c8b69b]/20 bg-[#181715] px-5">
+      <form action="/search" className="mt-6 flex max-w-xl items-center gap-3 border border-line bg-canvas px-4 focus-within:border-fg">
         <Search className="size-4 shrink-0 text-mute" aria-hidden />
         <label htmlFor="search-page-q" className="sr-only">
           Search fragrances
         </label>
-        <input id="search-page-q" name="q" type="search" defaultValue={query} placeholder="Search fragrances…" className="h-12 flex-1 bg-transparent text-sm text-white placeholder:text-mute focus:outline-none" />
+        <input id="search-page-q" name="q" type="search" defaultValue={query} placeholder="Search fragrances…" className="h-12 flex-1 bg-transparent text-sm text-fg placeholder:text-mute focus:outline-none" />
       </form>
     </CatalogPage>
   );

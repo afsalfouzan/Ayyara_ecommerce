@@ -1,18 +1,14 @@
 import type { Paise, StockStatus } from './types';
 
-const rupees = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const rupees = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
 
-/** Prices as the brand shows them: "Rs. 1,200.00". */
+/** Prices as shown across the site: "₹999", or "₹999.50" when there are paise. */
 export function formatPrice(paise: Paise) {
-  return `Rs. ${rupees.format(paise / 100)}`;
+  return `₹${rupees.format(paise / 100)}`;
 }
 
-const wholeRupees = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
-
-/** Short price for the small shop cards: "₹999", or "₹999.50" when there are paise. */
-export function formatRupees(paise: Paise) {
-  return `₹${wholeRupees.format(paise / 100)}`;
-}
+/** The same format, under the name the shop cards use. */
+export const formatRupees = formatPrice;
 
 /** Decimal rupee string for structured data, e.g. "4500.00". */
 export function toRupeeString(paise: Paise) {

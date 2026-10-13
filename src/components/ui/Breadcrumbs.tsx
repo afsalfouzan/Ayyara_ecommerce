@@ -23,7 +23,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
                     <Link href={item.href} className="link-underline hover:text-fg">
                       {item.name}
                     </Link>
-                    <span aria-hidden className="text-line">
+                    <span aria-hidden className="text-mute">
                       /
                     </span>
                   </>

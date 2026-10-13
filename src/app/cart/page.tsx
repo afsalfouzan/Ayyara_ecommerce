@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { CartView } from '@/components/cart/CartView';
+import { Container } from '@/components/ui/Container';
 import { getProducts } from '@/lib/catalog';
 import type { Product } from '@/lib/types';
 
@@ -17,10 +18,8 @@ export default async function CartPage() {
     // The bag still works without the catalogue: it just shows no notes and no suggestions.
   }
   return (
-    <div className="bg-[#131313] px-5 pt-6 pb-16 text-[#e5e2e1] sm:px-8 sm:pt-10 lg:px-12">
-      <div className="mx-auto max-w-7xl">
-        <CartView products={products} />
-      </div>
-    </div>
+    <Container className="pt-6 pb-16 sm:pt-10 md:pb-24">
+      <CartView products={products} />
+    </Container>
   );
 }

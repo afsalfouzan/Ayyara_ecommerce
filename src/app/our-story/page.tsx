@@ -24,7 +24,7 @@ const IMAGES = { hero: storyHero, chapter1: storyChapter1, water: storyWater, ch
 
 export default function OurStoryPage() {
   return (
-    <article className="relative w-full bg-[#0e0e0e] text-stone-200 antialiased selection:bg-[#c5a059]/30 selection:text-white">
+    <article className="relative w-full bg-canvas text-fg">
       {/* ── 1. Hero Section ─────────────────────────────────────────── */}
       <section className="relative flex min-h-[520px] w-full items-center justify-center overflow-hidden border-b border-white/10 sm:min-h-[580px] lg:min-h-[640px]">
         <Image
@@ -39,7 +39,7 @@ export default function OurStoryPage() {
           className="object-cover object-center opacity-70 transition-transform duration-1000 ease-out hover:scale-105"
         />
         {/* Cinematic dark vignette scrim */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/50 to-[#0e0e0e]/75" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/55" />
 
         <Container size="narrow" className="relative z-10 mx-auto px-4 py-20 text-center">
           <span className="mb-4 inline-block font-sans text-xs font-semibold tracking-[0.3em] text-[#cec5b9] uppercase sm:text-sm">
@@ -55,23 +55,23 @@ export default function OurStoryPage() {
       </section>
 
       {/* ── 2. Editorial Statement ──────────────────────────────────── */}
-      <section className="border-b border-white/10 bg-[#0e0e0e] py-16 sm:py-24">
+      <section className="border-b border-line bg-canvas py-16 sm:py-24">
         <Container size="narrow" className="text-center">
-          <div className="mx-auto mb-8 h-px w-16 bg-[#c5a059]/60" />
-          <p className="font-serif text-xl font-light leading-relaxed text-stone-100 italic sm:text-2xl sm:leading-loose lg:text-3xl">
+          <div className="mx-auto mb-8 h-px w-16 bg-line" />
+          <p className="text-xl font-light leading-relaxed text-fg-soft italic sm:text-2xl sm:leading-loose lg:text-3xl">
             “At Ayyara Rebirth, our formulation is a love letter to the earth’s raw and untamed landscapes. We believe
             the truest modern alchemy is simply allowing nature to speak for itself. We harvest bright, living
             botanicals and ground them in deep, earthy elements, creating a fragrance that breathes and evolves with you
             naturally.”
           </p>
-          <div className="mx-auto mt-8 h-px w-16 bg-[#c5a059]/60" />
+          <div className="mx-auto mt-8 h-px w-16 bg-line" />
         </Container>
       </section>
 
       {/* ── 3. Chapter I · The Dialogue ─────────────────────────────── */}
-      <section className="border-b border-white/10 py-16 sm:py-24">
+      <section className="border-b border-line py-16 sm:py-24">
         <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-white/10 bg-neutral-900 sm:aspect-[16/10]">
+          <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-line bg-neutral-900 sm:aspect-[16/10]">
             <Image
               src={IMAGES.chapter1}
               alt="Antique typewriter beside a crystalline perfume flacon labeled Ayyara on a weathered studio desk"
@@ -81,17 +81,17 @@ export default function OurStoryPage() {
               placeholder="blur"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e]/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
           </div>
 
           <div className="flex flex-col justify-center text-center lg:text-left">
-            <span className="font-sans text-xs font-semibold tracking-[0.25em] text-[#c5a059] uppercase">
+            <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
               Chapter I · The Dialogue
             </span>
-            <h2 className="mt-3 font-serif text-3xl font-normal text-white sm:text-4xl">
+            <h2 className="mt-3 text-3xl text-fg sm:text-4xl">
               An Ode to the Earth’s Elements
             </h2>
-            <p className="mt-6 font-sans text-base font-light leading-relaxed text-stone-300 sm:text-lg">
+            <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg">
               Born from a deep reverence for nature, Ayyara Rebirth is where the earth’s finest elements meet modern
               alchemy. We look to the natural world not just for our ingredients, but for our inspiration. We source
               from the most vibrant landscapes to create botanical blends that truly awaken the senses.
@@ -99,7 +99,7 @@ export default function OurStoryPage() {
             <div className="mt-8 flex justify-center lg:justify-start">
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2 border-b border-[#c5a059] pb-1 font-sans text-sm font-medium tracking-widest text-[#cec5b9] uppercase transition-colors hover:text-white"
+                className="inline-flex items-center gap-2 border-b border-line pb-1 font-sans text-sm font-medium tracking-widest text-mute uppercase transition-colors hover:text-fg"
               >
                 Discover the Scent Notes &rarr;
               </Link>
@@ -109,16 +109,16 @@ export default function OurStoryPage() {
       </section>
 
       {/* ── 4. Chapter II · The Resonance ───────────────────────────── */}
-      <section className="border-b border-white/10 py-16 sm:py-24">
+      <section className="border-b border-line py-16 sm:py-24">
         <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="order-2 flex flex-col justify-center text-center lg:order-1 lg:text-left">
-            <span className="font-sans text-xs font-semibold tracking-[0.25em] text-[#c5a059] uppercase">
+            <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
               Chapter II · The Resonance
             </span>
-            <h2 className="mt-3 font-serif text-3xl font-normal text-white sm:text-4xl">
+            <h2 className="mt-3 text-3xl text-fg sm:text-4xl">
               Bottling the Essence of Rebirth
             </h2>
-            <p className="mt-6 font-sans text-base font-light leading-relaxed text-stone-300 sm:text-lg">
+            <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg">
               From our signature fragrances to our expanding collections of holistic beauty, everything we create is
               designed to harmonize with your natural state. We celebrate the pure, the organic, and the pristine,
               bottling the essence of the earth to help you discover your own rebirth.
@@ -132,7 +132,7 @@ export default function OurStoryPage() {
 
           <div className="order-1 flex flex-col gap-4 lg:order-2">
             {/* Water ripples texture banner */}
-            <div className="relative h-32 w-full overflow-hidden rounded-sm border border-white/10 sm:h-36">
+            <div className="relative h-32 w-full overflow-hidden rounded-sm border border-line sm:h-36">
               <Image
                 src={IMAGES.water}
                 alt="Delicate concentric water ripples disturbance, liquid gloss texture"
@@ -142,11 +142,11 @@ export default function OurStoryPage() {
               placeholder="blur"
                 className="object-cover opacity-80"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0e0e0e]/80 via-transparent to-[#0e0e0e]/80" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-transparent" />
             </div>
 
             {/* Velvet armchair flacon monograph */}
-            <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-white/10 sm:aspect-[16/10]">
+            <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-line sm:aspect-[16/10]">
               <Image
                 src={IMAGES.chapter2}
                 alt="Clear glass luxury perfume bottle resting on deep velvet vintage armchair beside art monograph book"
@@ -156,23 +156,23 @@ export default function OurStoryPage() {
               placeholder="blur"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-transparent" />
             </div>
           </div>
         </Container>
       </section>
 
       {/* ── 5. Natural Elegance (Philosophy Callout) ────────────────── */}
-      <section className="border-b border-white/10 bg-[#141414] py-16 sm:py-24">
+      <section className="border-b border-line bg-surface py-16 sm:py-24">
         <Container size="narrow" className="text-center">
-          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-neutral-900 text-[#c5a059]">
+          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-line bg-neutral-900 text-mute">
             <Sparkles className="h-6 w-6" />
           </div>
-          <span className="font-sans text-xs font-semibold tracking-[0.25em] text-[#cec5b9] uppercase">
+          <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
             Pure Philosophy
           </span>
-          <h2 className="mt-2 font-serif text-3xl font-normal text-white sm:text-4xl">Natural Elegance</h2>
-          <p className="mt-6 font-sans text-base font-light leading-relaxed text-stone-300 sm:text-lg sm:leading-loose">
+          <h2 className="mt-2 text-3xl text-fg sm:text-4xl">Natural Elegance</h2>
+          <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg sm:leading-loose">
             Born from the earth, Ayyara Rebirth is a return to natural elegance. We see modern alchemy as a collaboration
             with nature distilling sunlit botanicals and deep, grounding woods into living, breathing rituals. By
             stripping away the unnecessary, we let the purest elements speak for themselves. Whether through scent or
@@ -182,47 +182,47 @@ export default function OurStoryPage() {
       </section>
 
       {/* ── 6. Sacred Tenets / Atelier Distinctions ─────────────────── */}
-      <section className="border-b border-white/10 py-16 sm:py-24">
+      <section className="border-b border-line py-16 sm:py-24">
         <Container>
           <div className="text-center">
-            <span className="font-sans text-xs font-semibold tracking-[0.25em] text-[#c5a059] uppercase">
+            <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
               Our Sacred Tenets
             </span>
-            <h2 className="mt-2 font-serif text-3xl font-normal text-white sm:text-4xl">Atelier Distinctions</h2>
+            <h2 className="mt-2 text-3xl text-fg sm:text-4xl">Atelier Distinctions</h2>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
             {/* Card 1 */}
-            <div className="flex flex-col items-center rounded-sm border border-white/10 bg-[#141414] p-8 text-center transition-all duration-300 hover:border-white/20 hover:bg-neutral-900">
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-[#c5a059] border border-white/10">
+            <div className="flex flex-col items-center rounded-sm border border-line bg-surface p-8 text-center transition-all duration-300 hover:border-line hover:bg-neutral-900">
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-mute border border-line">
                 <ShieldCheck className="h-7 w-7" />
               </div>
-              <h3 className="font-serif text-xl font-normal text-white">100% Satisfaction Guarantee</h3>
-              <p className="mt-3 font-sans text-sm font-light leading-relaxed text-stone-400">
+              <h3 className="text-xl text-fg">100% Satisfaction Guarantee</h3>
+              <p className="mt-3 font-sans text-sm font-light leading-relaxed text-mute">
                 Your complete satisfaction is at the heart of what we do. We are dedicated to ensuring every Ayyara
                 Rebirth experience delights you from the first spray.
               </p>
             </div>
 
             {/* Card 2 */}
-            <div className="flex flex-col items-center rounded-sm border border-white/10 bg-[#141414] p-8 text-center transition-all duration-300 hover:border-white/20 hover:bg-neutral-900">
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-[#c5a059] border border-white/10">
+            <div className="flex flex-col items-center rounded-sm border border-line bg-surface p-8 text-center transition-all duration-300 hover:border-line hover:bg-neutral-900">
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-mute border border-line">
                 <Award className="h-7 w-7" />
               </div>
-              <h3 className="font-serif text-xl font-normal text-white">Uncompromising Quality</h3>
-              <p className="mt-3 font-sans text-sm font-light leading-relaxed text-stone-400">
+              <h3 className="text-xl text-fg">Uncompromising Quality</h3>
+              <p className="mt-3 font-sans text-sm font-light leading-relaxed text-mute">
                 Formulated with exceptional care, using only the finest premium ingredients to meet the absolute highest
                 standards of modern luxury.
               </p>
             </div>
 
             {/* Card 3 */}
-            <div className="flex flex-col items-center rounded-sm border border-white/10 bg-[#141414] p-8 text-center transition-all duration-300 hover:border-white/20 hover:bg-neutral-900">
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-[#c5a059] border border-white/10">
+            <div className="flex flex-col items-center rounded-sm border border-line bg-surface p-8 text-center transition-all duration-300 hover:border-line hover:bg-neutral-900">
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-mute border border-line">
                 <Truck className="h-7 w-7" />
               </div>
-              <h3 className="font-serif text-xl font-normal text-white">Swift &amp; Secure Delivery</h3>
-              <p className="mt-3 font-sans text-sm font-light leading-relaxed text-stone-400">
+              <h3 className="text-xl text-fg">Swift &amp; Secure Delivery</h3>
+              <p className="mt-3 font-sans text-sm font-light leading-relaxed text-mute">
                 Packaged with elegance and handled with the utmost care, ensuring your new signature scent arrives safely
                 and promptly to your door.
               </p>
@@ -232,17 +232,17 @@ export default function OurStoryPage() {
       </section>
 
       {/* ── 7. VIP Newsletter (Discover Your Signature) ─────────────── */}
-      <section className="bg-[#0e0e0e] py-16 sm:py-24">
+      <section className="bg-canvas py-16 sm:py-24">
         <Container size="narrow">
-          <div className="rounded-sm border border-white/10 bg-[#141414] p-8 sm:p-12">
+          <div className="rounded-sm border border-line bg-surface p-8 sm:p-12">
             <div className="text-center">
-              <span className="font-sans text-xs font-semibold tracking-[0.25em] text-[#c5a059] uppercase">
+              <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
                 Private Correspondence
               </span>
-              <h2 className="mt-2 font-serif text-3xl font-normal tracking-wide text-white uppercase sm:text-4xl">
+              <h2 className="mt-2 text-3xl tracking-wide text-fg uppercase sm:text-4xl">
                 Discover Your Signature
               </h2>
-              <p className="mx-auto mt-4 max-w-md font-sans text-sm font-light leading-relaxed text-stone-400">
+              <p className="mx-auto mt-4 max-w-md font-sans text-sm font-light leading-relaxed text-mute">
                 We are crafting fragrances designed to leave a lasting impression. Leave your details below to stay
                 updated on our upcoming launches, exclusive offers, and brand journey.
               </p>

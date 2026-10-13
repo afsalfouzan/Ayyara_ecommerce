@@ -18,7 +18,7 @@ function Shape({ shape, className }: { shape: { viewBox: string; d: string }; cl
 export function Logo({ className, variant = 'wordmark' }: { className?: string; variant?: 'horizontal' | 'wordmark' | 'full' }) {
   if (variant === 'horizontal') {
     return (
-      <span role="img" aria-label="Ayyara Rebirth" className={clsx('inline-flex items-center gap-2.5 sm:gap-3 leading-none text-white select-none', className)}>
+      <span role="img" aria-label="Ayyara Rebirth" className={clsx('inline-flex items-center gap-2.5 sm:gap-3 leading-none text-fg select-none', className)}>
         <Shape shape={LOGO_MARK} className="h-6 sm:h-7 lg:h-7.5" />
         <span className="flex flex-col items-center">
           <Shape shape={LOGO_WORDMARK} className="h-[0.72rem] sm:h-[0.82rem] lg:h-[0.88rem]" />

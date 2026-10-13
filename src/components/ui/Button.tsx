@@ -2,31 +2,26 @@ import { clsx } from 'clsx';
 import Link from 'next/link';
 import type { ComponentPropsWithoutRef } from 'react';
 
-type Variant = 'primary' | 'outline' | 'ghost' | 'gold';
-type Size = 'md' | 'lg';
+type Variant = 'primary' | 'outline' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
 
 const base =
-  'label inline-flex items-center justify-center gap-2.5 rounded-[2px] transition-[background-color,color,border-color,opacity] duration-300 ease-luxe disabled:cursor-not-allowed disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45';
+  'inline-flex items-center justify-center gap-2 rounded-[2px] text-xs font-medium tracking-[0.12em] whitespace-nowrap uppercase transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45';
 
 const variants: Record<Variant, string> = {
   primary: 'bg-fg text-canvas hover:bg-fg-soft',
   outline: 'border border-fg text-fg hover:bg-fg hover:text-canvas',
-  ghost: 'text-fg hover:text-gold-bright',
-  // Dark text: ivory on gold is too faint to read (contrast 2.2:1).
-  gold: 'bg-gold text-canvas hover:bg-gold-bright',
+  ghost: 'text-fg underline underline-offset-4 hover:text-gold',
 };
 
 const sizes: Record<Size, string> = {
+  sm: 'h-10 px-4',
   md: 'h-11 px-6',
-  lg: 'h-13 px-8 sm:px-10',
+  lg: 'h-12 px-8',
 };
 
-export function buttonClasses({
-  variant = 'primary',
-  size = 'md',
-  className,
-}: { variant?: Variant; size?: Size; className?: string } = {}) {
-  return clsx(base, variants[variant], sizes[size], className);
+export function buttonClasses({ variant = 'primary', size = 'md', className }: { variant?: Variant; size?: Size; className?: string } = {}) {
+  return clsx(base, variants[variant], variant !== 'ghost' && sizes[size], className);
 }
 
 type ButtonProps = ComponentPropsWithoutRef<'button'> & { variant?: Variant; size?: Size };

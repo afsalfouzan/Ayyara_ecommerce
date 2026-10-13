@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<'/shop/[collection]
   if (!collection) return {};
   return {
     title: collection.title,
-    description: `${collection.line} Shop Ayyara Rebirth ${collection.label.toLowerCase()}’s fragrances online.`,
+    description: `${collection.line} Shop Ayyara Rebirth ${collection.label.toLowerCase()} fragrances online.`,
     alternates: { canonical: `/shop/${collection.slug}` },
     openGraph: shareMeta(`/shop/${collection.slug}`, { title: `${collection.title} | Ayyara Rebirth` }),
   };
@@ -44,7 +44,7 @@ export default async function CollectionPage({ params }: PageProps<'/shop/[colle
           body={
             <>
               Meanwhile, explore{' '}
-              <Link href="/shop" className="text-white underline underline-offset-4">
+              <Link href="/shop" className="text-fg underline underline-offset-4">
                 all perfumes
               </Link>
               .

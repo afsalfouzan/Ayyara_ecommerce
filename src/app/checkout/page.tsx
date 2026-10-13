@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function CheckoutPage() {
   return (
-    <Container className="pt-10 pb-24 sm:pt-14">
-      <p className="eyebrow">Secure Checkout</p>
-      <h1 className="mt-3 font-serif text-4xl sm:text-5xl font-light tracking-wide text-white">Order Checkout</h1>
+    <Container className="pt-6 pb-16 sm:pt-10 md:pb-24">
+      <p className="eyebrow">Secure checkout</p>
+      <h1 className="mt-2 text-3xl text-fg md:text-4xl">Checkout</h1>
       <CheckoutForm />
     </Container>
   );

@@ -65,8 +65,8 @@ export function listingsOf(products: Product[], keep: (listing: Listing) => bool
   return products.flatMap((product) => product.variants.map((variant) => ({ product, variant }))).filter(keep);
 }
 
-/** Unisex perfumes appear in both the men's and women's collections. */
-export function inCollection(product: Product, collection: 'men' | 'women') {
+/** Unisex perfumes appear in the men's and women's collections as well as their own. */
+export function inCollection(product: Product, collection: 'men' | 'women' | 'unisex') {
   return product.gender === collection || product.gender === 'unisex';
 }
 
