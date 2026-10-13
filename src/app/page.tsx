@@ -11,7 +11,7 @@ import { shareMeta } from '@/lib/seo';
 /*
  * Home page, built to the "L'Élixir Noir" design: near-black surfaces, warm
  * champagne accents, Playfair Display headings. The design was drawn for a
- * phone, and every card keeps its phone size (350 px wide) on all screens:
+ * phone, and every card keeps its phone size (335 px wide) on all screens:
  * wider screens fit more cards in a row instead of stretching them. The header
  * and its navigation are the site's own, not the design's.
  */
@@ -100,7 +100,7 @@ export default async function HomePage() {
           {/* Cards keep their phone size on every screen; wider screens simply fit more of them in a row. */}
           <div className="flex flex-wrap justify-center gap-8 md:gap-6">
             {collectionCards.map((card) => (
-              <article key={card.title} className="card-noir group relative flex w-full max-w-[350px] flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_50px_rgba(0,0,0,0.9)]">
+              <article key={card.title} className="card-noir group relative flex w-full max-w-[335px] flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_50px_rgba(0,0,0,0.9)]">
                 <div className="relative aspect-square w-full overflow-hidden">
                   {/* A square crop of a 4:3 photo: it needs about a third more pixels than the card is wide. */}
                   <Image src={card.photo.src} alt={card.photo.alt} fill sizes="(min-width: 480px) 470px, 134vw" quality={85} placeholder="blur" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
@@ -189,7 +189,7 @@ export default async function HomePage() {
 
           <div className="mt-8 flex flex-wrap justify-center gap-3 md:mt-12 md:gap-5">
             {notePyramid.map((note) => (
-              <div key={note.stage} className={`flex w-full max-w-[350px] flex-col gap-1 rounded-xl border border-[rgb(207_190_158/0.12)] p-4 shadow-md ${note.surface}`}>
+              <div key={note.stage} className={`flex w-full max-w-[335px] flex-col gap-1 rounded-xl border border-[rgb(207_190_158/0.12)] p-4 shadow-md ${note.surface}`}>
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-[10px] font-semibold tracking-[0.25em] text-champagne uppercase">{note.stage}</span>
                   <span className="shrink-0 text-[11px] font-medium text-sand">{note.time}</span>
@@ -208,7 +208,7 @@ export default async function HomePage() {
           <h2 className="mb-4 border border-[rgb(200_182_155/0.15)] bg-[linear-gradient(rgb(26,25,24)_0%,rgb(19,18,17)_100%)] py-1.5 text-center text-[10px] font-semibold tracking-[0.3em] text-champagne uppercase">The Atelier Standard</h2>
           <div className="flex flex-wrap justify-center gap-3 md:gap-5">
             {tenets.map((tenet) => (
-              <div key={tenet.title} className="flex w-full max-w-[350px] items-center gap-4 rounded-xl border border-[rgb(200_182_155/0.14)] bg-[linear-gradient(rgb(25,24,23)_0%,rgb(18,17,16)_100%)] p-4 shadow-md">
+              <div key={tenet.title} className="flex w-full max-w-[335px] items-center gap-4 rounded-xl border border-[rgb(200_182_155/0.14)] bg-[linear-gradient(rgb(25,24,23)_0%,rgb(18,17,16)_100%)] p-4 shadow-md">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#201f1f] text-champagne shadow-[0_0_15px_rgba(219,195,161,0.15)]">
                   <Icon name={tenet.icon} strokeWidth={1.6} className="h-6 w-6" />
                 </div>
@@ -224,7 +224,7 @@ export default async function HomePage() {
 
       {/* Sign-up */}
       <section className="relative px-5 py-12 sm:px-8 md:py-16 lg:px-12">
-        <div className="relative mx-auto w-full max-w-[350px] overflow-hidden rounded-xl bg-[#201f1f] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(219,195,161,0.06)]">
+        <div className="relative mx-auto w-full max-w-[335px] overflow-hidden rounded-xl bg-[#201f1f] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(219,195,161,0.06)]">
           <div aria-hidden className="pointer-events-none absolute -top-12 -right-12 h-48 w-48 bg-[radial-gradient(circle,rgba(219,195,161,0.12)_0%,transparent_70%)]" />
           <div className="flex flex-col items-center text-center">
             <Icon name="lockOpen" strokeWidth={1.6} className="h-7 w-7 text-champagne" />
