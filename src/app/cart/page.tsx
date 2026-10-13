@@ -1,18 +1,26 @@
 import type { Metadata } from 'next';
 import { CartView } from '@/components/cart/CartView';
-import { Container } from '@/components/ui/Container';
+import { getProducts } from '@/lib/catalog';
+import type { Product } from '@/lib/types';
 
 export const metadata: Metadata = {
   title: 'Your Bag',
   robots: { index: false, follow: true },
 };
 
-export default function CartPage() {
+/** The bag lives in the browser, so the page itself only supplies the catalogue (for notes and suggestions). */
+export default async function CartPage() {
+  let products: Product[] = [];
+  try {
+    products = await getProducts();
+  } catch {
+    // The bag still works without the catalogue: it just shows no notes and no suggestions.
+  }
   return (
-    <Container className="pt-10 pb-24 sm:pt-14">
-      <p className="eyebrow">Atelier Selection</p>
-      <h1 className="mt-3 font-serif text-4xl sm:text-5xl font-light tracking-wide text-white">Your Shopping Bag</h1>
-      <CartView />
-    </Container>
+    <div className="bg-[#131313] px-5 pt-6 pb-16 text-[#e5e2e1] sm:px-8 sm:pt-10 lg:px-12">
+      <div className="mx-auto max-w-7xl">
+        <CartView products={products} />
+      </div>
+    </div>
   );
 }
