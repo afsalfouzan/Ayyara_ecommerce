@@ -44,7 +44,7 @@ async function Results({ searchParams }: Pick<PageProps<'/search'>, 'searchParam
         />
       }
     >
-      <form action="/search" className="mx-auto mt-10 flex max-w-xl items-center gap-3 rounded-full border border-white/15 bg-surface px-5">
+      <form action="/search" className="mt-5 flex max-w-xl items-center gap-3 rounded-full border border-[#c8b69b]/20 bg-[#181715] px-5">
         <Search className="size-4 shrink-0 text-mute" aria-hidden />
         <label htmlFor="search-page-q" className="sr-only">
           Search fragrances

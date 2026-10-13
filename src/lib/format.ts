@@ -7,6 +7,13 @@ export function formatPrice(paise: Paise) {
   return `Rs. ${rupees.format(paise / 100)}`;
 }
 
+const wholeRupees = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
+
+/** Short price for the small shop cards: "₹999", or "₹999.50" when there are paise. */
+export function formatRupees(paise: Paise) {
+  return `₹${wholeRupees.format(paise / 100)}`;
+}
+
 /** Decimal rupee string for structured data, e.g. "4500.00". */
 export function toRupeeString(paise: Paise) {
   return (paise / 100).toFixed(2);

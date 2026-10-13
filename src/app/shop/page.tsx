@@ -14,9 +14,9 @@ export default async function ShopPage() {
   const listings = listingsOf(await getProducts());
   return (
     <CatalogPage
-      eyebrow="The collection"
+      eyebrow="Haute Parfumerie"
       title="All Perfumes"
-      intro="Fine fragrances for modern you — each composed to be worn as a signature."
+      intro="Fine fragrances for modern you — each composed to be worn as an indelible signature, macerated in Kerala."
       listings={listings}
       current="/shop"
       crumbs={[{ name: 'Shop', href: '/shop' }]}
