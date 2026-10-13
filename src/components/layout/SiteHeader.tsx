@@ -4,12 +4,16 @@ import { clsx } from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
-import { Logo } from '@/components/brand/Logo';
 import { CartLink } from '@/components/cart/CartLink';
 import { Icon } from '@/components/ui/icons';
 import { mainNav } from '@/lib/site';
 import { NavLink } from './NavLink';
 import { SearchButton } from './SearchButton';
+
+/** The shop's name set in the serif, in place of the logo image. */
+function Wordmark() {
+  return <span className="font-display text-xl font-semibold tracking-[0.14em] whitespace-nowrap text-fg uppercase sm:text-2xl">Ayyara Rebirth</span>;
+}
 
 function RouteWatcher({ onNavigate }: { onNavigate: () => void }) {
   const pathname = usePathname();
@@ -65,13 +69,13 @@ export function SiteHeader() {
             <Icon name={open ? 'close' : 'menu'} className="h-6 w-6 transition-transform duration-200" />
           </button>
           <Link href="/" aria-label="Ayyara Rebirth — home" className="hidden lg:inline-flex">
-            <Logo variant="horizontal" />
+            <Wordmark />
           </Link>
         </div>
 
         <div className="flex justify-center">
           <Link href="/" aria-label="Ayyara Rebirth — home" className="inline-flex lg:hidden" onClick={close}>
-            <Logo variant="horizontal" />
+            <Wordmark />
           </Link>
           <nav aria-label="Primary" className="hidden items-center space-x-9 text-xs font-medium tracking-[0.12em] uppercase lg:flex">
             {mainNav.map((item) =>
