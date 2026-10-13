@@ -24,7 +24,7 @@ export function HomeProductCard({ listing }: { listing: Listing }) {
   const line = notes.length ? notes.join(' • ') : product.tagline;
   return (
     <article className="card-noir group relative flex w-full max-w-[335px] flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_60px_rgba(207,190,158,0.12)]">
-      <Link href={href} tabIndex={-1} aria-hidden className="relative block aspect-[3/2] w-full overflow-hidden bg-[#0e0e0e]">
+      <Link href={href} tabIndex={-1} aria-hidden className="relative block aspect-[4/3] w-full overflow-hidden bg-[#0e0e0e]">
         {photo ? (
           <Image src={photo.src} alt="" fill sizes="(min-width: 400px) 335px, 100vw" quality={85} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
         ) : (
