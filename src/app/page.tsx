@@ -221,15 +221,16 @@ export default async function HomePage() {
 
       {/* Sign-up */}
       <section className="relative px-5 py-12 sm:px-8 md:py-16 lg:px-12">
-        <div className="relative mx-auto w-full max-w-[335px] overflow-hidden rounded-xl bg-[#201f1f] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(219,195,161,0.06)]">
+        {/* Unlike the cards above, the form grows with the screen so its fields are comfortable to type in. */}
+        <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-xl bg-[#201f1f] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(219,195,161,0.06)] sm:p-8 md:p-10">
           <div aria-hidden className="pointer-events-none absolute -top-12 -right-12 h-48 w-48 bg-[radial-gradient(circle,rgba(219,195,161,0.12)_0%,transparent_70%)]" />
           <div className="flex flex-col items-center text-center">
             <Icon name="lockOpen" strokeWidth={1.6} className="h-7 w-7 text-champagne" />
             <span className="mt-2 text-[11px] font-semibold tracking-[0.3em] text-champagne uppercase">The Private Circle</span>
-            <h2 className="mt-1 font-playfair text-[22px] leading-[30px] font-medium text-white">Invitations to Rare Extraits</h2>
-            <p className="mt-2 max-w-xs text-[13px] leading-5 text-mist">Reserve priority access to bespoke barrel aged releases and private salon samplings.</p>
+            <h2 className="mt-1 font-playfair text-[22px] leading-[30px] font-medium text-white md:text-[28px] md:leading-9">Invitations to Rare Extraits</h2>
+            <p className="mt-2 max-w-xs text-[13px] leading-5 text-mist md:max-w-md md:text-[15px] md:leading-6">Reserve priority access to bespoke barrel aged releases and private salon samplings.</p>
           </div>
-          <div className="relative mt-6">
+          <div className="relative mt-6 md:mt-8">
             <NewsletterForm look="circle" />
           </div>
         </div>

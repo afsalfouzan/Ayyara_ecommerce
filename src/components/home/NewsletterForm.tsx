@@ -6,7 +6,7 @@ import { storeApi, StoreApiError } from '@/lib/api';
 
 const plainField = 'w-full appearance-none rounded-md border border-white/15 bg-[#141414] px-4 py-3.5 text-sm text-white placeholder:text-stone-500 transition-colors focus:border-white focus:ring-0 focus:outline-none';
 
-const circleField = 'w-full appearance-none rounded-xl bg-[#353534] px-3.5 py-3 text-[13px] text-[#e5e2e1] placeholder:text-[#8e918f] transition-colors focus:bg-[#3a3939] focus:ring-0 focus:outline-none';
+const circleField = 'w-full appearance-none rounded-xl bg-[#353534] px-3.5 py-3 text-[13px] md:px-4 md:py-3.5 md:text-sm text-[#e5e2e1] placeholder:text-[#8e918f] transition-colors focus:bg-[#3a3939] focus:ring-0 focus:outline-none';
 
 /**
  * "Stay Updated" sign-up: first name, last name (optional) and email.
@@ -55,8 +55,8 @@ export function NewsletterForm({ look = 'plain' }: { look?: 'plain' | 'circle' }
   }
 
   return (
-    <form onSubmit={submit} className={circle ? 'space-y-3' : 'space-y-4'} noValidate={false}>
-      <div className={circle ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-1 gap-4 sm:grid-cols-2'}>
+    <form onSubmit={submit} className={circle ? 'space-y-3 md:space-y-4' : 'space-y-4'} noValidate={false}>
+      <div className={circle ? 'grid grid-cols-2 gap-3 md:gap-4' : 'grid grid-cols-1 gap-4 sm:grid-cols-2'}>
         <div>
           <label htmlFor="nl-first" className="sr-only">
             First name
@@ -81,10 +81,10 @@ export function NewsletterForm({ look = 'plain' }: { look?: 'plain' | 'circle' }
       </div>
       {circle ? (
         <>
-          <button type="submit" disabled={state === 'sending'} className="btn-champagne mt-2 w-full rounded-xl py-3.5 text-[11px] font-semibold tracking-[0.2em] uppercase" data-purpose="form-submit">
+          <button type="submit" disabled={state === 'sending'} className="btn-champagne mt-2 w-full rounded-xl py-3.5 text-[11px] font-semibold tracking-[0.2em] uppercase md:py-4 md:text-xs" data-purpose="form-submit">
             <span className="relative z-10">{state === 'sending' ? 'Sending…' : 'Join the Private Circle'}</span>
           </button>
-          <p className="pt-1 text-center text-[10px] tracking-wide text-sand">Your details stay private. Unsubscribe at any time.</p>
+          <p className="pt-1 text-center text-[10px] tracking-wide text-sand md:text-[11px]">Your details stay private. Unsubscribe at any time.</p>
         </>
       ) : (
       <div className="pt-2">
