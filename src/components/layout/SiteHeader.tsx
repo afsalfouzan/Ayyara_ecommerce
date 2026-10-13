@@ -4,16 +4,12 @@ import { clsx } from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
+import { Wordmark } from '@/components/brand/Wordmark';
 import { CartLink } from '@/components/cart/CartLink';
 import { Icon } from '@/components/ui/icons';
 import { mainNav } from '@/lib/site';
 import { NavLink } from './NavLink';
 import { SearchButton } from './SearchButton';
-
-/** The shop's name set in the serif, in place of the logo image. */
-function Wordmark() {
-  return <span className="font-display text-xl font-semibold tracking-[0.14em] whitespace-nowrap text-fg uppercase sm:text-2xl">Ayyara Rebirth</span>;
-}
 
 function RouteWatcher({ onNavigate }: { onNavigate: () => void }) {
   const pathname = usePathname();
