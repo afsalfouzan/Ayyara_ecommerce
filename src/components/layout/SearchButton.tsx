@@ -21,8 +21,8 @@ export function SearchButton() {
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} aria-label="Search Fragrances" className="touch-ripple p-2 text-stone-300 transition-colors hover:text-white">
-        <Icon name="search" className="h-5 w-5" />
+      <button type="button" onClick={() => setOpen(true)} aria-label="Search Fragrances" className="touch-ripple p-2 text-mist transition-colors hover:text-white">
+        <Icon name="search" strokeWidth={1.6} className="h-5 w-5" />
       </button>
       <dialog
         ref={dialogRef}
@@ -31,14 +31,14 @@ export function SearchButton() {
         aria-label="Search"
         className="m-0 mt-0 w-full max-w-none bg-transparent p-0 backdrop:bg-black/70 backdrop:backdrop-blur-sm"
       >
-        <form action="/search" className="border-b border-white/10 bg-[#141414]" onSubmit={() => setOpen(false)}>
+        <form action="/search" className="border-b border-[#c8b69b]/15 bg-[#131313]" onSubmit={() => setOpen(false)}>
           <div className="mx-auto flex h-20 max-w-3xl items-center gap-3 px-4">
-            <Icon name="search" className="h-5 w-5 shrink-0 text-stone-400" />
+            <Icon name="search" strokeWidth={1.6} className="h-5 w-5 shrink-0 text-champagne" />
             <label htmlFor="site-search" className="sr-only">
               Search fragrances
             </label>
-            <input ref={inputRef} id="site-search" name="q" type="search" required autoComplete="off" placeholder="Search fragrances…" className="h-12 flex-1 bg-transparent font-serif text-2xl font-light text-white placeholder:text-stone-500 focus:outline-none" />
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close search" className="inline-flex size-10 items-center justify-center text-fg-soft hover:text-white">
+            <input ref={inputRef} id="site-search" name="q" type="search" required autoComplete="off" placeholder="Search fragrances…" className="h-12 flex-1 bg-transparent font-playfair text-xl text-white placeholder:text-[#8e918f] focus:outline-none sm:text-2xl" />
+            <button type="button" onClick={() => setOpen(false)} aria-label="Close search" className="inline-flex size-10 items-center justify-center text-mist transition-colors hover:text-white">
               <Icon name="close" className="h-5 w-5" />
             </button>
           </div>

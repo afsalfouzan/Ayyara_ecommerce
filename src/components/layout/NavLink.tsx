@@ -8,7 +8,7 @@ import { Suspense, type ComponentPropsWithoutRef } from 'react';
 type Props = ComponentPropsWithoutRef<typeof Link> & { href: string; activeClassName?: string };
 
 /**
- * Navigation link that highlights the current page in amber, as in the design.
+ * Navigation link that highlights the current page in champagne.
  * The plain link is part of the prerendered shell; the active state streams in
  * once the URL is known, so the header never blocks static rendering.
  */
@@ -23,5 +23,5 @@ export function NavLink({ activeClassName, ...props }: Props) {
 function ActiveLink({ href, className, activeClassName, ...props }: Props) {
   const pathname = usePathname();
   const active = pathname === href || (href !== '/' && pathname.startsWith(`${href}/`));
-  return <Link href={href} aria-current={active ? 'page' : undefined} className={clsx(className, active && ['text-amber-300!', activeClassName])} {...props} />;
+  return <Link href={href} aria-current={active ? 'page' : undefined} className={clsx(className, active && ['text-champagne!', activeClassName])} {...props} />;
 }
