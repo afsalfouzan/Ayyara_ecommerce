@@ -18,7 +18,7 @@ export async function CatalogPage({ eyebrow, title, intro, listings, current, cr
 
       <header className="mt-6 max-w-2xl md:mt-8">
         <p className="eyebrow">{eyebrow}</p>
-        <h1 className="mt-2 text-3xl text-fg md:text-5xl">{title}</h1>
+        <h1 className="mt-2 text-4xl text-fg md:text-6xl">{title}</h1>
         {intro && <p className="mt-3 text-base leading-relaxed text-fg-soft">{intro}</p>}
       </header>
 

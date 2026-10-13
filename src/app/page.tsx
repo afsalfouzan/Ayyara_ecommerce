@@ -32,7 +32,7 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero: words on ivory beside the photo; on a phone the photo comes first. */}
-      <section className="bg-surface">
+      <section>
         <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
           <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:order-2 lg:aspect-auto lg:min-h-[600px]">
             {/* A wide crop of a square photo on phones; about half the screen on a laptop. */}
@@ -40,8 +40,12 @@ export default async function HomePage() {
           </div>
           <div className="flex flex-col items-start justify-center px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-20">
             <p className="eyebrow">{site.name}</p>
-            <h1 className="mt-3 text-4xl leading-[1.1] font-medium text-fg sm:text-5xl lg:text-6xl">Fine fragrances for modern you</h1>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-fg-soft sm:text-lg">Refined perfumes for those who wear fragrance as a signature. Find the one that speaks for you.</p>
+            <h1 className="mt-3 text-[2.75rem] text-fg sm:text-6xl lg:text-7xl">
+              Fine Fragrances
+              <br />
+              for the Modern You
+            </h1>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-mute sm:text-lg">Refined fragrances for those who make scent their signature. Discover the one that feels uniquely yours.</p>
             <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
               <ButtonLink href="/shop" size="lg">
                 Shop perfumes
@@ -59,7 +63,7 @@ export default async function HomePage() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Collections</p>
-            <h2 className="mt-2 text-2xl text-fg md:text-3xl">Find your signature</h2>
+            <h2 className="mt-2 font-display text-3xl text-fg md:text-4xl">Find your signature</h2>
           </div>
           <Link href="/shop" className="shrink-0 text-xs font-medium tracking-[0.12em] text-fg uppercase underline underline-offset-4 hover:text-gold">
             View all
@@ -95,7 +99,7 @@ export default async function HomePage() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="eyebrow">Most loved</p>
-              <h2 className="mt-2 text-2xl text-fg md:text-3xl">Best sellers</h2>
+              <h2 className="mt-2 font-display text-3xl text-fg md:text-4xl">Best sellers</h2>
             </div>
             <Link href="/shop" className="shrink-0 text-xs font-medium tracking-[0.12em] text-fg uppercase underline underline-offset-4 hover:text-gold">
               Shop all
@@ -119,7 +123,7 @@ export default async function HomePage() {
       <Container as="section" className="py-14 text-center md:py-24">
         <div className="mx-auto max-w-2xl">
           <p className="eyebrow">Our story</p>
-          <h2 className="mt-2 text-2xl text-fg md:text-4xl">More than a fragrance, an identity</h2>
+          <h2 className="mt-2 font-display text-3xl text-fg md:text-5xl">More than a fragrance, an identity</h2>
           <p className="mt-4 text-base leading-relaxed text-fg-soft md:text-lg">We believe a perfume is your invisible, unforgettable signature. Each fragrance is crafted to capture memories and stir emotion, bridging tradition and modern luxury.</p>
           <ButtonLink href="/our-story" variant="outline" className="mt-7">
             Discover our story
@@ -146,7 +150,7 @@ export default async function HomePage() {
       <Container as="section" className="grid grid-cols-1 gap-6 py-12 md:py-20 lg:grid-cols-2 lg:gap-16">
         <div className="max-w-md">
           <p className="eyebrow">Stay updated</p>
-          <h2 className="mt-2 text-2xl text-fg md:text-3xl">New launches and offers, first</h2>
+          <h2 className="mt-2 font-display text-3xl text-fg md:text-4xl">New launches and offers, first</h2>
           <p className="mt-3 text-base leading-relaxed text-fg-soft">Leave your details and we’ll write when a new fragrance arrives or an offer opens.</p>
         </div>
         <div className="max-w-lg lg:pt-2">

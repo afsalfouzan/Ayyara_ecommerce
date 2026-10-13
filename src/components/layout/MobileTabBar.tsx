@@ -52,7 +52,7 @@ function Tabs({ path }: { path: string | null }) {
               <Icon name={tab.icon} strokeWidth={1.6} className="h-[22px] w-[22px]" />
               <span className={clsx('mt-1 text-[10px] tracking-[0.08em] uppercase', active ? 'font-semibold' : 'font-medium')}>{tab.label}</span>
               {tab.label === 'Bag' && inBag > 0 && (
-                <span aria-hidden className="absolute top-0 right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-fg px-1 text-[10px] font-semibold text-canvas">
+                <span aria-hidden className="absolute top-0 right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-fg px-1 text-[10px] font-semibold text-white">
                   {inBag > 9 ? '9+' : inBag}
                 </span>
               )}

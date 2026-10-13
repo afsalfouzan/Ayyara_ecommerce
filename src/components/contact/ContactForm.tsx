@@ -75,7 +75,7 @@ export function ContactForm() {
               type="button"
               aria-pressed={topic === option.value}
               onClick={() => setTopic(option.value)}
-              className={clsx('rounded-[2px] border px-3 py-2 text-[13px] transition-colors', topic === option.value ? 'border-fg bg-fg text-canvas' : 'border-line bg-canvas text-fg hover:border-fg')}
+              className={clsx('rounded-[2px] border px-3 py-2 text-[13px] transition-colors', topic === option.value ? 'border-fg bg-fg text-white' : 'border-line bg-canvas text-fg hover:border-fg')}
             >
               {option.label}
             </button>

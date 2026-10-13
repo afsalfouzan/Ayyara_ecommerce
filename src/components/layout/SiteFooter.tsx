@@ -25,7 +25,7 @@ const columns = [
 export async function SiteFooter() {
   const year = await currentYear();
   return (
-    <footer className="mt-auto border-t border-line bg-surface">
+    <footer className="mt-auto border-t border-line bg-raised">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:py-16 lg:px-10">
         <div className="col-span-2 md:col-span-1">
           <Link href="/" aria-label="Ayyara Rebirth — home" className="inline-flex">
@@ -48,7 +48,7 @@ export async function SiteFooter() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${site.name} on ${network === 'facebook' ? 'Facebook' : 'Instagram'}`}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-canvas text-fg transition-colors hover:border-fg"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-fg transition-colors hover:border-fg"
               >
                 <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden>
                   <path d={SOCIAL_ICONS[network]} />

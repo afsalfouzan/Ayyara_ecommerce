@@ -61,7 +61,7 @@ export default function ContactPage() {
 
       <header className="mt-6 max-w-2xl md:mt-8">
         <p className="eyebrow">Client care</p>
-        <h1 className="mt-2 text-3xl text-fg md:text-5xl">Contact us</h1>
+        <h1 className="mt-2 text-4xl text-fg md:text-6xl">Contact us</h1>
         <p className="mt-3 text-base leading-relaxed text-fg-soft">For help choosing a fragrance or with an existing order, our team is happy to assist. Please include your order number if your message is about an order.</p>
       </header>
 
@@ -102,7 +102,7 @@ export default function ContactPage() {
         </div>
 
         <section aria-labelledby="message-heading" className="bg-surface p-5 sm:p-8">
-          <h2 id="message-heading" className="text-xl font-medium text-fg md:text-2xl">
+          <h2 id="message-heading" className="font-display text-2xl text-fg md:text-3xl">
             Send a message
           </h2>
           <p className="mt-1 mb-6 text-sm text-fg-soft">We read every message and reply by email within one working day.</p>
@@ -111,7 +111,7 @@ export default function ContactPage() {
       </div>
 
       <section aria-labelledby="faq-heading" className="mt-14 max-w-3xl md:mt-20">
-        <h2 id="faq-heading" className="text-2xl text-fg md:text-3xl">
+        <h2 id="faq-heading" className="font-display text-3xl text-fg md:text-4xl">
           Common questions
         </h2>
         <div className="mt-4 border-t border-line">

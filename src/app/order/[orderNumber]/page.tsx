@@ -12,7 +12,7 @@ export default function OrderPage({ params }: PageProps<'/order/[orderNumber]'>)
   return (
     <Container className="pt-6 pb-16 sm:pt-10 md:pb-24">
       <p className="eyebrow">Order</p>
-      <h1 className="mt-2 text-3xl text-fg md:text-4xl">Your order</h1>
+      <h1 className="mt-2 text-4xl text-fg md:text-5xl">Your order</h1>
       <Suspense fallback={<div className="mt-10 h-96 animate-pulse rounded-sm border border-line bg-surface" />}>
         <OrderStatusLoader params={params} />
       </Suspense>

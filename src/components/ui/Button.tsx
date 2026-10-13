@@ -9,8 +9,8 @@ const base =
   'inline-flex items-center justify-center gap-2 rounded-[2px] text-xs font-medium tracking-[0.12em] whitespace-nowrap uppercase transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-fg text-canvas hover:bg-fg-soft',
-  outline: 'border border-fg text-fg hover:bg-fg hover:text-canvas',
+  primary: 'bg-fg text-white hover:bg-fg-soft',
+  outline: 'border border-fg text-fg hover:bg-fg hover:text-white',
   ghost: 'text-fg underline underline-offset-4 hover:text-gold',
 };
 

@@ -86,10 +86,10 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
                   setQuantity(1);
                   setAdded(false);
                 }}
-                className={clsx('min-w-20 rounded-[2px] border px-4 py-2.5 text-left text-sm transition-colors', selected ? 'border-fg bg-fg text-canvas' : 'border-line bg-canvas text-fg hover:border-fg', out && !selected && 'text-mute line-through')}
+                className={clsx('min-w-20 rounded-[2px] border px-4 py-2.5 text-left text-sm transition-colors', selected ? 'border-fg bg-fg text-white' : 'border-line bg-canvas text-fg hover:border-fg', out && !selected && 'text-mute line-through')}
               >
                 <span className="block font-medium">{option.sizeMl} ml</span>
-                <span className={clsx('block text-xs', selected ? 'text-canvas/80' : 'text-mute')}>{out ? 'Sold out' : formatPrice(option.pricePaise)}</span>
+                <span className={clsx('block text-xs', selected ? 'text-white/80' : 'text-mute')}>{out ? 'Sold out' : formatPrice(option.pricePaise)}</span>
               </button>
             );
           })}
@@ -130,7 +130,7 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
               </Link>
             </span>
           ) : (
-            variant.stockStatus === 'low_stock' && <span className="text-gold">{stockLabel.low_stock}</span>
+            variant.stockStatus === 'low_stock' && <span className="font-medium text-fg">{stockLabel.low_stock}</span>
           )}
         </p>
       </div>

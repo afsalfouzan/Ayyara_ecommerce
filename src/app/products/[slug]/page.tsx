@@ -125,7 +125,7 @@ export default async function ProductPage({
                 ? ` · For ${product.gender === "men" ? "him" : "her"}`
                 : " · Unisex"}
             </p>
-            <h1 className="mt-2 text-3xl text-fg md:text-4xl">
+            <h1 className="mt-2 text-4xl text-fg md:text-5xl">
               {product.name}
             </h1>
             {product.tagline && (
@@ -196,7 +196,7 @@ export default async function ProductPage({
         <section aria-labelledby="related-heading" className="bg-surface">
           <Container className="py-12 md:py-20">
             <div className="flex items-end justify-between gap-4">
-              <h2 id="related-heading" className="text-2xl text-fg md:text-3xl">
+              <h2 id="related-heading" className="font-display text-3xl text-fg md:text-4xl">
                 You may also like
               </h2>
               <Link
