@@ -30,6 +30,8 @@ npm run build && npm start
 - **Security headers** are set in `next.config.ts`. The content security policy limits scripts, frames and outgoing requests to this site, the API, photo storage and Razorpay. Add a host there before loading anything from a new service (analytics, chat, fonts), or the browser will block it.
 - **Share images.** `app/opengraph-image.tsx` is the site card; `app/products/[slug]/opengraph-image.tsx` draws one per perfume from its first photo. Pages build their link preview with `shareMeta()` (`lib/seo.ts`); a page that sets `openGraph` by hand loses the site name and image.
 - **Search engines** may index only the real site: `isLiveSite` (`lib/site.ts`) is false on previews, staging and builds without `NEXT_PUBLIC_SITE_URL`, which then answer `noindex`.
+- **Invoice links.** `/invoice/<order number>.pdf?k=…` (sent to customers on WhatsApp) is passed to the API by a rewrite in `next.config.ts`; the API checks the key and builds the PDF. The storefront stores nothing.
+- **Photos** on the home and Our Story pages are files in `src/assets`, served sharp at the right size for each screen; replace a file to replace a picture (2400 px wide or more).
 - Hosting variables and the go-live checklist are in the backend's `deploy/README.md`.
 
 ## Brand logo

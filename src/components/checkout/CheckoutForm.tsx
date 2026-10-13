@@ -135,7 +135,7 @@ export function CheckoutForm() {
         <ul className="mt-6 space-y-4">
           {items.map((item) => (
             <li key={item.variantId} className="grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 text-sm">
-              <LineThumb line={item} sizes="56px" />
+              <LineThumb line={item} sizes="100px" />
               <div>
                 <p className="font-serif text-base text-white leading-tight">{item.name}</p>
                 <p className="text-xs text-stone-400 mt-0.5">

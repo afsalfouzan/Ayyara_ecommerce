@@ -1,3 +1,7 @@
+import storyChapter1 from '@/assets/story/chapter1.jpg';
+import storyChapter2 from '@/assets/story/chapter2.jpg';
+import storyHero from '@/assets/story/hero.jpg';
+import storyWater from '@/assets/story/water.jpg';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,15 +19,8 @@ export const metadata: Metadata = {
   openGraph: shareMeta('/our-story'),
 };
 
-const IMAGES = {
-  hero: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCyj2zYHKaTfBDJ7peekdntSFyGbpcKSwadF5RwN2oxRhhYAhxMeIAi4PsdkZQ8Rh03Y4H8y49e4ElG5lJpudQj67bL2I-scnKgMJ20DP2BevvNdGx3leXKItmydg6jm-93qy1fuxzh89hU-6ojJblgE0V3kvYPmwkjPPJjRzng-AmdzebGiCRooMkO1GvxHMsUkd_KHCbjRhTNWR0milL77mFpv90P0P7PKkDtK83UEwhpYseM9Q3bMQ',
-  chapter1:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuByNancxr5_anqdvTYgIs7JpdfmkgRm7tEv8CHYPGSNJqUGU9Y1uD8zzMq93Ir0iP92nSLa4nYzqwK_dGiEqQcQLWr6vlGgc6mxZ6JXkdekZUFqYVoqO8gQCXsxT0BLhtlWAc0ozvKrgXcTrFqnftWbAA3-pkXxLAdEYGX0Jjw3y3BCAD59pf0c-A5U71iiMNG7CnXGMiRweAbg0D0N-1Qp77vpfBrUcYmkppsN467jEDzQJwfyszd4bQ',
-  water:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuBtdqKWHSZqVbsBml4faZpIb6IEFiboRiHRC_rAF29-uoRzqJo16_Bfi4egJ84_8GJJXbmJLiaGlh75fOHs_Ht9Do0anfCP1fveg815iMDrdYDk_CwTuOSu78VNrLnevXXzNO5nzt3YtMX9XrSIFPCpWn0vdMvol4DufxHkRxGtZZ-9GTfU53Aju8SsqAnmIkCN8HhN0HGdD_V0vgblUR2cDUlrvWjqR-SX3aTtGeMEWweOUJ189FGmOw',
-  chapter2:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuCIsKRWjs0LPm4BKx-lshQBDUyEBCU4uxGxgDb-xvInEVESKLzbregMEpTtKPRo5Q-sQcYN-bWclpbjjpXVX4b_s86tL2sFFYds0NohhWhlYX8b0Y4GjKkHtrM7G4HCEFJwnojb7ARH7PVaf_oMYUEqcsl6Mw5RKIcBw5uuegtd7r9B_dnA6cwMJXcm9mEiXMSIGVSdxYv9iyLuotkAG26RgyVh-wZRXdY-ExYlLhjwI8D8XrpmfSz6bg',
-};
+/* Full-size originals kept in the project so they are served sharp and correctly sized (concept images; replace with Ayyara's own). */
+const IMAGES = { hero: storyHero, chapter1: storyChapter1, water: storyWater, chapter2: storyChapter2 };
 
 export default function OurStoryPage() {
   return (
@@ -36,7 +33,9 @@ export default function OurStoryPage() {
           fill
           loading="eager"
           fetchPriority="high"
-          sizes="100vw"
+          sizes="(min-width: 768px) 100vw, 240vw"
+          quality={85}
+          placeholder="blur"
           className="object-cover object-center opacity-70 transition-transform duration-1000 ease-out hover:scale-105"
         />
         {/* Cinematic dark vignette scrim */}
@@ -77,7 +76,9 @@ export default function OurStoryPage() {
               src={IMAGES.chapter1}
               alt="Antique typewriter beside a crystalline perfume flacon labeled Ayyara on a weathered studio desk"
               fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              sizes="(max-width: 1024px) 100vw, 60vw"
+              quality={85}
+              placeholder="blur"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e]/80 via-transparent to-transparent" />
@@ -136,7 +137,9 @@ export default function OurStoryPage() {
                 src={IMAGES.water}
                 alt="Delicate concentric water ripples disturbance, liquid gloss texture"
                 fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 100vw, 60vw"
+              quality={85}
+              placeholder="blur"
                 className="object-cover opacity-80"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#0e0e0e]/80 via-transparent to-[#0e0e0e]/80" />
@@ -148,7 +151,9 @@ export default function OurStoryPage() {
                 src={IMAGES.chapter2}
                 alt="Clear glass luxury perfume bottle resting on deep velvet vintage armchair beside art monograph book"
                 fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 100vw, 60vw"
+              quality={85}
+              placeholder="blur"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e]/80 via-transparent to-transparent" />

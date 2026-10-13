@@ -47,6 +47,9 @@ const apiUploads = (() => {
   return { protocol: 'https' as const, hostname, port, pathname: '/uploads/**' };
 })();
 
+/** API address the server itself uses (it may be a private one); falls back to the public address. */
+const apiBase = (process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1').replace(/\/$/, '');
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
@@ -63,12 +66,12 @@ const nextConfig: NextConfig = {
 
   images: {
     formats: ['image/avif', 'image/webp'],
+    // 85 is used for photographs: visibly cleaner than the default 75 in AVIF, at a small cost in size.
+    qualities: [75, 85],
     // Product images are served from the S3 bucket (optionally behind CloudFront).
     remotePatterns: [
       { protocol: 'https', hostname: '*.s3.ap-south-1.amazonaws.com' },
       { protocol: 'https', hostname: '*.cloudfront.net' },
-      // TEMPORARY: home-page concept photography (see lib/imagery.ts).
-      { protocol: 'https', hostname: 'lh3.googleusercontent.com', pathname: '/aida-public/**' },
       // Images stored by a local backend.
       ...(localApi ? [{ protocol: 'http' as const, hostname: 'localhost', port: '4000', pathname: '/uploads/**' }] : []),
       // A backend that keeps product photos on its own disk (staging) serves them from /uploads.
@@ -93,6 +96,15 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+
+  /**
+   * Invoice links sent to customers (by WhatsApp) use the shop's own address:
+   * /invoice/AR-….pdf?k=…. The request is passed straight to the API, which
+   * checks the key and builds the PDF on the spot. Nothing is stored here.
+   */
+  async rewrites() {
+    return [{ source: '/invoice/:file', destination: `${apiBase}/store/invoices/:file` }];
   },
 
   /**

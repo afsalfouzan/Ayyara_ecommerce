@@ -7,7 +7,7 @@ export function LineThumb({ line, sizes }: { line: Pick<CartLine, 'image' | 'slu
   if (!line.image) return <ProductArt art={artFor(line.slug)} name={line.name} className="aspect-[4/5]" />;
   return (
     <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-white/10 bg-[#181818]">
-      <Image src={line.image.src} alt="" fill sizes={sizes} className="object-cover" />
+      <Image src={line.image.src} alt="" fill sizes={sizes} quality={85} className="object-cover" />
     </div>
   );
 }

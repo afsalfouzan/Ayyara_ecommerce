@@ -29,7 +29,8 @@ export const site = {
   policies: {
     freeShippingThresholdPaise: 0,
     dispatchWindow: '1–2 business days',
-    deliveryWindow: '3–7 business days across India',
+    // Keep in step with DELIVERY_ESTIMATE in the backend's config/store.ts (used in emails and WhatsApp messages).
+    deliveryWindow: '3 to 5 working days across India',
     returnWindowDays: 7,
   },
 } as const;

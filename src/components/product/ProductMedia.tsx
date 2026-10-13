@@ -24,7 +24,7 @@ export function ProductMedia({
   }
   return (
     <div className={clsx('relative aspect-[4/5] overflow-hidden rounded-sm border border-white/10 bg-[#181818]', className)}>
-      <Image src={photo.src} alt={photo.alt} fill sizes={sizes} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} className="object-cover" />
+      <Image src={photo.src} alt={photo.alt} fill sizes={sizes} quality={85} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} className="object-cover" />
     </div>
   );
 }

@@ -42,7 +42,7 @@ export function CartView() {
           {items.map((item) => (
             <li key={item.variantId} className="grid grid-cols-[5.5rem_1fr] gap-5 py-6 sm:grid-cols-[7rem_1fr] sm:gap-8">
               <Link href={`/products/${item.slug}`} tabIndex={-1} aria-hidden>
-                <LineThumb line={item} sizes="112px" />
+                <LineThumb line={item} sizes="200px" />
               </Link>
               <div className="flex min-w-0 flex-col">
                 <div className="flex items-start justify-between gap-4">

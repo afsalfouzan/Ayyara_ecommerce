@@ -89,18 +89,27 @@ export async function getBestSellerIds(): Promise<number[]> {
 }
 
 /**
- * Home-page best sellers: real top sellers that can still be bought, then sold-out
- * top sellers. Shows 4 when there are that many sellers, otherwise 2, topping
- * up with other in-stock sizes so the section always has at least two cards.
+ * Home-page best sellers: at most two perfumes, one card each. A perfume is
+ * shown in its best-selling size, never twice. Top sellers that can still be
+ * bought come first, then sold-out top sellers; if fewer than two perfumes have
+ * sold yet, other in-stock perfumes fill the gap.
  */
-export function bestSellerListings(products: Product[], rankedIds: number[], { min = 2, max = 4 } = {}) {
+export function bestSellerListings(products: Product[], rankedIds: number[], { max = 2 } = {}) {
   const all = listingsOf(products);
   const byId = new Map(all.map((listing) => [listing.variant.id, listing]));
   const ranked = rankedIds.flatMap((id) => byId.get(id) ?? []);
-  const sellers = [...ranked.filter((l) => l.variant.stockStatus !== 'out_of_stock'), ...ranked.filter((l) => l.variant.stockStatus === 'out_of_stock')];
-  const count = sellers.length >= max ? max : min;
-  const fillers = [...all.filter((l) => l.variant.stockStatus !== 'out_of_stock'), ...all].filter((l) => !sellers.includes(l));
-  return [...new Set([...sellers, ...fillers])].slice(0, count);
+  const inStock = (listing: Listing) => listing.variant.stockStatus !== 'out_of_stock';
+  const candidates = [...ranked.filter(inStock), ...ranked.filter((l) => !inStock(l)), ...all.filter(inStock), ...all];
+
+  const picked: Listing[] = [];
+  const perfumes = new Set<number>();
+  for (const listing of candidates) {
+    if (perfumes.has(listing.product.id)) continue;
+    perfumes.add(listing.product.id);
+    picked.push(listing);
+    if (picked.length === max) break;
+  }
+  return picked;
 }
 
 /** Case-insensitive match on the perfume's name, tagline and description. */

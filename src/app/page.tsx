@@ -28,7 +28,7 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative flex min-h-[500px] items-center justify-center overflow-hidden bg-black sm:min-h-[580px] md:min-h-[640px]">
         <div className="absolute inset-0 z-0">
-          <Image src={imagery.hero.src} alt={imagery.hero.alt} fill loading="eager" fetchPriority="high" sizes="100vw" className="h-full w-full object-cover object-center brightness-[0.88]" />
+          <Image src={imagery.hero.src} alt={imagery.hero.alt} fill loading="eager" fetchPriority="high" sizes="(min-width: 768px) 100vw, 240vw" quality={85} placeholder="blur" className="h-full w-full object-cover object-center brightness-[0.88]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/30" />
         </div>
         <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 py-20 text-center">
@@ -60,7 +60,7 @@ export default async function HomePage() {
                   className="group relative flex min-h-[420px] cursor-pointer flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-stone-900 shadow-2xl sm:min-h-[460px]"
                 >
                   <div className="absolute inset-0">
-                    <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+                    <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 768px) 50vw, 120vw" quality={85} placeholder="blur" className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/20" />
                   </div>
                   <div className="relative z-10 p-6 backdrop-blur-[2px] sm:p-8">
@@ -97,34 +97,39 @@ export default async function HomePage() {
           </div>
           <div className="order-1 lg:order-2 lg:col-span-6">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-stone-300/40 bg-stone-200 shadow-2xl sm:aspect-[16/11]">
-              <Image src={imagery.story.src} alt={imagery.story.alt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="h-full w-full object-cover" />
+              <Image src={imagery.story.src} alt={imagery.story.alt} fill sizes="(min-width: 1024px) 55vw, 130vw" quality={85} placeholder="blur" className="h-full w-full object-cover" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Best sellers */}
+      {/* Best sellers: the photo and the text column are the same height, so the cards sit level with the foot of the photo. */}
       <section className="bg-[#ffffff] px-4 py-16 text-stone-900 sm:px-6 md:py-24">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-stretch lg:gap-12">
             <div className="w-full lg:col-span-5">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-stone-200 bg-stone-100 shadow-xl sm:aspect-[4/5] lg:aspect-auto lg:h-[580px]">
-                <Image src={imagery.bestSellers.src} alt={imagery.bestSellers.alt} fill sizes="(min-width: 1024px) 40vw, 100vw" className="h-full w-full object-cover" />
+              <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-stone-200 bg-stone-100 shadow-xl sm:aspect-[16/11] lg:aspect-auto lg:h-full lg:min-h-[480px]">
+                {/* A tall crop of a wide photo: it needs roughly twice its box width in pixels to stay sharp. */}
+                <Image src={imagery.bestSellers.src} alt={imagery.bestSellers.alt} fill sizes="(min-width: 1024px) 70vw, (min-width: 640px) 130vw, 230vw" quality={85} placeholder="blur" className="h-full w-full object-cover" />
               </div>
             </div>
-            <div className="flex flex-col justify-between lg:col-span-7">
-              <div>
-                <h2 className="font-sans text-3xl font-semibold tracking-tight text-stone-950 uppercase sm:text-4xl md:text-5xl">BEST SELLERS</h2>
-                <p className="mt-4 max-w-xl text-sm leading-relaxed font-light text-stone-600 sm:text-base sm:leading-6">
-                  We are crafting fragrances designed to leave a lasting impression. Leave your details below to stay updated on our upcoming launches, exclusive offers, and brand journey
-                </p>
+            <div className="flex flex-col lg:col-span-7">
+              <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+                <div>
+                  <p className="font-sans text-[11px] font-medium tracking-[0.3em] text-[#7d6126] uppercase">Most loved</p>
+                  <h2 className="mt-2 font-sans text-3xl font-semibold tracking-tight text-stone-950 uppercase sm:text-4xl md:text-5xl">BEST SELLERS</h2>
+                </div>
+                <Link href="/shop" className="text-xs font-medium tracking-[0.2em] text-stone-900 uppercase underline decoration-[#c5a059] decoration-2 underline-offset-8 transition-colors hover:text-[#7d6126]">
+                  View all perfumes
+                </Link>
               </div>
+              <p className="mt-4 max-w-xl text-sm leading-relaxed font-light text-stone-600 sm:text-base sm:leading-6">The fragrances our customers come back for, time after time.</p>
               {bestSellers.length === 0 ? (
                 <p className="mt-8 rounded-2xl border border-stone-200 p-10 text-center text-stone-600">The collection is being restocked. Please check back soon.</p>
               ) : (
-                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div className={`mt-8 grid grid-cols-1 gap-5 lg:mt-auto lg:pt-8 ${bestSellers.length > 1 ? 'sm:grid-cols-2' : 'sm:max-w-sm'}`}>
                   {bestSellers.map((listing) => (
-                    <ListingCard key={listing.variant.id} listing={listing} />
+                    <ListingCard key={listing.variant.id} listing={listing} compact />
                   ))}
                 </div>
               )}
