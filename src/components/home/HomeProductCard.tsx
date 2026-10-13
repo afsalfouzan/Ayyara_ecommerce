@@ -9,10 +9,11 @@ import { artFor, formatPrice } from '@/lib/format';
 const GENDER_LABEL = { men: 'For Him', women: 'For Her', unisex: 'Unisex' } as const;
 
 /**
- * Product card for the home page, about a third of a phone screen tall: the
- * photo on the left, then the perfume's name, its leading notes, price and Add
- * to bag. Everything shown comes from the catalogue, so a perfume without
- * notes or a tagline simply leaves that line out.
+ * Product card for the home page: a wide photo with a saving label, then the
+ * perfume's name, its leading notes, price and Add to bag. The photo is a
+ * short band instead of a square and the text is set tight, to keep the card
+ * low. Everything shown comes from the catalogue, so a perfume without notes
+ * or a tagline simply leaves that line out.
  */
 export function HomeProductCard({ listing }: { listing: Listing }) {
   const { product, variant } = listing;
@@ -22,48 +23,46 @@ export function HomeProductCard({ listing }: { listing: Listing }) {
   const notes = product.notes ? [product.notes.top[0], product.notes.heart[0], product.notes.base[0]].filter(Boolean) : [];
   const line = notes.length ? notes.join(' • ') : product.tagline;
   return (
-    <article className="card-noir group relative flex h-[clamp(260px,33svh,300px)] w-full max-w-[335px] overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_60px_rgba(207,190,158,0.12)]">
-      <Link href={href} tabIndex={-1} aria-hidden className="relative block w-[120px] shrink-0 overflow-hidden bg-[#0e0e0e]">
+    <article className="card-noir group relative flex w-full max-w-[335px] flex-col overflow-hidden rounded-2xl transition-shadow duration-500 hover:shadow-[0_24px_60px_rgba(207,190,158,0.12)]">
+      <Link href={href} tabIndex={-1} aria-hidden className="relative block aspect-[3/2] w-full overflow-hidden bg-[#0e0e0e]">
         {photo ? (
-          // A tall, narrow crop: the photo is drawn at the card's height, about 400 px wide before cropping.
-          <Image src={photo.src} alt="" fill sizes="400px" quality={85} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+          <Image src={photo.src} alt="" fill sizes="(min-width: 400px) 335px, 100vw" quality={85} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
         ) : (
           <ProductArt art={artFor(product.slug)} name={product.name} className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-105" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#0e0e0e]/70" />
-        {product.concentration && (
-          <span className="chip-noir absolute bottom-3 left-1/2 max-w-[104px] -translate-x-1/2 truncate rounded-xl px-2 py-1 text-[8px] font-semibold tracking-wider whitespace-nowrap text-[#eae1d5] uppercase shadow-sm">{product.concentration}</span>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/20 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent_45%,rgba(10,10,10,0.65)_100%)]" />
+        {saving > 0 && (
+          <span className="chip-noir absolute top-3 left-3 flex items-center gap-1.5 rounded-xl px-3 py-1 shadow-lg">
+            <Icon name="tag" strokeWidth={2} className="h-3 w-3 text-champagne" />
+            <span className="text-[9px] font-semibold tracking-[0.2em] text-champagne uppercase">Save {formatPrice(saving)}</span>
+          </span>
         )}
+        {product.concentration && <span className="chip-noir absolute right-3 bottom-3 rounded-xl px-2.5 py-1 text-[9px] font-semibold tracking-wider text-[#eae1d5] uppercase shadow-sm">{product.concentration}</span>}
       </Link>
-      <div className="flex min-w-0 flex-1 flex-col p-4">
-        <div className="flex items-center justify-between gap-2">
-          <span className="truncate text-[9px] font-medium tracking-[0.22em] text-champagne uppercase">{GENDER_LABEL[product.gender]}</span>
-          <span className="shrink-0 text-[10px] tracking-wide text-sand/70">{variant.sizeMl}ml Flacon</span>
+      <div className="flex flex-1 flex-col px-5 pt-3.5 pb-4">
+        <div className="mb-0.5 flex items-center justify-between gap-3">
+          <span className="text-[9px] font-medium tracking-[0.25em] text-champagne uppercase">{GENDER_LABEL[product.gender]}</span>
+          <span className="text-[11px] tracking-wide text-sand/70">{variant.sizeMl}ml Flacon</span>
         </div>
-        <h3 className="mt-1.5 truncate font-playfair text-[22px] leading-tight tracking-tight text-[#f7f5f0]">
+        <h3 className="font-playfair text-[22px] leading-tight tracking-tight text-[#f7f5f0]">
           <Link href={href} className="transition-colors hover:text-champagne">
             {product.name}
           </Link>
         </h3>
-        {line && <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed font-light text-mist/90 italic">{line}</p>}
-        <div className="rule-champagne my-3 shrink-0" />
-        <div className="flex flex-wrap items-baseline gap-x-2">
+        {line && <p className="mt-1 line-clamp-1 text-xs leading-relaxed font-light text-mist/90 italic">{line}</p>}
+        <div className="rule-champagne my-2.5" />
+        <div className="mt-auto flex items-baseline gap-2.5">
           {saving > 0 && <span className="sr-only">Now </span>}
-          <span className="font-playfair text-lg text-champagne">{formatPrice(variant.pricePaise)}</span>
+          <span className="font-playfair text-xl text-champagne">{formatPrice(variant.pricePaise)}</span>
           {saving > 0 && (
             <>
               <span className="sr-only">MRP </span>
-              <span className="text-[11px] text-[#8e918f] line-through">{formatPrice(variant.mrpPaise)}</span>
+              <span className="text-[13px] text-[#8e918f] line-through">{formatPrice(variant.mrpPaise)}</span>
             </>
           )}
         </div>
-        {saving > 0 && (
-          <p className="mt-0.5 flex items-center gap-1 text-[9px] font-semibold tracking-[0.16em] text-champagne/90 uppercase">
-            <Icon name="tag" strokeWidth={2} className="h-2.5 w-2.5 shrink-0" />
-            Save {formatPrice(saving)}
-          </p>
-        )}
-        <div className="mt-auto pt-2">
+        <div className="mt-3">
           <AddToCartButton listing={listing} tone="champagne" compact />
         </div>
       </div>
