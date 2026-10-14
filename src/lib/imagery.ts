@@ -9,14 +9,15 @@ import women from '@/assets/home/women.jpg';
  * size it was supplied, so every screen gets a sharp, correctly sized copy and
  * a soft preview while it loads.
  *
- * The hero is 1024 px square and the collection photos 1200 × 896. Larger
- * originals (2400 px wide or more) can replace them under the same file names.
+ * The collection photos are the shop's own campaign images (supplied 2026-10-14):
+ * For Him is portrait, for the tall card; For Her and Unisex are landscape, for
+ * the wide cards. `position` keeps the bottles in view wherever a card crops.
  */
 export const imagery = {
   hero: { src: hero, alt: 'Ayyara Rebirth Epic perfume resting on driftwood with pear, vanilla and white blossom' },
-  men: { src: men, alt: 'An Ayyara Rebirth bottle in smoked glass on dark wood and leather' },
-  women: { src: women, alt: 'An Ayyara Rebirth bottle resting on ivory and rose silk' },
-  unisex: { src: unisex, alt: 'An Ayyara Rebirth bottle with a marble cap on travertine stone' },
+  men: { src: men, alt: 'An Ayyara Rebirth bottle on a mossy rock in a sunlit forest, beside hiking boots, a rucksack and a compass', position: 'object-[50%_60%]' },
+  women: { src: women, alt: 'Two Ayyara Rebirth bottles beside pearls and silver silk, with a jewellery box behind', position: 'object-[72%_55%]' },
+  unisex: { src: unisex, alt: 'Three Ayyara Rebirth bottles on a stone at the edge of a calm lake', position: 'object-[74%_55%]' },
 } as const;
 
 /**

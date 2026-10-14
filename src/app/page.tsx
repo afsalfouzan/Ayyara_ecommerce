@@ -45,8 +45,6 @@ const services = [
 export default async function HomePage() {
   const [products, rankedIds] = await Promise.all([getProducts(), getBestSellerIds()]);
   const bestSellers = bestSellerListings(products, rankedIds);
-  // The film is about ONE: link to that perfume if the shop has it, otherwise to the shop.
-  const one = products.find((product) => /\bone\b/i.test(product.name));
 
   return (
     <>
@@ -87,7 +85,7 @@ export default async function HomePage() {
             <li key={collection.number} className={collection.cell}>
               <Link href={collection.href} className="group flex h-full flex-col">
                 <div className={`relative w-full flex-1 overflow-hidden bg-surface ${collection.frame}`}>
-                  <Image src={collection.photo.src} alt={collection.photo.alt} fill sizes={collection.sizes} quality={85} placeholder="blur" className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]" />
+                  <Image src={collection.photo.src} alt={collection.photo.alt} fill sizes={collection.sizes} quality={85} placeholder="blur" className={`object-cover ${collection.photo.position} transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]`} />
                 </div>
                 <div className="mt-4 flex items-baseline gap-4">
                   <span className="text-xs tracking-[0.14em] text-gold tabular-nums">{collection.number}</span>
@@ -122,8 +120,8 @@ export default async function HomePage() {
             </h2>
             <p className="mt-1 text-sm tracking-[0.08em] text-mute">by Ayyara Rebirth</p>
             <p className="mt-5 max-w-md text-base leading-relaxed text-mute">We believe a perfume is your invisible, unforgettable signature. Crafted to capture memories and evoke deep emotions, our collections bridge the gap between tradition and modern luxury. Step into our world and explore how our signature scents are born.</p>
-            <Link href={one ? `/products/${one.slug}` : '/shop'} className={`${exploreLink} mt-7 border-b border-fg pb-0.5`}>
-              {one ? 'Discover ONE' : 'Explore fragrances'}
+            <Link href={'/shop'} className={`${exploreLink} mt-7 border-b border-fg pb-0.5`}>
+              Explore fragrances
             </Link>
           </div>
         </Container>
