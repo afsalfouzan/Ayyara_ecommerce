@@ -115,7 +115,7 @@ export default async function HomePage() {
           </div>
           <div className="lg:col-span-5 lg:col-start-7">
             <p className="eyebrow">The film</p>
-            <h2 className="mt-2 font-display text-[2rem] text-fg md:text-5xl">
+            <h2 className="mt-2 font-display text-[1.8rem] text-fg md:text-5xl text-nowrap">
               More Than a Fragrance
               <br />
               An Identity
