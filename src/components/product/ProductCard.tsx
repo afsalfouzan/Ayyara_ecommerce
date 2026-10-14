@@ -7,7 +7,7 @@ import { ProductArt } from './ProductArt';
 
 /**
  * Product card used across the shop. The photo does the work: a tall white
- * tile, then the name in the serif, one quiet line for type and size, the
+ * tile, then the name in the heading style, one quiet line for type and size, the
  * price, and Add to bag. It fills its grid column, so the grid decides its size.
  */
 export function ProductCard({ listing, priority = false, headingLevel: Heading = 'h3' }: { listing: Listing; priority?: boolean; headingLevel?: 'h2' | 'h3' }) {

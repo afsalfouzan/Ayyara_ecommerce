@@ -61,7 +61,7 @@ export function ProductArt({
           x="200"
           y="300"
           textAnchor="middle"
-          fontFamily="var(--font-display), Georgia, serif"
+          fontFamily="var(--font-display), sans-serif"
           fontSize="15"
           letterSpacing="4"
           fill="#16130f"

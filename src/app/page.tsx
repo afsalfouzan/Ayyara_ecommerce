@@ -62,10 +62,10 @@ export default async function HomePage() {
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent lg:hidden" />
         <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col px-5 pb-7 text-white sm:px-8 sm:pb-10 lg:static lg:order-1 lg:justify-center lg:py-14 lg:pr-8 lg:pl-12 lg:text-fg xl:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
           <p className="eyebrow text-white/85! lg:text-mute!">{site.name}</p>
-          <h1 className="mt-3 text-[2.375rem] whitespace-nowrap sm:text-6xl lg:text-[3.25rem] xl:text-[4.25rem]">
-            Fine Fragrance.
+          <h1 className="mt-3 text-[2.375rem] whitespace-nowrap sm:text-6xl lg:text-[2.875rem] xl:text-[3.75rem]">
+            Fine Fragrance
             <br />
-            Distinctly Yours.
+            For Modern You
           </h1>
           <p className="mt-3 max-w-sm text-base leading-relaxed text-white/85 lg:mt-6 lg:text-lg lg:text-mute">Discover a fragrance that expresses your individuality.</p>
           <div className="mt-5 lg:mt-9">
