@@ -1,4 +1,6 @@
 import type { MetadataRoute } from 'next';
+import { authors } from '@/content/authors';
+import { categories, posts } from '@/content/journal/posts';
 import { getProducts } from '@/lib/catalog';
 import { absoluteUrl, collections } from '@/lib/site';
 
@@ -8,7 +10,7 @@ import { absoluteUrl, collections } from '@/lib/site';
  */
 const CONTENT_UPDATED = '2026-10-14';
 
-const contentPages = ['/our-story', '/contact', '/shipping-returns', '/privacy-policy', '/terms'];
+const contentPages = ['/our-story', '/faq', '/contact', '/shipping-returns', '/privacy-policy', '/terms'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getProducts().catch(() => []);
@@ -35,5 +37,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'yearly' as const,
       priority: 0.4,
     })),
+    ...journalEntries(),
+  ];
+}
+
+/** Published articles, and the journal, category and author pages that have any. Drafts are never listed. */
+function journalEntries(): MetadataRoute.Sitemap {
+  const published = posts.filter((post) => !post.draft);
+  if (published.length === 0) return [];
+  const latest = (list: typeof published) => list.reduce((date, post) => (post.updated > date ? post.updated : date), '');
+  const withPosts = categories.filter((category) => published.some((post) => post.category === category.slug));
+  const people = authors.filter((author) => !author.draft && published.some((post) => post.author === author.slug));
+  return [
+    { url: absoluteUrl('/journal'), lastModified: latest(published), changeFrequency: 'weekly', priority: 0.6 },
+    ...published.map((post) => ({ url: absoluteUrl(`/journal/${post.slug}`), lastModified: post.updated, changeFrequency: 'monthly' as const, priority: 0.6 })),
+    ...withPosts.map((category) => ({ url: absoluteUrl(`/journal/category/${category.slug}`), lastModified: latest(published.filter((post) => post.category === category.slug)), changeFrequency: 'monthly' as const, priority: 0.4 })),
+    ...people.map((author) => ({ url: absoluteUrl(`/journal/authors/${author.slug}`), changeFrequency: 'yearly' as const, priority: 0.3 })),
   ];
 }

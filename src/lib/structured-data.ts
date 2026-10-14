@@ -169,3 +169,57 @@ export function faqJsonLd(faqs: { question: string; answer: string }[]) {
     })),
   };
 }
+
+type ArticleAuthor = { name: string; slug: string; role: string; profiles: string[] } | null;
+
+/** A journal article. Credited to its author when their profile is published, otherwise to the shop itself. */
+export function articleJsonLd(post: { slug: string; title: string; description: string; published: string; updated: string; image: { src: string } }, author: ArticleAuthor) {
+  const url = absoluteUrl(`/journal/${post.slug}`);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: post.title,
+    description: post.description,
+    url,
+    mainEntityOfPage: url,
+    image: [absoluteUrl(post.image.src)],
+    datePublished: post.published,
+    dateModified: post.updated,
+    inLanguage: 'en-IN',
+    author: author
+      ? { '@type': 'Person', name: author.name, jobTitle: author.role, url: absoluteUrl(`/journal/authors/${author.slug}`), ...(author.profiles.length ? { sameAs: author.profiles } : {}) }
+      : { '@type': 'Organization', '@id': ORGANIZATION_ID, name: site.name, url: absoluteUrl('/') },
+    publisher: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: site.name, logo: { '@type': 'ImageObject', url: absoluteUrl('/brand/ayyara-logo.png') } },
+  };
+}
+
+/** An author's profile page. */
+export function profilePageJsonLd(author: { name: string; slug: string; role: string; summary: string; profiles: string[] }) {
+  const url = absoluteUrl(`/journal/authors/${author.slug}`);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url,
+    mainEntity: {
+      '@type': 'Person',
+      name: author.name,
+      jobTitle: author.role,
+      description: author.summary,
+      url,
+      worksFor: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: site.name },
+      ...(author.profiles.length ? { sameAs: author.profiles } : {}),
+    },
+  };
+}
+
+/** The About page, pointing at the shop's own Organization data. */
+export function aboutPageJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    url: absoluteUrl('/our-story'),
+    name: `About ${site.name}`,
+    mainEntity: { '@id': ORGANIZATION_ID },
+  };
+}

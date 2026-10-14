@@ -1,3 +1,4 @@
+import createMDX from '@next/mdx';
 import type { NextConfig } from 'next';
 
 // Images from a backend on this machine (development, or a production build tested
@@ -153,4 +154,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Journal articles are MDX files in src/content/journal, imported by their pages (not routes of their own).
+const withMDX = createMDX({ options: { remarkPlugins: ['remark-gfm'] } });
+
+export default withMDX(nextConfig);

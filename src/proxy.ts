@@ -1,9 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { API_URL } from '@/lib/api';
+import { findAuthor } from '@/content/authors';
+import { findPost, visibleCategories } from '@/content/journal/posts';
 import { collections } from '@/lib/site';
 
 /*
- * Real 404s for product and collection addresses that don't exist.
+ * Real 404s for product, collection and journal addresses that don’t exist.
  *
  * Those pages are served from a prerendered shell that starts streaming before
  * the page knows whether the perfume exists, which fixes the status at 200
@@ -53,8 +55,13 @@ function notFound(request: NextRequest) {
 }
 
 export async function proxy(request: NextRequest) {
-  const [, section, slug] = request.nextUrl.pathname.split('/');
+  const [, section, slug, sub] = request.nextUrl.pathname.split('/');
   if (!slug) return NextResponse.next();
+  // Journal addresses are known from the code; drafts count as missing on the live site.
+  if (section === 'journal') {
+    const known = slug === 'category' ? visibleCategories().some((c) => c.slug === sub) : slug === 'authors' ? Boolean(sub && findAuthor(sub)) : Boolean(findPost(slug));
+    return known ? NextResponse.next() : notFound(request);
+  }
   if (section === 'shop' && !COLLECTIONS.has(slug)) return notFound(request);
   if (section === 'products' && (await productExists(decodeURIComponent(slug))) === false) return notFound(request);
   return NextResponse.next();
@@ -62,5 +69,5 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   // Only the page itself; its share image (/products/x/opengraph-image) is a separate address and not matched.
-  matcher: ['/products/:slug', '/shop/:collection'],
+  matcher: ['/products/:slug', '/shop/:collection', '/journal/:slug', '/journal/category/:category', '/journal/authors/:author'],
 };

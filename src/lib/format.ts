@@ -40,3 +40,8 @@ export function discountPercent(mrp: Paise, price: Paise) {
   if (mrp <= price) return 0;
   return Math.round(((mrp - price) / mrp) * 100);
 }
+
+/** "14 October 2026" from "2026-10-14". */
+export function formatDate(isoDay: string) {
+  return new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${isoDay}T00:00:00Z`));
+}

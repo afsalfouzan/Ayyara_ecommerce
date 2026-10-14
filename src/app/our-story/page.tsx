@@ -7,6 +7,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Award, ShieldCheck, Sparkles, Truck } from 'lucide-react';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
+import { DraftBanner } from '@/components/journal/JournalParts';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { visibleAboutSections } from '@/content/about';
+import { visibleAuthors } from '@/content/authors';
+import { getProducts } from '@/lib/catalog';
+import { collections, site } from '@/lib/site';
+import { aboutPageJsonLd } from '@/lib/structured-data';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { shareMeta } from '@/lib/seo';
@@ -22,7 +29,12 @@ export const metadata: Metadata = {
 /* Full-size originals kept in the project so they are served sharp and correctly sized (concept images; replace with Ayyara's own). */
 const IMAGES = { hero: storyHero, chapter1: storyChapter1, water: storyWater, chapter2: storyChapter2 };
 
-export default function OurStoryPage() {
+export default async function OurStoryPage() {
+  // Plain facts for the "at a glance" section, from the catalogue and the shop's settings.
+  const products = await getProducts().catch(() => []);
+  const concentrations = [...new Set(products.map((product) => product.concentration))];
+  const people = visibleAuthors();
+  const making = visibleAboutSections();
   return (
     <article className="relative w-full bg-canvas text-fg">
       {/* ── 1. Hero Section ─────────────────────────────────────────── */}
@@ -231,7 +243,80 @@ export default function OurStoryPage() {
         </Container>
       </section>
 
-      {/* ── 7. VIP Newsletter (Discover Your Signature) ─────────────── */}
+      {/* ── 7. The people behind the brand (shown once their profiles are approved) ── */}
+      {people.length > 0 && (
+        <section aria-labelledby="people-heading" className="border-b border-line py-16 sm:py-24">
+          <Container size="narrow">
+            <h2 id="people-heading" className="text-3xl text-fg sm:text-4xl">
+              The people behind Ayyara Rebirth
+            </h2>
+            <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {people.map((person) => (
+                <li key={person.slug} className="border border-line bg-surface p-6">
+                  <p className="eyebrow">{person.role}</p>
+                  <h3 className="mt-2 text-xl text-fg">
+                    <Link href={`/journal/authors/${person.slug}`} className="underline-offset-4 hover:underline">
+                      {person.name}
+                    </Link>
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-fg-soft">{person.summary}</p>
+                  {person.draft && <p className="mt-3 text-xs text-gold">DRAFT: awaiting the client’s details</p>}
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </section>
+      )}
+
+      {/* ── 8. Ingredients and craftsmanship (shown once the client's facts are approved) ── */}
+      {making.length > 0 && (
+        <section className="border-b border-line py-16 sm:py-24">
+          <Container size="narrow" className="space-y-12">
+            {making.map((part) => (
+              <div key={part.id} aria-labelledby={`${part.id}-heading`}>
+                <h2 id={`${part.id}-heading`} className="text-3xl text-fg sm:text-4xl">
+                  {part.title}
+                </h2>
+                <div className="prose-luxe mt-4">
+                  {part.body.map((paragraph) => (
+                    <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            ))}
+            {making.some((part) => part.draft) && <DraftBanner what="section" />}
+          </Container>
+        </section>
+      )}
+
+      {/* ── 9. At a glance: plain facts for customers, search engines and AI answers ── */}
+      <section aria-labelledby="facts-heading" className="border-b border-line bg-surface py-16 sm:py-24">
+        <Container size="narrow">
+          <h2 id="facts-heading" className="text-3xl text-fg sm:text-4xl">
+            Ayyara Rebirth at a glance
+          </h2>
+          <dl className="mt-8 divide-y divide-line border-y border-line text-[15px]">
+            {[
+              { label: 'Based in', value: 'Malappuram, Kerala, India' },
+              { label: 'What we make', value: `Perfumes${concentrations.length ? ` (${concentrations.join(', ').toLowerCase()})` : ''} in three collections: ${collections.map((collection) => collection.title).join(', ')}` },
+              { label: 'Delivery', value: `Free across India; dispatched within ${site.policies.dispatchWindow} and delivered in ${site.policies.deliveryWindow}` },
+              { label: 'Returns', value: `Unopened products within ${site.policies.returnWindowDays} days of delivery` },
+              { label: 'Customer care', value: `${site.contact.phone} · ${site.contact.email} · ${site.contact.hours}` },
+              { label: 'Address', value: site.contact.address },
+            ].map((fact) => (
+              <div key={fact.label} className="grid grid-cols-[8rem_1fr] gap-4 py-3.5 sm:grid-cols-[10rem_1fr]">
+                <dt className="text-mute">{fact.label}</dt>
+                <dd className="text-fg">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-6 text-sm text-fg-soft">
+            More in our <Link href="/faq" className="text-fg underline underline-offset-4">FAQ</Link>, <Link href="/shipping-returns" className="text-fg underline underline-offset-4">delivery &amp; returns</Link> and <Link href="/contact" className="text-fg underline underline-offset-4">contact</Link> pages.
+          </p>
+        </Container>
+      </section>
+
+      {/* ── 10. VIP Newsletter (Discover Your Signature) ─────────────── */}
       <section className="bg-canvas py-16 sm:py-24">
         <Container size="narrow">
           <div className="rounded-sm border border-line bg-surface p-8 sm:p-12">
@@ -260,6 +345,7 @@ export default function OurStoryPage() {
           </div>
         </Container>
       </section>
+      <JsonLd data={aboutPageJsonLd()} />
     </article>
   );
 }

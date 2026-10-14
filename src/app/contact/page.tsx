@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ContactForm } from '@/components/contact/ContactForm';
-import { JsonLd } from '@/components/seo/JsonLd';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Container } from '@/components/ui/Container';
 import { Icon, type IconName } from '@/components/ui/icons';
 import { site } from '@/lib/site';
-import { faqJsonLd } from '@/lib/structured-data';
+import { faqsById, liveLink } from '@/content/faq';
 import { shareMeta } from '@/lib/seo';
 
 /*
@@ -23,22 +22,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   const phoneHref = `tel:${site.contact.phone.replace(/\s/g, '')}`;
   const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name}, ${site.contact.address}`)}`;
-  // Each answer is plain text, so the structured data below carries exactly the words on the page.
-  const faqs: { question: string; answer: string; link?: { href: string; label: string } }[] = [
-    {
-      question: 'How do I track my order?',
-      answer: 'When your parcel leaves, we email you the courier’s name and tracking number. The link in your order confirmation email also shows the latest status.',
-    },
-    {
-      question: 'How long does delivery take?',
-      answer: `Orders are packed and dispatched within ${site.policies.dispatchWindow} from our atelier in Kerala and delivered in ${site.policies.deliveryWindow}. You receive the courier’s tracking number by email when your parcel leaves.`,
-    },
-    {
-      question: 'Can I return a perfume?',
-      answer: `Unopened products can be returned within ${site.policies.returnWindowDays} days of delivery.`,
-      link: { href: '/shipping-returns', label: 'Read the full policy' },
-    },
-  ];
+  const faqs = faqsById(['tracking', 'delivery-time', 'returns']);
   const channels: { icon: IconName; label: string; value: string; href?: string }[] = [
     { icon: 'phone', label: 'Phone', value: site.contact.phone, href: phoneHref },
     { icon: 'mail', label: 'Email', value: site.contact.email, href: `mailto:${site.contact.email}` },
@@ -118,11 +102,11 @@ export default function ContactPage() {
               </summary>
               <div className="pb-5 text-sm leading-relaxed text-fg-soft">
                 {faq.answer}
-                {faq.link && (
+                {liveLink(faq) && (
                   <>
                     {' '}
-                    <Link href={faq.link.href} className="text-fg underline underline-offset-4">
-                      {faq.link.label}
+                    <Link href={liveLink(faq)!.href} className="text-fg underline underline-offset-4">
+                      {liveLink(faq)!.label}
                     </Link>
                     .
                   </>
@@ -131,8 +115,14 @@ export default function ContactPage() {
             </details>
           ))}
         </div>
+        <p className="mt-5 text-sm text-fg-soft">
+          More answers about delivery, returns, authenticity and caring for your perfume are in our{' '}
+          <Link href="/faq" className="text-fg underline underline-offset-4">
+            FAQ
+          </Link>
+          .
+        </p>
       </section>
-      <JsonLd data={faqJsonLd(faqs)} />
     </Container>
   );
 }

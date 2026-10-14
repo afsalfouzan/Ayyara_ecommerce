@@ -1,6 +1,7 @@
 import { cacheLife } from 'next/cache';
 import Link from 'next/link';
 import { Wordmark } from '@/components/brand/Wordmark';
+import { visiblePosts } from '@/content/journal/posts';
 import { collections, footerNav, site } from '@/lib/site';
 
 async function currentYear() {
@@ -17,8 +18,16 @@ const SOCIAL_ICONS = {
 
 const columns = [
   { title: 'Shop', links: [{ href: '/shop', label: 'All perfumes' }, ...collections.map((c) => ({ href: `/shop/${c.slug}`, label: c.title })), { href: '/offers', label: 'Offers' }] },
-  { title: 'About', links: [{ href: '/our-story', label: 'Our story' }, { href: '/contact', label: 'Contact us' }] },
-  { title: 'Help', links: footerNav.policies },
+  {
+    title: 'About',
+    links: [
+      { href: '/our-story', label: 'Our story' },
+      // The journal is linked once it has an article to show.
+      ...(visiblePosts().length ? [{ href: '/journal', label: 'Journal' }] : []),
+      { href: '/contact', label: 'Contact us' },
+    ],
+  },
+  { title: 'Help', links: [{ href: '/faq', label: 'FAQ' }, ...footerNav.policies] },
 ];
 
 /** Footer: the brand and how to reach it, then three short columns of links. */
