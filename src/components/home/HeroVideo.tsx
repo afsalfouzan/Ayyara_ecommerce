@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { preload } from 'react-dom';
 import { Icon } from '@/components/ui/icons';
 
 /**
@@ -13,6 +14,8 @@ import { Icon } from '@/components/ui/icons';
  * Until it plays (or if it can't), the poster frame shows.
  */
 export function HeroVideo({ src, poster, label, className }: { src: string; poster: string; label: string; className?: string }) {
+  // The poster is the first thing seen (the page's largest picture), so it is fetched straight away.
+  preload(poster, { as: 'image', fetchPriority: 'high' });
   const video = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);

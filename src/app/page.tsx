@@ -142,9 +142,9 @@ export default async function HomePage() {
             <p className="border border-line p-10 text-center text-sm text-mute lg:col-span-8">The collection is being restocked. Please check back soon.</p>
           ) : (
             <ul className="grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8 lg:col-span-8">
-              {bestSellers.map((listing, index) => (
+              {bestSellers.map((listing) => (
                 <li key={listing.variant.id}>
-                  <ProductCard listing={listing} priority={index === 0} />
+                  <ProductCard listing={listing} />
                 </li>
               ))}
             </ul>

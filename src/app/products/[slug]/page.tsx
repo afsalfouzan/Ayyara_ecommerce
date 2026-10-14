@@ -19,9 +19,9 @@ import {
   PLACEHOLDER_SLUG,
 } from "@/lib/catalog";
 import { toRupeeString } from "@/lib/format";
-import { absoluteUrl, site } from "@/lib/site";
+import { absoluteUrl, collections, site } from "@/lib/site";
 import type { Product } from "@/lib/types";
-import { shareMeta } from "@/lib/seo";
+import { clip, DESCRIPTION_MAX, shareMeta, TITLE_MAX, twitterMeta } from "@/lib/seo";
 
 /*
  * Product page: photos beside the name, price and buying controls, then the
@@ -41,18 +41,28 @@ export async function generateStaticParams() {
   return [{ slug: PLACEHOLDER_SLUG }];
 }
 
+/** Room left for the title once the layout adds " | Ayyara Rebirth". */
+const TITLE_ROOM = TITLE_MAX - ` | ${site.name}`.length;
+
+/** The admin's SEO title if set, otherwise name, concentration and sizes: "Ayyara One Eau de Parfum 60 ml". */
 function seoTitle(product: Product) {
-  return (
-    product.seo.title ||
-    `${product.name} ${product.concentration} ${product.variants.map((v) => `${v.sizeMl} ml`).join(" / ")}`
+  const sizes = product.variants.map((v) => `${v.sizeMl} ml`).join(" / ");
+  const full = product.seo.title || `${product.name} ${product.concentration} ${sizes}`;
+  // With many sizes, drop them before cutting the name.
+  return clip(full.length <= TITLE_ROOM || product.seo.title ? full : `${product.name} ${product.concentration}`, TITLE_ROOM);
+}
+
+/** The admin's SEO description if set, otherwise the first paragraph of the description. */
+function seoDescription(product: Product) {
+  return clip(
+    product.seo.description || paragraphs(product.description)[0] || `${product.name} ${product.concentration} by ${site.name}.`,
+    DESCRIPTION_MAX,
   );
 }
 
-function seoDescription(product: Product) {
-  return (
-    product.seo.description ||
-    `${paragraphs(product.description)[0] ?? product.name}`.slice(0, 160)
-  );
+/** The collection a perfume belongs to, for its breadcrumb. */
+function collectionOf(product: Product) {
+  return collections.find((collection) => collection.slug === product.gender);
 }
 
 export async function generateMetadata({
@@ -63,15 +73,15 @@ export async function generateMetadata({
   if (!product)
     return { title: "Fragrance not found", robots: { index: false } };
   const url = `/products/${product.slug}`;
+  const title = seoTitle(product);
+  const description = seoDescription(product);
   return {
-    title: seoTitle(product),
-    description: seoDescription(product),
+    title,
+    description,
     alternates: { canonical: url },
-    // The share image is the generated card in ./opengraph-image.tsx.
-    openGraph: {
-      ...shareMeta(url, { title: seoTitle(product), image: false }),
-      description: seoDescription(product),
-    },
+    // The share image is the generated card in ./opengraph-image.tsx: the perfume's own photo with its name and price.
+    openGraph: { ...shareMeta(url, { title, image: false }), description },
+    twitter: twitterMeta({ title, description, image: `${url}/opengraph-image` }),
   };
 }
 
@@ -81,14 +91,16 @@ const NOTE_TIERS = [
   { tier: "base", label: "Base notes" },
 ] as const;
 
-// The product is resolved before any Suspense boundary so unknown slugs get a
-// real HTTP 404 (not a streamed 200 + noindex), which is what search engines expect.
+// The product is resolved before anything streams (there is deliberately no
+// loading.tsx here), so an unknown slug gets a real HTTP 404, and crawlers that
+// don't run JavaScript get the whole page in order rather than streamed in after the footer.
 export default async function ProductPage({
   params,
 }: PageProps<"/products/[slug]">) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
+  const collection = collectionOf(product);
   const related = listingsOf(await getRelatedProducts(product.slug, 4)).slice(
     0,
     4,
@@ -109,6 +121,7 @@ export default async function ProductPage({
           items={[
             { name: "Home", href: "/" },
             { name: "Shop", href: "/shop" },
+            ...(collection ? [{ name: collection.title, href: `/shop/${collection.slug}` }] : []),
             { name: product.name, href: `/products/${product.slug}` },
           ]}
         />

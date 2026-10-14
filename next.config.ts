@@ -135,6 +135,7 @@ const nextConfig: NextConfig = {
       to('/shop/page/:n', '/shop'),
 
       // Pages.
+      to('/about', '/our-story'),
       to('/about-us', '/our-story'),
       to('/contact-us', '/contact'),
       to('/refund_returns', '/shipping-returns'),
