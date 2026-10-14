@@ -1,3 +1,9 @@
+/** Opening hours, kept as data so the contact page and the structured data can't disagree. */
+const OPENING_HOURS = { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '10:00', closes: '18:00' } as const;
+/** Working days from payment to dispatch, and from dispatch to the door. */
+const DISPATCH_DAYS = { min: 1, max: 2 } as const;
+const DELIVERY_DAYS = { min: 3, max: 5 } as const;
+
 /**
  * Site-wide brand and contact configuration.
  * Social profile links are placeholders until the official page URLs are added.
@@ -16,8 +22,10 @@ export const site = {
     email: 'ayyararebirthofficial@gmail.com',
     phone: '+91 8606777746',
     whatsapp: null as string | null,
-    hours: 'Monday – Saturday, 10:00 – 18:00 IST',
+    hours: `${OPENING_HOURS.days[0]} – ${OPENING_HOURS.days.at(-1)}, ${OPENING_HOURS.opens} – ${OPENING_HOURS.closes} IST`,
+    openingHours: OPENING_HOURS,
     address: 'Veliyamthode, Chandakunnu, Malappuram, Kerala 679329, India',
+    postalAddress: { streetAddress: 'Veliyamthode, Chandakunnu', addressLocality: 'Malappuram', addressRegion: 'Kerala', postalCode: '679329', addressCountry: 'IN' },
   },
 
   social: {
@@ -28,9 +36,11 @@ export const site = {
 
   policies: {
     freeShippingThresholdPaise: 0,
-    dispatchWindow: '1–2 business days',
+    dispatchDays: DISPATCH_DAYS,
+    deliveryDays: DELIVERY_DAYS,
+    dispatchWindow: `${DISPATCH_DAYS.min}–${DISPATCH_DAYS.max} business days`,
     // Keep in step with DELIVERY_ESTIMATE in the backend's config/store.ts (used in emails and WhatsApp messages).
-    deliveryWindow: '3 to 5 working days across India',
+    deliveryWindow: `${DELIVERY_DAYS.min} to ${DELIVERY_DAYS.max} working days across India`,
     returnWindowDays: 7,
   },
 } as const;

@@ -10,7 +10,6 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/icons";
 import {
-  cheapestVariant,
   getProductBySlug,
   getProducts,
   getRelatedProducts,
@@ -18,8 +17,8 @@ import {
   paragraphs,
   PLACEHOLDER_SLUG,
 } from "@/lib/catalog";
-import { toRupeeString } from "@/lib/format";
-import { absoluteUrl, collections, site } from "@/lib/site";
+import { collections, site } from "@/lib/site";
+import { productJsonLd } from "@/lib/structured-data";
 import type { Product } from "@/lib/types";
 import { clip, DESCRIPTION_MAX, shareMeta, TITLE_MAX, twitterMeta } from "@/lib/seo";
 
@@ -230,44 +229,9 @@ export default async function ProductPage({
         </section>
       )}
 
-      <JsonLd data={productJsonLd(product)} />
+      <JsonLd data={productJsonLd(product, seoDescription(product))} />
     </>
   );
-}
-
-const AVAILABILITY = {
-  in_stock: "https://schema.org/InStock",
-  low_stock: "https://schema.org/LimitedAvailability",
-  out_of_stock: "https://schema.org/OutOfStock",
-} as const;
-
-/** One Offer per size, so search engines see each size's price and availability. */
-function productJsonLd(product: Product) {
-  const url = absoluteUrl(`/products/${product.slug}`);
-  const cheapest = cheapestVariant(product);
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: seoDescription(product),
-    sku: cheapest ? `AR-${cheapest.id}` : undefined,
-    brand: { "@type": "Brand", name: site.name },
-    image: product.images.length
-      ? product.images.map((image) => image.src)
-      : [absoluteUrl("/icon.svg")],
-    url,
-    offers: product.variants.map((variant) => ({
-      "@type": "Offer",
-      sku: `AR-${variant.id}`,
-      name: `${product.name} ${variant.sizeMl} ml`,
-      url,
-      priceCurrency: site.currency,
-      price: toRupeeString(variant.pricePaise),
-      availability: AVAILABILITY[variant.stockStatus],
-      itemCondition: "https://schema.org/NewCondition",
-      seller: { "@type": "Organization", name: site.name },
-    })),
-  };
 }
 
 function Disclosure({

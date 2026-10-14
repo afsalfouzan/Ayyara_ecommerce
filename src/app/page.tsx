@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { CampaignFilm } from '@/components/home/CampaignFilm';
 import { HeroVideo } from '@/components/home/HeroVideo';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { ProductCard } from '@/components/product/ProductCard';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
@@ -12,6 +13,7 @@ import { bestSellerListings, getBestSellerIds, getProducts } from '@/lib/catalog
 import { film, heroFilm, imagery } from '@/lib/imagery';
 import { shareMeta } from '@/lib/seo';
 import { site } from '@/lib/site';
+import { organizationJsonLd, websiteJsonLd } from '@/lib/structured-data';
 
 /*
  * Home page, laid out like a short fragrance editorial. Each section has its
@@ -187,6 +189,10 @@ export default async function HomePage() {
           </div>
         </div>
       </Container>
+
+      {/* Who the shop is and the site itself, for search engines and AI answers. */}
+      <JsonLd data={organizationJsonLd()} />
+      <JsonLd data={websiteJsonLd()} />
     </>
   );
 }

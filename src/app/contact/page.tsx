@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import type { ReactNode } from 'react';
 import { ContactForm } from '@/components/contact/ContactForm';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Container } from '@/components/ui/Container';
 import { Icon, type IconName } from '@/components/ui/icons';
 import { site } from '@/lib/site';
+import { faqJsonLd } from '@/lib/structured-data';
 import { shareMeta } from '@/lib/seo';
 
 /*
@@ -22,7 +23,8 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   const phoneHref = `tel:${site.contact.phone.replace(/\s/g, '')}`;
   const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name}, ${site.contact.address}`)}`;
-  const faqs: { question: string; answer: ReactNode }[] = [
+  // Each answer is plain text, so the structured data below carries exactly the words on the page.
+  const faqs: { question: string; answer: string; link?: { href: string; label: string } }[] = [
     {
       question: 'How do I track my order?',
       answer: 'When your parcel leaves, we email you the courier’s name and tracking number. The link in your order confirmation email also shows the latest status.',
@@ -33,15 +35,8 @@ export default function ContactPage() {
     },
     {
       question: 'Can I return a perfume?',
-      answer: (
-        <>
-          Unopened products can be returned within {site.policies.returnWindowDays} days of delivery.{' '}
-          <Link href="/shipping-returns" className="text-fg underline underline-offset-4">
-            Read the full policy
-          </Link>
-          .
-        </>
-      ),
+      answer: `Unopened products can be returned within ${site.policies.returnWindowDays} days of delivery.`,
+      link: { href: '/shipping-returns', label: 'Read the full policy' },
     },
   ];
   const channels: { icon: IconName; label: string; value: string; href?: string }[] = [
@@ -121,11 +116,23 @@ export default function ContactPage() {
                 {faq.question}
                 <Icon name="chevronDown" strokeWidth={1.8} className="h-4 w-4 shrink-0 text-mute transition-transform duration-300 group-open:rotate-180" />
               </summary>
-              <div className="pb-5 text-sm leading-relaxed text-fg-soft">{faq.answer}</div>
+              <div className="pb-5 text-sm leading-relaxed text-fg-soft">
+                {faq.answer}
+                {faq.link && (
+                  <>
+                    {' '}
+                    <Link href={faq.link.href} className="text-fg underline underline-offset-4">
+                      {faq.link.label}
+                    </Link>
+                    .
+                  </>
+                )}
+              </div>
             </details>
           ))}
         </div>
       </section>
+      <JsonLd data={faqJsonLd(faqs)} />
     </Container>
   );
 }

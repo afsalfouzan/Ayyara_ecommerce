@@ -3,8 +3,7 @@ import { Poppins } from 'next/font/google';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { MobileTabBar } from '@/components/layout/MobileTabBar';
 import { SiteHeader } from '@/components/layout/SiteHeader';
-import { JsonLd } from '@/components/seo/JsonLd';
-import { absoluteUrl, isLiveSite, site, socialProfiles } from '@/lib/site';
+import { isLiveSite, site } from '@/lib/site';
 import './globals.css';
 
 /** Ayyara Rebirth's own typeface, used for everything: titles, body text, navigation, buttons and forms. */
@@ -55,19 +54,6 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         </main>
         <SiteFooter />
         <MobileTabBar />
-        <JsonLd
-          data={{
-            '@context': 'https://schema.org',
-            '@type': 'Organization',
-            name: site.name,
-            url: site.url,
-            logo: absoluteUrl('/brand/ayyara-logo.png'),
-            email: site.contact.email,
-            telephone: site.contact.phone.replace(/\s/g, ''),
-            address: { '@type': 'PostalAddress', streetAddress: 'Veliyamthode, Chandakunnu', addressLocality: 'Malappuram', addressRegion: 'Kerala', postalCode: '679329', addressCountry: 'IN' },
-            ...(socialProfiles.length ? { sameAs: socialProfiles } : {}),
-          }}
-        />
       </body>
     </html>
   );
