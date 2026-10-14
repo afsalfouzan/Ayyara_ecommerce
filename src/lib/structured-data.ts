@@ -1,4 +1,5 @@
 import { cheapestVariant, paragraphs } from './catalog';
+import { profileOf, profileRows } from './fragrance';
 import { toRupeeString } from './format';
 import { absoluteUrl, site, socialProfiles } from './site';
 import type { Product } from './types';
@@ -10,7 +11,6 @@ import type { Product } from './types';
  *
  * Deliberately absent, because the shop has no such data:
  *   aggregateRating / review   there are no customer reviews in the catalogue
- *   fragrance family           not recorded for products
  *   Article                    the site has no blog
  *   Store / LocalBusiness      not confirmed that customers can visit the address
  */
@@ -114,16 +114,11 @@ export function websiteJsonLd() {
 export function productJsonLd(product: Product, description: string) {
   const url = absoluteUrl(`/products/${product.slug}`);
   const cheapest = cheapestVariant(product);
-  const notes = product.notes;
-  const noteProperties = notes
-    ? ([
-        ['Top notes', notes.top],
-        ['Heart notes', notes.heart],
-        ['Base notes', notes.base],
-      ] as const)
-        .filter(([, list]) => list.length > 0)
-        .map(([name, list]) => ({ '@type': 'PropertyValue', name, value: list.join(', ') }))
-    : [];
+  const profile = profileOf(product);
+  // The same facts as the page's "Fragrance profile" table (filled-in fields only), except volume, which is listed per size below.
+  const profileProperties = profileRows(product)
+    .filter((row) => row.label !== 'Made for')
+    .map((row) => ({ '@type': 'PropertyValue', name: row.label, value: row.value }));
 
   return {
     '@context': 'https://schema.org',
@@ -137,9 +132,9 @@ export function productJsonLd(product: Product, description: string) {
     brand: { '@type': 'Brand', name: site.name },
     category: PERFUME_CATEGORY,
     audience: { '@type': 'PeopleAudience', suggestedGender: AUDIENCE[product.gender] },
+    ...(profile.launchYear ? { releaseDate: String(profile.launchYear) } : {}),
     additionalProperty: [
-      ...noteProperties,
-      ...(product.concentration ? [{ '@type': 'PropertyValue', name: 'Concentration', value: product.concentration }] : []),
+      ...profileProperties,
       ...product.variants.map((variant) => ({ '@type': 'PropertyValue', name: 'Volume', value: variant.sizeMl, unitCode: 'MLT', unitText: 'ml' })),
     ],
     offers: product.variants.map((variant) => ({

@@ -18,7 +18,8 @@ import {
   PLACEHOLDER_SLUG,
 } from "@/lib/catalog";
 import { collections, site } from "@/lib/site";
-import { productJsonLd } from "@/lib/structured-data";
+import { faqText, missingFields, productFaqs, profileOf, profileRows } from "@/lib/fragrance";
+import { faqJsonLd, productJsonLd } from "@/lib/structured-data";
 import type { Product } from "@/lib/types";
 import { clip, DESCRIPTION_MAX, shareMeta, TITLE_MAX, twitterMeta } from "@/lib/seo";
 
@@ -84,12 +85,6 @@ export async function generateMetadata({
   };
 }
 
-const NOTE_TIERS = [
-  { tier: "top", label: "Top notes" },
-  { tier: "heart", label: "Heart notes" },
-  { tier: "base", label: "Base notes" },
-] as const;
-
 // The product is resolved before anything streams (there is deliberately no
 // loading.tsx here), so an unknown slug gets a real HTTP 404, and crawlers that
 // don't run JavaScript get the whole page in order rather than streamed in after the footer.
@@ -100,18 +95,14 @@ export default async function ProductPage({
   const product = await getProductBySlug(slug);
   if (!product) notFound();
   const collection = collectionOf(product);
-  const related = listingsOf(await getRelatedProducts(product.slug, 4)).slice(
-    0,
-    4,
-  );
+  const suggestions = await getRelatedProducts(product, 4);
+  const related = listingsOf(suggestions.products).slice(0, 4);
+  const family = profileOf(product).fragranceFamily;
   const description = paragraphs(product.description);
-  const notes =
-    product.notes &&
-    (product.notes.top.length ||
-      product.notes.heart.length ||
-      product.notes.base.length)
-      ? product.notes
-      : null;
+  const rows = profileRows(product);
+  const faqs = productFaqs(product);
+  // TODO(client data): fields still empty for this perfume. Listed only while developing, never to customers.
+  const missing = process.env.NODE_ENV === "development" ? missingFields(product) : [];
 
   return (
     <>
@@ -164,26 +155,6 @@ export default async function ProductPage({
                   ))}
                 </Disclosure>
               )}
-              {notes && (
-                <Disclosure
-                  title="Fragrance notes"
-                  defaultOpen={description.length <= 1}
-                >
-                  <dl className="flex flex-col gap-3">
-                    {NOTE_TIERS.map(({ tier, label }) =>
-                      notes[tier].length ? (
-                        <div
-                          key={tier}
-                          className="grid grid-cols-[7rem_1fr] gap-3"
-                        >
-                          <dt className="text-mute">{label}</dt>
-                          <dd className="text-fg">{notes[tier].join(", ")}</dd>
-                        </div>
-                      ) : null,
-                    )}
-                  </dl>
-                </Disclosure>
-              )}
               <Disclosure title="Delivery and returns">
                 <p>
                   Free delivery across India. Dispatched within{" "}
@@ -202,15 +173,55 @@ export default async function ProductPage({
             </div>
           </div>
         </div>
+
+        {/* The facts buyers ask about, as text (not icons) so search engines and AI answers can read them. */}
+        <div className="mt-14 grid grid-cols-1 gap-12 border-t border-line pt-12 md:mt-20 md:pt-16 lg:grid-cols-2 lg:gap-16">
+          <section aria-labelledby="profile-heading">
+            <h2 id="profile-heading" className="font-display text-3xl text-fg md:text-4xl">
+              Fragrance profile
+            </h2>
+            <dl className="mt-6 divide-y divide-line border-y border-line">
+              {rows.map((row) => (
+                <div key={row.label} className="grid grid-cols-[8.5rem_1fr] gap-4 py-3.5 text-[15px] sm:grid-cols-[11rem_1fr]">
+                  <dt className="text-mute">{row.label}</dt>
+                  <dd className="text-fg">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+            {missing.length > 0 && (
+              <p className="mt-4 border border-dashed border-gold p-3 text-xs text-mute">
+                <strong className="text-fg">Shown only while developing.</strong> Not yet filled in the admin: {missing.join(", ")}.
+              </p>
+            )}
+          </section>
+
+          <section aria-labelledby="questions-heading">
+            <h2 id="questions-heading" className="font-display text-3xl text-fg md:text-4xl">
+              Questions about {product.name}
+            </h2>
+            <div className="mt-6 divide-y divide-line border-y border-line">
+              {faqs.map((faq) => (
+                <div key={faq.question} className="py-5">
+                  <h3 className="text-base font-medium text-fg">{faq.question}</h3>
+                  <p className="mt-1.5 text-[15px] leading-relaxed text-fg">{faq.answer}</p>
+                  {faq.detail && <p className="mt-1 text-[15px] leading-relaxed text-fg-soft">{faq.detail}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </Container>
 
       {related.length > 0 && (
         <section aria-labelledby="related-heading" className="bg-surface">
           <Container className="py-12 md:py-20">
             <div className="flex items-end justify-between gap-4">
-              <h2 id="related-heading" className="font-display text-3xl text-fg md:text-4xl">
-                You may also like
-              </h2>
+              <div>
+                {suggestions.sameFamily && family && <p className="eyebrow">More {family.toLowerCase()} fragrances</p>}
+                <h2 id="related-heading" className="mt-1 font-display text-3xl text-fg md:text-4xl">
+                  Related fragrances
+                </h2>
+              </div>
               <Link
                 href="/shop"
                 className="shrink-0 text-xs font-medium tracking-[0.12em] text-fg uppercase underline underline-offset-4 hover:text-gold"
@@ -230,6 +241,8 @@ export default async function ProductPage({
       )}
 
       <JsonLd data={productJsonLd(product, seoDescription(product))} />
+      {/* The same questions and answers the page shows above. */}
+      {faqs.length > 0 && <JsonLd data={faqJsonLd(faqs.map((faq) => ({ question: faq.question, answer: faqText(faq) })))} />}
     </>
   );
 }

@@ -37,9 +37,21 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   }
 }
 
-export async function getRelatedProducts(slug: string, limit = 3): Promise<Product[]> {
-  const products = await getProducts();
-  return products.filter((product) => product.slug !== slug).slice(0, limit);
+/**
+ * Other perfumes to suggest on a product page: the same fragrance family
+ * first, then the same collection, then the rest of the shop.
+ * `sameFamily` says whether any suggestion shares the family.
+ */
+export async function getRelatedProducts(product: Product, limit = 4): Promise<{ products: Product[]; sameFamily: boolean }> {
+  const others = (await getProducts()).filter((other) => other.slug !== product.slug);
+  const family = product.profile?.fragranceFamily;
+  const rank = (other: Product) => (family && other.profile?.fragranceFamily === family ? 0 : other.gender === product.gender || other.gender === 'unisex' ? 1 : 2);
+  const products = others
+    .map((other, index) => ({ other, index }))
+    .sort((a, b) => rank(a.other) - rank(b.other) || a.index - b.index)
+    .slice(0, limit)
+    .map(({ other }) => other);
+  return { products, sameFamily: Boolean(family) && products.some((other) => other.profile?.fragranceFamily === family) };
 }
 
 /** Lowest-priced size, used for "From ₹…" on cards and in structured data. */
