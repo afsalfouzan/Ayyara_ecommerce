@@ -6,7 +6,6 @@ const DELIVERY_DAYS = { min: 3, max: 5 } as const;
 
 /**
  * Site-wide brand and contact configuration.
- * Social profile links are placeholders until the official page URLs are added.
  */
 export const site = {
   name: 'Ayyara Rebirth',
@@ -29,8 +28,8 @@ export const site = {
   },
 
   social: {
-    facebook: 'https://www.facebook.com/',
-    instagram: 'https://www.instagram.com/',
+    facebook: 'https://www.facebook.com/ayyararebirth/',
+    instagram: 'https://www.instagram.com/ayyara.rebirth',
   },
 
 
