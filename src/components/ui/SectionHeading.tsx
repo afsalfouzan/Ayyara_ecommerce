@@ -19,8 +19,8 @@ export function SectionHeading({
   return (
     <div className={clsx(align === 'center' && 'mx-auto max-w-2xl text-center', className)}>
       {eyebrow && <p className="eyebrow mb-4">{eyebrow}</p>}
-      <Heading className="text-4xl leading-[1.08] sm:text-5xl">{title}</Heading>
-      {intro && <p className="mt-5 text-base leading-relaxed text-mute sm:text-lg">{intro}</p>}
+      <Heading className="heading">{title}</Heading>
+      {intro && <p className="lede mt-5 text-mute">{intro}</p>}
     </div>
   );
 }

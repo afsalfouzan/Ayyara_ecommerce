@@ -35,7 +35,7 @@ export function CartView({ products }: { products: Product[] }) {
   return (
     <>
       <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h1 className="text-4xl text-fg md:text-5xl">Your bag</h1>
+        <h1 className="heading text-fg">Your bag</h1>
         {ready && count > 0 && (
           <p className="text-sm text-mute">
             {count} {count === 1 ? 'item' : 'items'}
@@ -124,7 +124,7 @@ export function CartView({ products }: { products: Product[] }) {
 
       {ready && suggestions.length > 0 && (
         <section aria-labelledby="suggestions-heading" className="mt-14 md:mt-20">
-          <h2 id="suggestions-heading" className="font-display text-3xl text-fg md:text-4xl">
+          <h2 id="suggestions-heading" className="heading text-fg">
             You may also like
           </h2>
           <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4">

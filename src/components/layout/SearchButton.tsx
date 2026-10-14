@@ -29,7 +29,7 @@ export function SearchButton() {
         onClose={() => setOpen(false)}
         onClick={(event) => event.target === event.currentTarget && setOpen(false)}
         aria-label="Search"
-        className="m-0 mt-0 w-full max-w-none bg-transparent p-0 backdrop:bg-fg/30"
+        className="m-0 mt-0 w-full max-w-none bg-transparent p-0 backdrop:bg-black/40"
       >
         <form action="/search" className="border-b border-line bg-canvas" onSubmit={() => setOpen(false)}>
           <div className="mx-auto flex h-20 max-w-3xl items-center gap-3 px-4">

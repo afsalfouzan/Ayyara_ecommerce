@@ -3,23 +3,29 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Container } from '@/components/ui/Container';
-import { getBestSellerIds, type Listing } from '@/lib/catalog';
+import type { Listing } from '@/lib/catalog';
 import { collections } from '@/lib/site';
 import { CatalogListings } from './CatalogListings';
 
-const TABS = [{ href: '/shop', label: 'All' }, ...collections.map((c) => ({ href: `/shop/${c.slug}`, label: c.title })), { href: '/offers', label: 'Offers' }];
+const TABS = [{ href: '/shop', label: 'All' }, ...collections.map((c) => ({ href: `/shop/${c.slug}`, label: c.title }))];
+
+/** The shop's heading, kept the same on All and on each collection tab. */
+export const SHOP_HEADING = {
+  eyebrow: 'The collection',
+  title: 'All Perfumes',
+  intro: 'Fine fragrances for modern you, each composed to be worn as a signature.',
+};
 
 /** Shared layout for the shop, collection, offers and search pages: a heading, the collection tabs, then the perfumes. */
-export async function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, empty, children }: { eyebrow: string; title: string; intro?: string; listings: Listing[]; current?: string; crumbs: { name: string; href: string }[]; empty: ReactNode; children?: ReactNode }) {
-  const rankedIds = await getBestSellerIds();
+export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, empty, children }: { eyebrow: string; title: string; intro?: string; listings: Listing[]; current?: string; crumbs: { name: string; href: string }[]; empty: ReactNode; children?: ReactNode }) {
   return (
     <Container className="pt-5 pb-16 sm:pt-8 md:pb-24">
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, ...crumbs]} />
 
       <header className="mt-6 max-w-2xl md:mt-8">
         <p className="eyebrow">{eyebrow}</p>
-        <h1 className="mt-2 text-4xl text-fg md:text-6xl">{title}</h1>
-        {intro && <p className="mt-3 text-base leading-relaxed text-fg-soft">{intro}</p>}
+        <h1 className="heading mt-2 text-fg">{title}</h1>
+        {intro && <p className="lede mt-3 leading-relaxed text-fg-soft">{intro}</p>}
       </header>
 
       {children}
@@ -41,7 +47,7 @@ export async function CatalogPage({ eyebrow, title, intro, listings, current, cr
         </nav>
       )}
 
-      <CatalogListings listings={listings} rankedIds={rankedIds} empty={empty} />
+      <CatalogListings listings={listings} empty={empty} />
     </Container>
   );
 }

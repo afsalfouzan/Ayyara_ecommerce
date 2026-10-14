@@ -29,8 +29,8 @@ export function ContentPage({
       />
       <header className="mt-8 border-b border-line pb-8">
         {eyebrow && <p className="eyebrow mb-4">{eyebrow}</p>}
-        <h1 className="text-4xl text-fg md:text-6xl">{title}</h1>
-        {intro && <p className="mt-4 text-base leading-relaxed text-fg-soft md:text-lg">{intro}</p>}
+        <h1 className="heading text-fg">{title}</h1>
+        {intro && <p className="lede mt-4 leading-relaxed text-fg-soft">{intro}</p>}
       </header>
       {draft && process.env.NODE_ENV !== 'production' && (
         <p className="mt-8 border border-gold/60 bg-gold-soft/50 p-4 text-sm text-fg-soft">

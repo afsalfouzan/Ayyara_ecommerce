@@ -26,8 +26,8 @@ export default function JournalPage() {
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Journal', href: '/journal' }]} />
       <header className="mt-6 max-w-2xl md:mt-8">
         <p className="eyebrow">The journal</p>
-        <h1 className="mt-2 text-4xl text-fg md:text-6xl">Fragrance guides</h1>
-        <p className="mt-3 text-base leading-relaxed text-fg-soft">Plain answers to the questions we are asked most about wearing, choosing and caring for perfume.</p>
+        <h1 className="heading mt-2 text-fg">Fragrance guides</h1>
+        <p className="lede mt-3 leading-relaxed text-fg-soft">Plain answers to the questions we are asked most about wearing, choosing and caring for perfume.</p>
       </header>
       <nav aria-label="Journal categories" className="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-b border-line pb-3 md:mt-8">
         {visibleCategories().map((category) => (

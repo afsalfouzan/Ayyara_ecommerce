@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
-import { Wordmark } from '@/components/brand/Wordmark';
+import { Logo } from '@/components/brand/Logo';
 import { CartLink } from '@/components/cart/CartLink';
 import { Icon } from '@/components/ui/icons';
 import { mainNav } from '@/lib/site';
@@ -47,7 +47,7 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-canvas/95 backdrop-blur-md">
+    <header className="theme-black sticky top-0 z-50 border-b border-line bg-canvas">
       <Suspense fallback={null}>
         <RouteWatcher onNavigate={close} />
       </Suspense>
@@ -65,13 +65,13 @@ export function SiteHeader() {
             <Icon name={open ? 'close' : 'menu'} className="h-6 w-6 transition-transform duration-200" />
           </button>
           <Link href="/" aria-label="Ayyara Rebirth — home" className="hidden lg:inline-flex">
-            <Wordmark />
+            <Logo variant="wordmark" />
           </Link>
         </div>
 
         <div className="flex justify-center">
           <Link href="/" aria-label="Ayyara Rebirth — home" className="inline-flex lg:hidden" onClick={close}>
-            <Wordmark />
+            <Logo variant="wordmark" />
           </Link>
           <nav aria-label="Primary" className="hidden items-center space-x-9 text-xs font-medium tracking-[0.12em] uppercase lg:flex">
             {mainNav.map((item) =>
@@ -118,7 +118,7 @@ export function SiteHeader() {
         onClick={close}
         aria-hidden="true"
         className={clsx(
-          'fixed inset-0 top-16 z-40 bg-fg/30 transition-opacity duration-300 lg:hidden',
+          'fixed inset-0 top-16 z-40 bg-black/40 transition-opacity duration-300 lg:hidden',
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
       />

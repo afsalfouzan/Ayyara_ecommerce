@@ -128,7 +128,7 @@ export default async function ProductPage({
                 ? ` · For ${product.gender === "men" ? "him" : "her"}`
                 : " · Unisex"}
             </p>
-            <h1 className="mt-2 text-4xl text-fg md:text-5xl">
+            <h1 className="heading mt-2 text-fg">
               {product.name}
             </h1>
             {product.tagline && (
@@ -177,7 +177,7 @@ export default async function ProductPage({
         {/* The facts buyers ask about, as text (not icons) so search engines and AI answers can read them. */}
         <div className="mt-14 grid grid-cols-1 gap-12 border-t border-line pt-12 md:mt-20 md:pt-16 lg:grid-cols-2 lg:gap-16">
           <section aria-labelledby="profile-heading">
-            <h2 id="profile-heading" className="font-display text-3xl text-fg md:text-4xl">
+            <h2 id="profile-heading" className="heading text-fg">
               Fragrance profile
             </h2>
             <dl className="mt-6 divide-y divide-line border-y border-line">
@@ -196,7 +196,7 @@ export default async function ProductPage({
           </section>
 
           <section aria-labelledby="questions-heading">
-            <h2 id="questions-heading" className="font-display text-3xl text-fg md:text-4xl">
+            <h2 id="questions-heading" className="heading text-fg">
               Questions about {product.name}
             </h2>
             <div className="mt-6 divide-y divide-line border-y border-line">
@@ -218,7 +218,7 @@ export default async function ProductPage({
             <div className="flex items-end justify-between gap-4">
               <div>
                 {suggestions.sameFamily && family && <p className="eyebrow">More {family.toLowerCase()} fragrances</p>}
-                <h2 id="related-heading" className="mt-1 font-display text-3xl text-fg md:text-4xl">
+                <h2 id="related-heading" className="heading mt-1 text-fg">
                   Related fragrances
                 </h2>
               </div>

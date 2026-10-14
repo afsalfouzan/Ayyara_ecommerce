@@ -1,6 +1,7 @@
 import { cacheLife } from 'next/cache';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Wordmark } from '@/components/brand/Wordmark';
+import silverLogo from '@/assets/brand/logo-silver.png';
 import { visiblePosts } from '@/content/journal/posts';
 import { collections, footerNav, site } from '@/lib/site';
 
@@ -38,7 +39,7 @@ export async function SiteFooter() {
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-5 py-12 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:py-16 lg:px-12">
         <div className="col-span-2 md:col-span-1">
           <Link href="/" aria-label="Ayyara Rebirth — home" className="inline-flex">
-            <Wordmark className="items-start" />
+            <Image src={silverLogo} alt="Ayyara Rebirth" className="h-[1.6rem] w-auto" sizes="100px" />
           </Link>
           <address className="mt-5 flex flex-col gap-1.5 text-sm text-fg-soft not-italic">
             <p className="max-w-xs">{site.contact.address}</p>

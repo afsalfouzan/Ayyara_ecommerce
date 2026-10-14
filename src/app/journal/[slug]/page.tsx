@@ -63,7 +63,7 @@ export default async function JournalPostPage({ params }: PageProps<'/journal/[s
                 {category.title}
               </Link>
             )}
-            <h1 className="mt-2 text-4xl text-fg md:text-5xl">{post.title}</h1>
+            <h1 className="heading mt-2 text-fg">{post.title}</h1>
             <div className="mt-4">
               <Byline post={post} />
             </div>
@@ -79,7 +79,7 @@ export default async function JournalPostPage({ params }: PageProps<'/journal/[s
           {/* The answer first, for readers and for search and AI summaries. */}
           <section aria-label="In short" className="mt-8 border-l-2 border-gold bg-surface p-5">
             <p className="eyebrow">In short</p>
-            <p className="mt-2 text-base leading-relaxed text-fg">{post.summary}</p>
+            <p className="lede mt-2 leading-relaxed text-fg">{post.summary}</p>
           </section>
           <div className="prose-luxe mt-10">
             <Body />
@@ -102,7 +102,7 @@ export default async function JournalPostPage({ params }: PageProps<'/journal/[s
       {more.length > 0 && (
         <section aria-labelledby="more-heading" className="bg-surface">
           <Container className="py-12 md:py-20">
-            <h2 id="more-heading" className="font-display text-3xl text-fg md:text-4xl">
+            <h2 id="more-heading" className="heading text-fg">
               More from the journal
             </h2>
             <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

@@ -33,8 +33,13 @@ export function Logo({ className, variant = 'wordmark' }: { className?: string; 
         <Shape shape={LOGO_FULL} className="h-24 sm:h-28" />
       ) : (
         <>
-          <Shape shape={LOGO_WORDMARK} className="h-[1.3rem] md:h-[1.55rem]" />
-          <Shape shape={LOGO_REBIRTH} className="mt-1 h-[0.55rem] md:h-[0.6rem]" />
+          <Shape shape={LOGO_WORDMARK} className="h-4" />
+          {/* "Rebirth" between two hairlines, as in the brand artwork. */}
+          <span className="mt-0.5 flex w-full items-center gap-1.5">
+            <span className="h-px flex-1 bg-current opacity-40" />
+            <Shape shape={LOGO_REBIRTH} className="h-[0.4rem]" />
+            <span className="h-px flex-1 bg-current opacity-40" />
+          </span>
         </>
       )}
     </span>

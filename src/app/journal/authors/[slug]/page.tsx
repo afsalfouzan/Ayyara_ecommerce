@@ -42,7 +42,7 @@ export default async function AuthorPage({ params }: PageProps<'/journal/authors
       />
       <header className="mt-6 md:mt-8">
         <p className="eyebrow">{author.role}</p>
-        <h1 className="mt-2 text-4xl text-fg md:text-5xl">{author.name}</h1>
+        <h1 className="heading mt-2 text-fg">{author.name}</h1>
       </header>
       {author.draft && (
         <div className="mt-6">
@@ -69,7 +69,7 @@ export default async function AuthorPage({ params }: PageProps<'/journal/authors
       </div>
       {written.length > 0 && (
         <section aria-labelledby="written-heading" className="mt-14 border-t border-line pt-10">
-          <h2 id="written-heading" className="font-display text-3xl text-fg">
+          <h2 id="written-heading" className="heading text-fg">
             Articles by {author.name}
           </h2>
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2">

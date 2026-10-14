@@ -1,3 +1,4 @@
+import filmLegacy from '@/assets/home/film-legacy.jpg';
 import filmOne from '@/assets/home/film-one.jpg';
 import hero from '@/assets/home/hero.jpg';
 import men from '@/assets/home/men.jpg';
@@ -41,4 +42,17 @@ export const film = {
   poster: filmOne,
   posterAlt: 'A clear bottle of ONE by Ayyara Rebirth, 60 ml, against a deep rose background',
   title: 'ONE by Ayyara Rebirth',
+} as const;
+
+/**
+ * The LEGACY campaign film, as supplied (portrait, 720 × 1280, about 10 seconds, with sound),
+ * shown after ONE in the film slider. The poster is its middle frame, with the bottle in view.
+ */
+export const legacyFilm = {
+  src: '/media/ayyara-legacy-film.mp4',
+  width: 720,
+  height: 1280,
+  poster: filmLegacy,
+  posterAlt: 'A bottle of LEGACY by Ayyara Rebirth, filled with blue perfume, against a dark teal background',
+  title: 'LEGACY by Ayyara Rebirth',
 } as const;

@@ -100,10 +100,10 @@ export default async function OurStoryPage() {
             <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
               Chapter I · The Dialogue
             </span>
-            <h2 className="mt-3 text-3xl text-fg sm:text-4xl">
+            <h2 className="heading mt-3 text-fg">
               An Ode to the Earth’s Elements
             </h2>
-            <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg">
+            <p className="lede mt-6 font-sans font-light leading-relaxed text-fg-soft">
               Born from a deep reverence for nature, Ayyara Rebirth is where the earth’s finest elements meet modern
               alchemy. We look to the natural world not just for our ingredients, but for our inspiration. We source
               from the most vibrant landscapes to create botanical blends that truly awaken the senses.
@@ -127,10 +127,10 @@ export default async function OurStoryPage() {
             <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
               Chapter II · The Resonance
             </span>
-            <h2 className="mt-3 text-3xl text-fg sm:text-4xl">
+            <h2 className="heading mt-3 text-fg">
               Bottling the Essence of Rebirth
             </h2>
-            <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg">
+            <p className="lede mt-6 font-sans font-light leading-relaxed text-fg-soft">
               From our signature fragrances to every new release, everything we create is designed to harmonize with
               your natural state. We celebrate the pure and the pristine, bottling the essence of the earth to help you
               discover your own rebirth.
@@ -183,8 +183,8 @@ export default async function OurStoryPage() {
           <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
             Pure Philosophy
           </span>
-          <h2 className="mt-2 text-3xl text-fg sm:text-4xl">Natural Elegance</h2>
-          <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg sm:leading-loose">
+          <h2 className="heading mt-2 text-fg">Natural Elegance</h2>
+          <p className="lede mt-6 font-sans font-light leading-relaxed text-fg-soft sm:leading-loose">
             Born from the earth, Ayyara Rebirth is a return to natural elegance. We see modern alchemy as a collaboration
             with nature distilling sunlit botanicals and deep, grounding woods into living, breathing rituals. By
             stripping away the unnecessary, we let the purest elements speak for themselves. Through every scent, our
@@ -200,7 +200,7 @@ export default async function OurStoryPage() {
             <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
               Our Sacred Tenets
             </span>
-            <h2 className="mt-2 text-3xl text-fg sm:text-4xl">Atelier Distinctions</h2>
+            <h2 className="heading mt-2 text-fg">Atelier Distinctions</h2>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -247,7 +247,7 @@ export default async function OurStoryPage() {
       {people.length > 0 && (
         <section aria-labelledby="people-heading" className="border-b border-line py-16 sm:py-24">
           <Container size="narrow">
-            <h2 id="people-heading" className="text-3xl text-fg sm:text-4xl">
+            <h2 id="people-heading" className="heading text-fg">
               The people behind Ayyara Rebirth
             </h2>
             <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -274,7 +274,7 @@ export default async function OurStoryPage() {
           <Container size="narrow" className="space-y-12">
             {making.map((part) => (
               <div key={part.id} aria-labelledby={`${part.id}-heading`}>
-                <h2 id={`${part.id}-heading`} className="text-3xl text-fg sm:text-4xl">
+                <h2 id={`${part.id}-heading`} className="heading text-fg">
                   {part.title}
                 </h2>
                 <div className="prose-luxe mt-4">
@@ -292,7 +292,7 @@ export default async function OurStoryPage() {
       {/* ── 9. At a glance: plain facts for customers, search engines and AI answers ── */}
       <section aria-labelledby="facts-heading" className="border-b border-line bg-surface py-16 sm:py-24">
         <Container size="narrow">
-          <h2 id="facts-heading" className="text-3xl text-fg sm:text-4xl">
+          <h2 id="facts-heading" className="heading text-fg">
             Ayyara Rebirth at a glance
           </h2>
           <dl className="mt-8 divide-y divide-line border-y border-line text-[15px]">
@@ -324,10 +324,10 @@ export default async function OurStoryPage() {
               <span className="font-sans text-xs font-semibold tracking-[0.25em] text-mute uppercase">
                 Private Correspondence
               </span>
-              <h2 className="mt-2 text-3xl tracking-wide text-fg uppercase sm:text-4xl">
+              <h2 className="heading mt-2 text-fg uppercase">
                 Discover Your Signature
               </h2>
-              <p className="mx-auto mt-4 max-w-md font-sans text-sm font-light leading-relaxed text-mute">
+              <p className="lede mx-auto mt-4 max-w-md font-sans font-light leading-relaxed text-mute">
                 We are crafting fragrances designed to leave a lasting impression. Leave your details below to stay
                 updated on our upcoming launches, exclusive offers, and brand journey.
               </p>

@@ -11,7 +11,7 @@ export default function NotFound() {
   return (
     <Container size="narrow" className="py-24 text-center sm:py-32">
       <p className="eyebrow">Error 404</p>
-      <h1 className="mt-4 text-4xl text-fg md:text-6xl">We can’t find that page</h1>
+      <h1 className="heading mt-4 text-fg">We can’t find that page</h1>
       <p className="mt-5 text-mute">The page you are looking for may have moved or no longer exists.</p>
       <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
         <ButtonLink href="/shop">Shop all perfumes</ButtonLink>

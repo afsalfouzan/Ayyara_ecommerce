@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { CatalogPage, EmptyMessage } from '@/components/product/CatalogPage';
+import { CatalogPage, EmptyMessage, SHOP_HEADING } from '@/components/product/CatalogPage';
 import { getProducts, inCollection, listingsOf } from '@/lib/catalog';
 import { collections, site } from '@/lib/site';
 import { clip, DESCRIPTION_MAX, shareMeta, twitterMeta } from '@/lib/seo';
@@ -32,15 +32,10 @@ export default async function CollectionPage({ params }: PageProps<'/shop/[colle
   const listings = listingsOf((await getProducts()).filter((p) => inCollection(p, collection.slug)));
   return (
     <CatalogPage
-      eyebrow="Collection"
-      title={collection.title}
-      intro={`${collection.line} ${collection.sub}.`}
+      {...SHOP_HEADING}
       listings={listings}
       current={`/shop/${collection.slug}`}
-      crumbs={[
-        { name: 'Shop', href: '/shop' },
-        { name: collection.title, href: `/shop/${collection.slug}` },
-      ]}
+      crumbs={[{ name: 'Shop', href: '/shop' }]}
       empty={
         <EmptyMessage
           title="New arrivals are on their way."

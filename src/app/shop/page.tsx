@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CatalogPage, EmptyMessage } from '@/components/product/CatalogPage';
+import { CatalogPage, EmptyMessage, SHOP_HEADING } from '@/components/product/CatalogPage';
 import { getProducts, listingsOf } from '@/lib/catalog';
 import { shareMeta } from '@/lib/seo';
 
@@ -14,9 +14,7 @@ export default async function ShopPage() {
   const listings = listingsOf(await getProducts());
   return (
     <CatalogPage
-      eyebrow="The collection"
-      title="All Perfumes"
-      intro="Fine fragrances for modern you, each composed to be worn as a signature."
+      {...SHOP_HEADING}
       listings={listings}
       current="/shop"
       crumbs={[{ name: 'Shop', href: '/shop' }]}

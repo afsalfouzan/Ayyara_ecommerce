@@ -24,8 +24,8 @@ export default function FaqPage() {
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'FAQ', href: '/faq' }]} />
       <header className="mt-6 md:mt-8">
         <p className="eyebrow">Help</p>
-        <h1 className="mt-2 text-4xl text-fg md:text-6xl">Frequently asked questions</h1>
-        <p className="mt-3 text-base leading-relaxed text-fg-soft">
+        <h1 className="heading mt-2 text-fg">Frequently asked questions</h1>
+        <p className="lede mt-3 leading-relaxed text-fg-soft">
           Can’t find your answer? <Link href="/contact" className="text-fg underline underline-offset-4">Contact us</Link> and we will reply within one working day.
         </p>
       </header>
@@ -38,7 +38,7 @@ export default function FaqPage() {
       </nav>
       {groups.map((group) => (
         <section key={group.title} id={group.title.toLowerCase().replace(/\W+/g, '-')} aria-labelledby={`${group.title}-heading`} className="mt-12 scroll-mt-24">
-          <h2 id={`${group.title}-heading`} className="font-display text-3xl text-fg">
+          <h2 id={`${group.title}-heading`} className="heading text-fg">
             {group.title}
           </h2>
           <div className="mt-4 divide-y divide-line border-y border-line">

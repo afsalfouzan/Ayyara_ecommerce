@@ -40,8 +40,8 @@ export default async function JournalCategoryPage({ params }: PageProps<'/journa
       />
       <header className="mt-6 max-w-2xl md:mt-8">
         <p className="eyebrow">Journal</p>
-        <h1 className="mt-2 text-4xl text-fg md:text-6xl">{category.title}</h1>
-        <p className="mt-3 text-base leading-relaxed text-fg-soft">{category.description}</p>
+        <h1 className="heading mt-2 text-fg">{category.title}</h1>
+        <p className="lede mt-3 leading-relaxed text-fg-soft">{category.description}</p>
       </header>
       <ul className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
