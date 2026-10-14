@@ -12,7 +12,8 @@ import { InputField, SelectField, TextareaField } from '@/components/ui/Field';
 import { storeApi, StoreApiError } from '@/lib/api';
 import { formatPrice } from '@/lib/format';
 import { payWithRazorpay, type PaymentParams } from '@/lib/razorpay';
-import { checkoutSchema, INDIAN_STATES } from '@/lib/validation/checkout';
+import { site } from '@/lib/site';
+import { checkoutSchema } from '@/lib/validation/checkout';
 
 type Errors = Partial<Record<keyof z.input<typeof checkoutSchema>, string>>;
 
@@ -121,7 +122,8 @@ export function CheckoutForm() {
             <InputField id="addressLine2" label="Area, landmark" autoComplete="address-line2" optional error={errors.addressLine2} className="sm:col-span-2" />
             <InputField id="city" label="City" autoComplete="address-level2" required error={errors.city} />
             <InputField id="pincode" label="PIN code" autoComplete="postal-code" inputMode="numeric" maxLength={6} required error={errors.pincode} />
-            <SelectField id="state" label="State" autoComplete="address-level1" required options={INDIAN_STATES} placeholder="Select state" defaultValue="" error={errors.state} className="sm:col-span-2" />
+            {/* Only the states the shop delivers to; with one, it is already chosen. */}
+            <SelectField id="state" label="State" autoComplete="address-level1" required options={site.policies.deliveryStates} placeholder="Select state" defaultValue={site.policies.deliveryStates.length === 1 ? site.policies.deliveryStates[0] : ''} hint={`We currently deliver only within ${site.policies.deliveryArea}.`} error={errors.state} className="sm:col-span-2" />
             <TextareaField id="notes" label="Delivery notes" optional maxLength={500} error={errors.notes} className="sm:col-span-2" />
           </div>
         </fieldset>

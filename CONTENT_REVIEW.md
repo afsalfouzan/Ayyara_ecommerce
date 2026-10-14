@@ -2,12 +2,11 @@
 
 Reviewed 2026-10-14. Suggestions only: no copy was changed. Search engines and AI answers quote concrete facts, such as names, places, numbers and notes, and skip vague lines. Each item below says what to replace and what kind of fact would do it. Anything marked **claim** should be confirmed or removed before launch, because AI answers may repeat it as fact.
 
-## Must fix before launch
+## Fixed on 2026-10-14
 
-1. **Delivery & returns, Privacy policy, Terms of service** are still marked as placeholder copy (a "Draft copy" banner appears on them in development). They need the client's approval, and the privacy policy should name what is actually collected and who processes it: payments (Razorpay), email (Resend), and couriers.
-2. **Our Story, "100% Satisfaction Guarantee"** (claim). This contradicts the returns policy (opened perfumes can't be returned). Remove it, or replace it with the actual policy.
-3. **Our Story, "We celebrate the pure, the organic, and the pristine"** (claim). "Organic" suggests certification. Remove it unless the ingredients are certified organic.
-4. **Our Story, "our expanding collections of holistic beauty" / "clean beauty"** (claim). Remove these unless the shop sells beauty products. The old site had haircare and skin pages; the new shop sells only perfume.
+- **Delivery & returns, Privacy policy and Terms** were rewritten to match what the site does. They now cover delivery within Kerala only, Razorpay, Resend and the courier, data rights under the DPDP Act, and Muhammed Yasir as proprietor and grievance officer. The client should still read them.
+- **"100% Satisfaction Guarantee"** was replaced by "7-Day Returns" (the real policy), and **"Swift & Secure Delivery"** by the real delivery figures.
+- **"organic"** and the **"holistic / clean beauty"** lines were removed from Our Story.
 
 ## Home page
 
@@ -34,7 +33,6 @@ Reviewed 2026-10-14. Suggestions only: no copy was changed. Search engines and A
 - **"We harvest bright, living botanicals"** (claim). Does the brand harvest anything itself? If not, say who supplies the ingredients.
 - **"We source from the most vibrant landscapes"** (claim). Name the regions or suppliers.
 - **"Uncompromising Quality … only the finest premium ingredients"** (claim). Replace with a checkable fact (for example the fragrance house the oils come from, or the quality checks each batch gets).
-- **"Swift & Secure Delivery"**. Replace with the real figures: dispatched within 1–2 business days, delivered in 3–5 working days across India, free.
 - **Images:** the code notes these are concept images. Replace them with the brand's own photos, especially any showing an "Ayyara" bottle that isn't a real product.
 - **New sections waiting for the client** (drafts, hidden on the live site): founder and perfumer bios, where the ingredients come from, and how each perfume is made.
 
@@ -43,7 +41,6 @@ Reviewed 2026-10-14. Suggestions only: no copy was changed. Search engines and A
 - **"From our atelier in Kerala"** (claim). Confirm that this is accurate wording for where orders are packed.
 - **Opening hours** (Monday – Saturday, 10:00 – 18:00 IST). Confirm.
 - **Draft FAQ answers** (hidden on the live site until supplied):
-  - delivery outside India
   - other places to buy
   - shelf life
   - samples and testers

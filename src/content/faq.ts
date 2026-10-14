@@ -12,16 +12,16 @@ import { site } from '@/lib/site';
  */
 export type Faq = { id: string; question: string; answer: string; link?: { href: string; label: string }; draft?: boolean };
 
-const { dispatchWindow, deliveryWindow, returnWindowDays } = site.policies;
+const { dispatchWindow, deliveryWindow, deliveryArea, returnWindowDays } = site.policies;
 
 export const faqGroups: { title: string; items: Faq[] }[] = [
   {
     title: 'Delivery',
     items: [
       { id: 'delivery-time', question: 'How long does delivery take?', answer: `Orders are packed and dispatched within ${dispatchWindow} from our atelier in Kerala and delivered in ${deliveryWindow}. You receive the courier’s tracking number by email when your parcel leaves.` },
-      { id: 'delivery-cost', question: 'How much does delivery cost?', answer: 'Delivery is free on every order within India.' },
+      { id: 'delivery-cost', question: 'How much does delivery cost?', answer: `Delivery is free on every order within ${deliveryArea}.` },
       { id: 'tracking', question: 'How do I track my order?', answer: 'When your parcel leaves, we email you the courier’s name and tracking number. The link in your order confirmation email also shows the latest status.' },
-      { id: 'international', question: 'Do you deliver outside India?', answer: 'DRAFT: to be confirmed by the shop.', draft: true },
+      { id: 'delivery-area', question: `Do you deliver outside ${deliveryArea}?`, answer: `Not yet. For now we deliver only to addresses within ${deliveryArea}.` },
     ],
   },
   {

@@ -8,6 +8,7 @@ import { cart, useCart } from '@/components/cart/cart-store';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/icons';
 import { discountPercent, formatPrice, stockLabel } from '@/lib/format';
+import { site } from '@/lib/site';
 import type { Product } from '@/lib/types';
 
 /**
@@ -65,7 +66,7 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
             </>
           )}
         </p>
-        <p className="mt-1 text-xs text-mute">Inclusive of all taxes. Free delivery across India.</p>
+        <p className="mt-1 text-xs text-mute">Inclusive of all taxes. Free delivery within {site.policies.deliveryArea}.</p>
       </div>
 
       <fieldset>

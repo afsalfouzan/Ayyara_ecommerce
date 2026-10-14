@@ -5,7 +5,7 @@ import storyWater from '@/assets/story/water.jpg';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Award, ShieldCheck, Sparkles, Truck } from 'lucide-react';
+import { Award, RotateCcw, Sparkles, Truck } from 'lucide-react';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
 import { DraftBanner } from '@/components/journal/JournalParts';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -131,9 +131,9 @@ export default async function OurStoryPage() {
               Bottling the Essence of Rebirth
             </h2>
             <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg">
-              From our signature fragrances to our expanding collections of holistic beauty, everything we create is
-              designed to harmonize with your natural state. We celebrate the pure, the organic, and the pristine,
-              bottling the essence of the earth to help you discover your own rebirth.
+              From our signature fragrances to every new release, everything we create is designed to harmonize with
+              your natural state. We celebrate the pure and the pristine, bottling the essence of the earth to help you
+              discover your own rebirth.
             </p>
             <div className="mt-8 flex justify-center lg:justify-start">
               <ButtonLink href="/shop" variant="outline">
@@ -187,8 +187,8 @@ export default async function OurStoryPage() {
           <p className="mt-6 font-sans text-base font-light leading-relaxed text-fg-soft sm:text-lg sm:leading-loose">
             Born from the earth, Ayyara Rebirth is a return to natural elegance. We see modern alchemy as a collaboration
             with nature distilling sunlit botanicals and deep, grounding woods into living, breathing rituals. By
-            stripping away the unnecessary, we let the purest elements speak for themselves. Whether through scent or
-            clean beauty, our promise is simply an invitation to reconnect, awaken, and experience your own rebirth.
+            stripping away the unnecessary, we let the purest elements speak for themselves. Through every scent, our
+            promise is simply an invitation to reconnect, awaken, and experience your own rebirth.
           </p>
         </Container>
       </section>
@@ -207,12 +207,12 @@ export default async function OurStoryPage() {
             {/* Card 1 */}
             <div className="flex flex-col items-center rounded-sm border border-line bg-surface p-8 text-center transition-all duration-300 hover:border-line hover:bg-neutral-900">
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-mute border border-line">
-                <ShieldCheck className="h-7 w-7" />
+                <RotateCcw className="h-7 w-7" />
               </div>
-              <h3 className="text-xl text-fg">100% Satisfaction Guarantee</h3>
+              <h3 className="text-xl text-fg">{site.policies.returnWindowDays}-Day Returns</h3>
               <p className="mt-3 font-sans text-sm font-light leading-relaxed text-mute">
-                Your complete satisfaction is at the heart of what we do. We are dedicated to ensuring every Ayyara
-                Rebirth experience delights you from the first spray.
+                Changed your mind? Unopened perfumes in their original packaging can be returned within{' '}
+                {site.policies.returnWindowDays} days of delivery.
               </p>
             </div>
 
@@ -233,10 +233,10 @@ export default async function OurStoryPage() {
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-900 text-mute border border-line">
                 <Truck className="h-7 w-7" />
               </div>
-              <h3 className="text-xl text-fg">Swift &amp; Secure Delivery</h3>
+              <h3 className="text-xl text-fg">Free Delivery in {site.policies.deliveryArea}</h3>
               <p className="mt-3 font-sans text-sm font-light leading-relaxed text-mute">
-                Packaged with elegance and handled with the utmost care, ensuring your new signature scent arrives safely
-                and promptly to your door.
+                Dispatched within {site.policies.dispatchWindow} and delivered to your door in{' '}
+                {site.policies.deliveryTime}, with tracking by email.
               </p>
             </div>
           </div>
@@ -299,7 +299,7 @@ export default async function OurStoryPage() {
             {[
               { label: 'Based in', value: 'Malappuram, Kerala, India' },
               { label: 'What we make', value: `Perfumes${concentrations.length ? ` (${concentrations.join(', ').toLowerCase()})` : ''} in three collections: ${collections.map((collection) => collection.title).join(', ')}` },
-              { label: 'Delivery', value: `Free across India; dispatched within ${site.policies.dispatchWindow} and delivered in ${site.policies.deliveryWindow}` },
+              { label: 'Delivery', value: `Free, within ${site.policies.deliveryArea} only; dispatched within ${site.policies.dispatchWindow} and delivered in ${site.policies.deliveryTime}` },
               { label: 'Returns', value: `Unopened products within ${site.policies.returnWindowDays} days of delivery` },
               { label: 'Customer care', value: `${site.contact.phone} · ${site.contact.email} · ${site.contact.hours}` },
               { label: 'Address', value: site.contact.address },

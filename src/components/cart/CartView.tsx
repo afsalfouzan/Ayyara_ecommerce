@@ -106,7 +106,7 @@ export function CartView({ products }: { products: Product[] }) {
               <ul className="mt-5 flex flex-col gap-2 border-t border-line pt-4 text-xs text-fg-soft">
                 <li className="flex items-center gap-2">
                   <Icon name="truck" strokeWidth={1.5} className="h-4 w-4 shrink-0" />
-                  Free delivery in {site.policies.deliveryWindow.replace(' across India', '')}
+                  Free delivery within {site.policies.deliveryArea}, in {site.policies.deliveryTime}
                 </li>
                 <li className="flex items-center gap-2">
                   <Icon name="returnArrow" strokeWidth={1.5} className="h-4 w-4 shrink-0" />

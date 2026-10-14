@@ -5,7 +5,7 @@ import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Shop All Perfumes',
-  description: 'Shop the Ayyara Rebirth collection of fine fragrances. Secure online payment and delivery across India.',
+  description: 'Shop the Ayyara Rebirth collection of fine fragrances. Secure online payment and free delivery within Kerala.',
   alternates: { canonical: '/shop' },
   openGraph: shareMeta('/shop', { title: 'Shop All Perfumes | Ayyara Rebirth' }),
 };

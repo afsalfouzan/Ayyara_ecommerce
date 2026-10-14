@@ -3,6 +3,13 @@ const OPENING_HOURS = { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Fr
 /** Working days from payment to dispatch, and from dispatch to the door. */
 const DISPATCH_DAYS = { min: 1, max: 2 } as const;
 const DELIVERY_DAYS = { min: 3, max: 5 } as const;
+/**
+ * States the website delivers to; checkout offers only these. Keep in step
+ * with DELIVERY_STATES in the backend's config/store.ts, which enforces it.
+ */
+const DELIVERY_STATES = ['Kerala'] as const;
+const DELIVERY_AREA = DELIVERY_STATES.join(', ');
+const DELIVERY_TIME = `${DELIVERY_DAYS.min} to ${DELIVERY_DAYS.max} working days`;
 
 /**
  * Site-wide brand and contact configuration.
@@ -27,6 +34,16 @@ export const site = {
     postalAddress: { streetAddress: 'Veliyamthode, Chandakunnu', addressLocality: 'Malappuram', addressRegion: 'Kerala', postalCode: '679329', addressCountry: 'IN' },
   },
 
+  /**
+   * Who sells, and who handles complaints, as India's e-commerce rules require
+   * the site to show. The shop is a sole proprietorship trading as Ayyara Rebirth.
+   */
+  legal: {
+    tradingName: 'Ayyara Rebirth',
+    proprietor: 'Muhammed Yasir',
+    grievanceOfficer: 'Muhammed Yasir',
+  },
+
   social: {
     facebook: 'https://www.facebook.com/ayyararebirth/',
     instagram: 'https://www.instagram.com/ayyara.rebirth',
@@ -37,9 +54,14 @@ export const site = {
     freeShippingThresholdPaise: 0,
     dispatchDays: DISPATCH_DAYS,
     deliveryDays: DELIVERY_DAYS,
+    deliveryStates: DELIVERY_STATES,
+    /** Where the shop delivers, for sentences: "within Kerala". */
+    deliveryArea: DELIVERY_AREA,
+    /** "3 to 5 working days", without the area. */
+    deliveryTime: DELIVERY_TIME,
     dispatchWindow: `${DISPATCH_DAYS.min}–${DISPATCH_DAYS.max} business days`,
     // Keep in step with DELIVERY_ESTIMATE in the backend's config/store.ts (used in emails and WhatsApp messages).
-    deliveryWindow: `${DELIVERY_DAYS.min} to ${DELIVERY_DAYS.max} working days across India`,
+    deliveryWindow: `${DELIVERY_TIME} within ${DELIVERY_AREA}`,
     returnWindowDays: 7,
   },
 } as const;

@@ -157,7 +157,7 @@ export default async function ProductPage({
               )}
               <Disclosure title="Delivery and returns">
                 <p>
-                  Free delivery across India. Dispatched within{" "}
+                  Free delivery within {site.policies.deliveryArea}. Dispatched within{" "}
                   {site.policies.dispatchWindow}; delivered in{" "}
                   {site.policies.deliveryWindow}. Unopened products can be
                   returned within {site.policies.returnWindowDays} days of

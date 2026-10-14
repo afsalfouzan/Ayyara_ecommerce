@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CatalogPage, EmptyMessage } from '@/components/product/CatalogPage';
 import { getProducts, inCollection, listingsOf } from '@/lib/catalog';
-import { collections } from '@/lib/site';
+import { collections, site } from '@/lib/site';
 import { clip, DESCRIPTION_MAX, shareMeta, twitterMeta } from '@/lib/seo';
 
 export function generateStaticParams() {
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: PageProps<'/shop/[collection]
   const collection = find((await params).collection);
   if (!collection) return {};
   const title = `${collection.searchName} | ${collection.title}`;
-  const description = clip(`${collection.line} Shop ${collection.searchName.toLowerCase()} by Ayyara Rebirth online, with free delivery across India.`, DESCRIPTION_MAX);
+  const description = clip(`${collection.line} Shop ${collection.searchName.toLowerCase()} by Ayyara Rebirth online, with free delivery within ${site.policies.deliveryArea}.`, DESCRIPTION_MAX);
   return {
     title,
     description,

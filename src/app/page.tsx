@@ -39,7 +39,7 @@ const collections = [
 ] as const;
 
 const services = [
-  { title: 'Free delivery', text: `Across India, in ${site.policies.deliveryWindow.replace(' across India', '')}` },
+  { title: 'Free delivery', text: `Within ${site.policies.deliveryArea}, in ${site.policies.deliveryTime}` },
   { title: `${site.policies.returnWindowDays}-day returns`, text: 'On unopened products' },
   { title: 'Secure payment', text: 'UPI, cards and net banking' },
 ];

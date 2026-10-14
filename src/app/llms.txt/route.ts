@@ -31,9 +31,9 @@ export async function GET() {
   const text = [
     `# ${site.name}`,
     '',
-    `> ${site.description} An Indian perfume house based in Malappuram, Kerala, selling online across India.`,
+    `> ${site.description} An Indian perfume house based in Malappuram, Kerala, selling online with delivery within ${site.policies.deliveryArea}.`,
     '',
-    `- Delivery: free across India; dispatched within ${policies.dispatchWindow}, delivered in ${policies.deliveryWindow}.`,
+    `- Delivery: free, within ${policies.deliveryArea} only; dispatched within ${policies.dispatchWindow}, delivered in ${policies.deliveryTime}.`,
     `- Returns: unopened products within ${policies.returnWindowDays} days of delivery.`,
     `- Payment: UPI, card or net banking, in Indian rupees.`,
     `- Contact: ${contact.phone}, ${contact.email} (${contact.hours}).`,

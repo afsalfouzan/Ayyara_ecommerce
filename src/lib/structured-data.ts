@@ -40,14 +40,16 @@ function returnPolicy() {
   };
 }
 
-/** Free delivery across India: dispatched in 1–2 working days, delivered in 3–5. */
+/** Free delivery to the states the shop serves: dispatched in 1–2 working days, delivered in 3–5. */
+const STATE_CODES: Record<string, string> = { Kerala: 'KL' };
+
 function shippingDetails() {
   const { dispatchDays, deliveryDays, freeShippingThresholdPaise } = site.policies;
   return {
     '@type': 'OfferShippingDetails',
     // Delivery is free on every order while there is no minimum.
     ...(freeShippingThresholdPaise === 0 ? { shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: site.currency } } : {}),
-    shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'IN' },
+    shippingDestination: site.policies.deliveryStates.map((state) => ({ '@type': 'DefinedRegion', addressCountry: 'IN', ...(STATE_CODES[state] ? { addressRegion: STATE_CODES[state] } : {}) })),
     deliveryTime: {
       '@type': 'ShippingDeliveryTime',
       handlingTime: { '@type': 'QuantitativeValue', minValue: dispatchDays.min, maxValue: dispatchDays.max, unitCode: 'DAY' },

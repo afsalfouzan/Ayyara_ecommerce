@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { site } from '@/lib/site';
 
 // Zod speeds itself up by generating code at runtime, which the site's security
 // policy forbids (and reports). The form is tiny, so plain validation is used.
@@ -58,7 +59,7 @@ export const checkoutSchema = z.object({
   addressLine1: z.string().trim().min(5, 'Enter your house number and street').max(200),
   addressLine2: z.string().trim().max(200).optional().default(''),
   city: z.string().trim().min(2, 'Enter your city').max(100),
-  state: z.enum(INDIAN_STATES, { error: 'Select your state' }),
+  state: z.enum(INDIAN_STATES, { error: 'Select your state' }).refine((state) => (site.policies.deliveryStates as readonly string[]).includes(state), `We currently deliver only within ${site.policies.deliveryArea}`),
   pincode: z.string().trim().regex(/^[1-9]\d{5}$/, 'Enter a valid 6-digit PIN code'),
   notes: z.string().trim().max(500).optional().default(''),
 });
