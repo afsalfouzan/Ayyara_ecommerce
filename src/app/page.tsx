@@ -65,7 +65,7 @@ export default async function HomePage() {
           <h1 className="mt-3 text-[2.375rem] whitespace-nowrap sm:text-6xl lg:text-[2.875rem] xl:text-[3.75rem]">
             Fine Fragrance
             <br />
-            For Modern You
+            <span className='text-[2rem]'>For Modern You</span>
           </h1>
           <p className="mt-3 max-w-sm text-base leading-relaxed text-white/85 lg:mt-6 lg:text-lg lg:text-mute">Discover a fragrance that expresses your individuality.</p>
           <div className="mt-5 lg:mt-9">
@@ -93,7 +93,7 @@ export default async function HomePage() {
                   <span className="text-xs tracking-[0.14em] text-gold tabular-nums">{collection.number}</span>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-display text-2xl leading-tight text-fg md:text-3xl">{collection.title}</h3>
-                    <p className="mt-1 text-sm text-mute">{collection.line}</p>
+                    <p className="mt-1 text-sm text-mute text-nowrap">{collection.line}</p>
                   </div>
                   <span className={`${exploreLink} shrink-0`}>
                     <span className="border-b border-fg pb-0.5">Explore</span>
@@ -115,9 +115,13 @@ export default async function HomePage() {
           </div>
           <div className="lg:col-span-5 lg:col-start-7">
             <p className="eyebrow">The film</p>
-            <h2 className="mt-2 font-display text-[2.5rem] text-fg md:text-6xl">ONE</h2>
+            <h2 className="mt-2 font-display text-[2rem] text-fg md:text-5xl">
+              More Than a Fragrance
+              <br />
+              An Identity
+            </h2>
             <p className="mt-1 text-sm tracking-[0.08em] text-mute">by Ayyara Rebirth</p>
-            <p className="mt-5 max-w-sm text-base leading-relaxed text-mute">Watch the campaign film for ONE.</p>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-mute">We believe a perfume is your invisible, unforgettable signature. Crafted to capture memories and evoke deep emotions, our collections bridge the gap between tradition and modern luxury. Step into our world and explore how our signature scents are born.</p>
             <Link href={one ? `/products/${one.slug}` : '/shop'} className={`${exploreLink} mt-7 border-b border-fg pb-0.5`}>
               {one ? 'Discover ONE' : 'Explore fragrances'}
             </Link>
