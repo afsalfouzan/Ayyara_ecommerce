@@ -23,7 +23,6 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
   const firstAvailable = product.variants.find((v) => v.stockStatus !== 'out_of_stock') ?? product.variants[0]!;
   const [variantId, setVariantId] = useState(firstAvailable.id);
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
 
   const variant = product.variants.find((v) => v.id === variantId) ?? firstAvailable;
   const inBag = items.find((item) => item.variantId === variant.id)?.quantity ?? 0;
@@ -33,20 +32,27 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
   const percentOff = discountPercent(variant.mrpPaise, variant.pricePaise);
   const blocked = soldOut || remaining === 0;
   const addLabel = soldOut ? 'Sold out' : remaining === 0 ? 'Maximum in bag' : 'Add to bag';
+  // Once this size is in the bag, the quantity box shows the bag's count and − / + change the bag itself, up to the stock.
+  const shownCount = inBag > 0 ? inBag : shownQuantity;
+  const canDecrease = inBag > 0 ? inBag > 1 : !blocked && shownQuantity > 1;
+  const canIncrease = inBag > 0 ? inBag < variant.purchasableQuantity : !blocked && shownQuantity < remaining;
+  const decrease = () => (inBag > 0 ? cart.setQuantity(variant.id, inBag - 1) : setQuantity(shownQuantity - 1));
+  // Adding through cart.add refreshes the line's stock limit, which a bag saved earlier may still hold at an old value.
+  const increase = () => (inBag > 0 ? cart.add(line(), 1) : setQuantity(shownQuantity + 1));
+  const inBagNotFull = inBag > 0 && remaining > 0;
+
+  /** The bag line for this size, with today's price and stock limit. */
+  const line = () => ({ variantId: variant.id, productId: product.id, slug: product.slug, name: product.name, sizeMl: variant.sizeMl, unitPrice: variant.pricePaise, mrp: variant.mrpPaise, maxQuantity: variant.purchasableQuantity, image: product.images[0] ?? null });
 
   function add(count = shownQuantity) {
     if (remaining === 0) return;
-    cart.add(
-      { variantId: variant.id, productId: product.id, slug: product.slug, name: product.name, sizeMl: variant.sizeMl, unitPrice: variant.pricePaise, mrp: variant.mrpPaise, maxQuantity: variant.purchasableQuantity, image: product.images[0] ?? null },
-      Math.min(count, remaining),
-    );
+    cart.add(line(), Math.min(count, remaining));
     setQuantity(1);
-    setAdded(true);
   }
 
-  /** Puts the chosen bottles in the bag (unless it already holds as many as allowed) and opens checkout. */
+  /** Puts the chosen bottles in the bag (unless this size is already there) and opens checkout. */
   function buyNow() {
-    add();
+    if (inBag === 0) add();
     router.push('/checkout');
   }
 
@@ -85,7 +91,6 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
                 onClick={() => {
                   setVariantId(option.id);
                   setQuantity(1);
-                  setAdded(false);
                 }}
                 className={clsx('min-w-20 rounded-[2px] border px-4 py-2.5 text-left text-sm transition-colors', selected ? 'border-fg bg-fg text-white' : 'border-line bg-canvas text-fg hover:border-fg', out && !selected && 'text-mute line-through')}
               >
@@ -100,19 +105,25 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
       <div className="flex flex-col gap-3">
         <div className="flex items-stretch gap-3">
           <div role="group" aria-label="Quantity" className="flex items-center rounded-[2px] border border-line">
-            <button type="button" aria-label="Decrease quantity" disabled={blocked || shownQuantity <= 1} onClick={() => setQuantity(shownQuantity - 1)} className={stepper}>
+            <button type="button" aria-label="Decrease quantity" disabled={!canDecrease} onClick={decrease} className={stepper}>
               −
             </button>
             <span className="w-8 text-center text-sm font-medium text-fg tabular-nums" aria-live="polite">
-              {shownQuantity}
+              {shownCount}
             </span>
-            <button type="button" aria-label="Increase quantity" disabled={blocked || shownQuantity >= remaining} onClick={() => setQuantity(shownQuantity + 1)} className={stepper}>
+            <button type="button" aria-label="Increase quantity" disabled={!canIncrease} onClick={increase} className={stepper}>
               +
             </button>
           </div>
-          <Button onClick={() => add()} disabled={blocked} className="h-auto min-h-11 flex-1">
-            {addLabel}
-          </Button>
+          {inBagNotFull ? (
+            <Button onClick={() => router.push('/cart')} className="h-auto min-h-11 flex-1">
+              View bag
+            </Button>
+          ) : (
+            <Button onClick={() => add()} disabled={blocked} className="h-auto min-h-11 flex-1">
+              {addLabel}
+            </Button>
+          )}
         </div>
         {!soldOut && (
           <Button variant="outline" onClick={buyNow} className="w-full">
@@ -122,10 +133,18 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
         <p role="status" aria-live="polite" className="min-h-5 text-sm">
           {soldOut ? (
             <span className="text-mute">This size is currently unavailable. {product.variants.length > 1 ? 'Try another size or check back soon.' : 'Please check back soon.'}</span>
-          ) : added ? (
+          ) : remaining === 0 ? (
+            // The bag already holds every bottle of this size the godown has.
+            <span className="text-fg">
+              Your bag has all {variant.purchasableQuantity} available.{' '}
+              <Link href="/cart" className="underline underline-offset-4">
+                View bag
+              </Link>
+            </span>
+          ) : inBag > 0 ? (
             <span className="inline-flex animate-fade-up items-center gap-2 text-success">
               <Icon name="check" strokeWidth={2} className="h-4 w-4" />
-              Added to your bag.
+              {inBag} in your bag.
               <Link href="/cart" className="text-fg underline underline-offset-4">
                 View bag
               </Link>
@@ -147,9 +166,15 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
             {percentOff > 0 && <span className="text-xs text-mute line-through">{formatPrice(variant.mrpPaise)}</span>}
           </span>
         </div>
-        <Button onClick={() => add(1)} disabled={blocked} className="shrink-0">
-          {addLabel}
-        </Button>
+        {inBagNotFull ? (
+          <Button onClick={() => router.push('/cart')} className="shrink-0">
+            View bag
+          </Button>
+        ) : (
+          <Button onClick={() => add(1)} disabled={blocked} className="shrink-0">
+            {addLabel}
+          </Button>
+        )}
       </div>
     </div>
   );

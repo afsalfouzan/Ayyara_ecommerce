@@ -1,5 +1,5 @@
 import { cheapestVariant, paragraphs } from './catalog';
-import { profileOf, profileRows } from './fragrance';
+import { profileRows } from './fragrance';
 import { toRupeeString } from './format';
 import { absoluteUrl, site, socialProfiles } from './site';
 import type { Product } from './types';
@@ -116,7 +116,6 @@ export function websiteJsonLd() {
 export function productJsonLd(product: Product, description: string) {
   const url = absoluteUrl(`/products/${product.slug}`);
   const cheapest = cheapestVariant(product);
-  const profile = profileOf(product);
   // The same facts as the page's "Fragrance profile" table (filled-in fields only), except volume, which is listed per size below.
   const profileProperties = profileRows(product)
     .filter((row) => row.label !== 'Made for')
@@ -134,7 +133,6 @@ export function productJsonLd(product: Product, description: string) {
     brand: { '@type': 'Brand', name: site.name },
     category: PERFUME_CATEGORY,
     audience: { '@type': 'PeopleAudience', suggestedGender: AUDIENCE[product.gender] },
-    ...(profile.launchYear ? { releaseDate: String(profile.launchYear) } : {}),
     additionalProperty: [
       ...profileProperties,
       ...product.variants.map((variant) => ({ '@type': 'PropertyValue', name: 'Volume', value: variant.sizeMl, unitCode: 'MLT', unitText: 'ml' })),

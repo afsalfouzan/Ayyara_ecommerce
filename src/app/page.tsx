@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import oilConcentration from '@/assets/product/oil-concentration.jpg';
 import { FilmSlider } from '@/components/home/FilmSlider';
 import { HeroVideo } from '@/components/home/HeroVideo';
 import { NewsletterForm } from '@/components/home/NewsletterForm';
@@ -9,7 +10,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { ButtonLink } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Container';
 import { Icon } from '@/components/ui/icons';
-import { bestSellerListings, getBestSellerIds, getProducts } from '@/lib/catalog';
+import { bestSellerListings, CONCENTRATION, getBestSellerIds, getProducts } from '@/lib/catalog';
 import { film, heroFilm, imagery, legacyFilm } from '@/lib/imagery';
 import { shareMeta } from '@/lib/seo';
 import { site } from '@/lib/site';
@@ -22,6 +23,7 @@ import { organizationJsonLd, websiteJsonLd } from '@/lib/structured-data';
  *   collections   three photos of different shapes, numbered like chapters
  *   the films     the ONE and LEGACY campaign films in a slider, as stills that play in place, on white
  *   best sellers  a heading column beside the product tiles
+ *   profile       the perfume-oil comparison image, on white
  *   the house     one large line of text on the deeper beige
  *   service       three plain facts from the shop's own policies
  *   sign-up       a narrow, centred form
@@ -154,6 +156,27 @@ export default async function HomePage() {
               ))}
             </ul>
           )}
+        </Container>
+      </section>
+
+      {/* Fragrance profile: how much perfume oil an Ayyara perfume holds, beside the shop's own comparison image. */}
+      <section className="bg-surface">
+        <Container className="grid grid-cols-1 items-center gap-8 py-14 md:py-24 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-4">
+            <p className="eyebrow">Fragrance profile</p>
+            <h2 className="heading mt-2 text-fg">{CONCENTRATION}</h2>
+            <p className="lede mt-3 max-w-sm leading-relaxed text-mute">Every Ayyara perfume is made with <span className="whitespace-nowrap">40–50%</span> perfume oil, more than an eau de toilette, an eau de parfum or a parfum.</p>
+            <Link href="/shop" className={`${exploreLink} mt-6 border-b border-fg pb-0.5`}>
+              Explore fragrances
+            </Link>
+          </div>
+          <Image
+            src={oilConcentration}
+            alt="Four bottles compared by perfume oil: Eau de toilette 5–15% oil, Eau de Parfum 15–20%, Parfum 20–30%, and Ayyara Perfume 40–50%"
+            sizes="(min-width: 1024px) 60vw, 100vw"
+            placeholder="blur"
+            className="h-auto w-full lg:col-span-8"
+          />
         </Container>
       </section>
 

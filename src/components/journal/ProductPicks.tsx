@@ -2,22 +2,20 @@ import Link from 'next/link';
 import { ProductCard } from '@/components/product/ProductCard';
 import { getProducts, listingsOf } from '@/lib/catalog';
 import { showDrafts } from '@/lib/drafts';
-import { profileOf } from '@/lib/fragrance';
-import type { Product, Season } from '@/lib/types';
+import type { Product } from '@/lib/types';
 
 /**
- * Perfumes from the catalogue to feature in an article, chosen by their own
- * data (the seasons set in the admin, or who they're made for), so an article
- * never claims a perfume suits something the shop hasn't said it does.
+ * Perfumes from the catalogue to feature in an article: all of them, or those
+ * made for one gender, so an article never claims more than the shop has said.
  */
-export async function ProductPicks({ season, gender }: { season?: Season; gender?: Product['gender'] }) {
-  const products = (await getProducts()).filter((product) => (!season || profileOf(product).seasons.includes(season)) && (!gender || product.gender === gender));
+export async function ProductPicks({ gender }: { gender?: Product['gender'] }) {
+  const products = (await getProducts()).filter((product) => !gender || product.gender === gender);
   if (products.length === 0) {
     return (
       <>
         {showDrafts && (
           <p className="border border-dashed border-gold p-3 text-sm">
-            <strong>Draft note:</strong> no perfume is marked {season ? `for ${season}` : `as ${gender}`} in the admin yet, so none can be featured here.
+            <strong>Draft note:</strong> no perfume is marked as {gender} in the admin yet, so none can be featured here.
           </p>
         )}
         <p>

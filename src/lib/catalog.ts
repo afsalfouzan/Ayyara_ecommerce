@@ -8,12 +8,19 @@ import type { Product } from './types';
  * re-checks both when the bag is quoted and when the order is placed.
  */
 
+/**
+ * Every Ayyara perfume is shown with this concentration, whatever the admin holds:
+ * at 40–50% perfume oil they sit above parfum, so the standard name is extrait de parfum.
+ */
+export const CONCENTRATION = 'Extrait de Parfum';
+const withConcentration = (product: Product): Product => ({ ...product, concentration: CONCENTRATION });
+
 export async function getProducts(): Promise<Product[]> {
   'use cache';
   cacheLife('minutes');
   cacheTag('products');
   const { items } = await storeApi<{ items: Product[] }>('/store/products');
-  return items;
+  return items.map(withConcentration);
 }
 
 /**
@@ -30,28 +37,23 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (slug === PLACEHOLDER_SLUG) return null;
   try {
     const { product } = await storeApi<{ product: Product }>(`/store/products/${encodeURIComponent(slug)}`);
-    return product;
+    return withConcentration(product);
   } catch (error) {
     if (error instanceof StoreApiError && error.status === 404) return null;
     throw error;
   }
 }
 
-/**
- * Other perfumes to suggest on a product page: the same fragrance family
- * first, then the same collection, then the rest of the shop.
- * `sameFamily` says whether any suggestion shares the family.
- */
-export async function getRelatedProducts(product: Product, limit = 4): Promise<{ products: Product[]; sameFamily: boolean }> {
+/** Other perfumes to suggest on a product page: the same collection first, then the rest of the shop. */
+export async function getRelatedProducts(product: Product, limit = 4): Promise<{ products: Product[] }> {
   const others = (await getProducts()).filter((other) => other.slug !== product.slug);
-  const family = product.profile?.fragranceFamily;
-  const rank = (other: Product) => (family && other.profile?.fragranceFamily === family ? 0 : other.gender === product.gender || other.gender === 'unisex' ? 1 : 2);
+  const rank = (other: Product) => (other.gender === product.gender || other.gender === 'unisex' ? 0 : 1);
   const products = others
     .map((other, index) => ({ other, index }))
     .sort((a, b) => rank(a.other) - rank(b.other) || a.index - b.index)
     .slice(0, limit)
     .map(({ other }) => other);
-  return { products, sameFamily: Boolean(family) && products.some((other) => other.profile?.fragranceFamily === family) };
+  return { products };
 }
 
 /** Lowest-priced size, used for "From ₹…" on cards and in structured data. */

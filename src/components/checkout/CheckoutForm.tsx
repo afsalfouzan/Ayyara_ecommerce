@@ -84,7 +84,7 @@ export function CheckoutForm() {
     } catch (error) {
       setSubmitting(false);
       if (error instanceof StoreApiError) {
-        if (error.code === 'INSUFFICIENT_STOCK' || error.code === 'ITEM_UNAVAILABLE' || error.code === 'QUANTITY_LIMIT') {
+        if (error.code === 'INSUFFICIENT_STOCK' || error.code === 'ITEM_UNAVAILABLE') {
           // Stock changed: start a fresh checkout so the corrected bag gets a new order.
           checkoutId.current = null;
           setFormError('Some items in your bag just sold out or changed. Please review your bag and try again.');

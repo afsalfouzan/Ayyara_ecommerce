@@ -2,7 +2,6 @@ import { visibleFaqGroups } from '@/content/faq';
 import { posts } from '@/content/journal/posts';
 import { cheapestVariant, getProducts } from '@/lib/catalog';
 import { formatPrice } from '@/lib/format';
-import { profileOf } from '@/lib/fragrance';
 import { absoluteUrl, collections, site } from '@/lib/site';
 
 /*
@@ -22,10 +21,9 @@ export async function GET() {
 
   const productLine = (product: (typeof products)[number]) => {
     const cheapest = cheapestVariant(product);
-    const family = profileOf(product).fragranceFamily;
     const sizes = product.variants.map((variant) => `${variant.sizeMl} ml`).join(', ');
     const who = { men: 'for men', women: 'for women', unisex: 'unisex' }[product.gender];
-    return `- [${product.name}](${absoluteUrl(`/products/${product.slug}`)}): ${product.concentration}, ${who}${family ? `, ${family.toLowerCase()}` : ''}; ${sizes}${cheapest ? `; from ${formatPrice(cheapest.pricePaise)}` : ''}`;
+    return `- [${product.name}](${absoluteUrl(`/products/${product.slug}`)}): ${product.concentration}, ${who}; ${sizes}${cheapest ? `; from ${formatPrice(cheapest.pricePaise)}` : ''}`;
   };
 
   const text = [

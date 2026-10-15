@@ -77,7 +77,7 @@ export function ProductArt({
           letterSpacing="2.5"
           fill="#7d5f2e"
         >
-          EAU DE PARFUM
+          EXTRAIT DE PARFUM
         </text>
       </svg>
     </div>

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import oilConcentration from "@/assets/product/oil-concentration.jpg";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { VariantPicker } from "@/components/product/VariantPicker";
@@ -18,7 +20,7 @@ import {
   PLACEHOLDER_SLUG,
 } from "@/lib/catalog";
 import { collections, site } from "@/lib/site";
-import { faqText, missingFields, productFaqs, profileOf, profileRows } from "@/lib/fragrance";
+import { faqText, productFaqs, profileRows } from "@/lib/fragrance";
 import { faqJsonLd, productJsonLd } from "@/lib/structured-data";
 import type { Product } from "@/lib/types";
 import { clip, DESCRIPTION_MAX, shareMeta, TITLE_MAX, twitterMeta } from "@/lib/seo";
@@ -97,12 +99,9 @@ export default async function ProductPage({
   const collection = collectionOf(product);
   const suggestions = await getRelatedProducts(product, 4);
   const related = listingsOf(suggestions.products).slice(0, 4);
-  const family = profileOf(product).fragranceFamily;
   const description = paragraphs(product.description);
   const rows = profileRows(product);
   const faqs = productFaqs(product);
-  // TODO(client data): fields still empty for this perfume. Listed only while developing, never to customers.
-  const missing = process.env.NODE_ENV === "development" ? missingFields(product) : [];
 
   return (
     <>
@@ -175,7 +174,7 @@ export default async function ProductPage({
         </div>
 
         {/* The facts buyers ask about, as text (not icons) so search engines and AI answers can read them. */}
-        <div className="mt-14 grid grid-cols-1 gap-12 border-t border-line pt-12 md:mt-20 md:pt-16 lg:grid-cols-2 lg:gap-16">
+        <div className="mt-10 grid grid-cols-1 gap-12 md:mt-16 lg:grid-cols-2 lg:gap-16">
           <section aria-labelledby="profile-heading">
             <h2 id="profile-heading" className="heading text-fg">
               Fragrance profile
@@ -188,11 +187,14 @@ export default async function ProductPage({
                 </div>
               ))}
             </dl>
-            {missing.length > 0 && (
-              <p className="mt-4 border border-dashed border-gold p-3 text-xs text-mute">
-                <strong className="text-fg">Shown only while developing.</strong> Not yet filled in the admin: {missing.join(", ")}.
-              </p>
-            )}
+            {/* The shop's own comparison of perfume oil strength, supplied by the client. */}
+            <Image
+              src={oilConcentration}
+              alt="Four bottles compared by perfume oil: Eau de toilette 5–15% oil, Eau de Parfum 15–20%, Parfum 20–30%, and Ayyara Perfume 40–50%"
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              placeholder="blur"
+              className="mt-6 h-auto w-full"
+            />
           </section>
 
           <section aria-labelledby="questions-heading">
@@ -217,7 +219,6 @@ export default async function ProductPage({
           <Container className="py-12 md:py-20">
             <div className="flex items-end justify-between gap-4">
               <div>
-                {suggestions.sameFamily && family && <p className="eyebrow">More {family.toLowerCase()} fragrances</p>}
                 <h2 id="related-heading" className="heading mt-1 text-fg">
                   Related fragrances
                 </h2>

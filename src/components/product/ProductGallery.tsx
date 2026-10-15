@@ -45,8 +45,9 @@ export function ProductGallery({ product }: { product: Pick<Product, 'name' | 's
         )}
       </div>
 
+      {/* The photo runs edge to edge on phones; the thumbnails line up with the page text instead. */}
       {count > 1 && (
-        <ul className="mt-3 flex gap-2.5 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="mt-2 flex gap-3 overflow-x-auto px-5 py-1 [scrollbar-width:none] sm:px-1 [&::-webkit-scrollbar]:hidden">
           {product.images.map((photo, index) => (
             <li key={photo.src} className="shrink-0">
               <button
@@ -54,7 +55,7 @@ export function ProductGallery({ product }: { product: Pick<Product, 'name' | 's
                 onClick={() => setActive(index)}
                 aria-label={`Show photo ${index + 1} of ${count}`}
                 aria-current={index === active}
-                className={clsx('relative block h-16 w-16 overflow-hidden bg-surface transition-opacity sm:h-20 sm:w-20', index === active ? 'ring-1 ring-fg ring-offset-2' : 'opacity-60 hover:opacity-100')}
+                className={clsx('relative block h-16 w-16 overflow-hidden rounded-[3px] bg-surface outline-offset-[3px] transition-[opacity,outline-color] duration-300 sm:h-20 sm:w-20', index === active ? 'outline outline-1 outline-gold' : 'opacity-55 outline outline-1 outline-transparent hover:opacity-100')}
               >
                 <Image src={photo.src} alt="" fill sizes="200px" className="object-cover" />
               </button>

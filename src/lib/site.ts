@@ -19,7 +19,7 @@ export const site = {
   shortName: 'Ayyara',
   tagline: 'Fine fragrances for modern you',
   description:
-    'Ayyara Rebirth crafts refined eau de parfum for those who wear fragrance as a signature. Discover the collection and shop securely online.',
+    'Ayyara Rebirth crafts refined perfumes for those who wear fragrance as a signature. Discover the collection and shop securely online.',
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, ''),
   locale: 'en_IN',
   currency: 'INR',

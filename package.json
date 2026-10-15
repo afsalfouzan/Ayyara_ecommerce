@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "report:missing-data": "node scripts/missing-product-data.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
