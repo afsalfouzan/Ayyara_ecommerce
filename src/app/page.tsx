@@ -58,8 +58,9 @@ export default async function HomePage() {
        * with the words laid over its foot; the page scrolls on beneath it.
        * Laptop: an uneven split. The film is tall, so it takes the wider right-hand column at the
        * full height of the screen, where it stays sharp, and the words sit on ivory beside it.
+       * On a tall screen (an iPad Pro held upright) that height is capped at 70% of the width, so the film doesn't tower over the page.
        */}
-      <section className="relative lg:grid lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[6fr_7fr] lg:items-stretch">
+      <section className="relative lg:grid lg:min-h-[min(calc(100svh-5rem),70vw)] lg:grid-cols-[6fr_7fr] lg:items-stretch">
         <HeroVideo src={heroFilm.src} poster={heroFilm.poster} label={heroFilm.label} className="relative h-[calc(100svh-8rem-env(safe-area-inset-bottom,0px))] min-h-[480px] w-full overflow-hidden bg-raised lg:order-2 lg:h-auto lg:min-h-[620px]" />
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent lg:hidden" />
         <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col px-5 pb-7 text-white sm:px-8 sm:pb-10 lg:static lg:order-1 lg:justify-center lg:py-14 lg:pr-8 lg:pl-12 lg:text-fg xl:pl-[max(3rem,calc((100vw-80rem)/2+3rem))]">
@@ -118,9 +119,10 @@ export default async function HomePage() {
             {/* The bottles sit in the middle of the frame, so a shorter crop on phones keeps them whole. */}
             <FilmSlider films={[film, legacyFilm]} frameClassName="aspect-[4/5] sm:aspect-[9/16]" />
           </div>
-          <div className="lg:col-span-5 lg:col-start-7">
+          <div className="lg:col-span-6 lg:col-start-7">
             <p className="eyebrow">The film</p>
-            <h2 className="mt-2 font-display text-[min(1.8rem,7.2vw)] tracking-[0.02em] text-fg md:text-5xl text-nowrap">
+            {/* One line at every width: the size follows the screen on phones and beside the film on laptops. */}
+            <h2 className="mt-2 font-display text-[min(1.8rem,7.2vw)] tracking-[0.02em] text-fg md:text-5xl lg:text-[min(2.875rem,3.5vw)] text-nowrap">
               More Than a Fragrance
               <br />
               An Identity
