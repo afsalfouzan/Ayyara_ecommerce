@@ -262,6 +262,20 @@
   }
 }
 
+/*
+ * iPhone Safari zooms into any form field whose text is under 16px when it is
+ * tapped. On phones every text field uses 16px, so tapping one never zooms.
+ * Pinch-to-zoom still works (zoom is not disabled). Outside any layer, so it
+ * wins over utility classes such as text-sm.
+ */
+@media (max-width: 767px) {
+  input:not([type='checkbox'], [type='radio'], [type='range']),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
