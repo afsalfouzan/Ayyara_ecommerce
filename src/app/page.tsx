@@ -92,6 +92,41 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Collections: three photos side by side on laptops, numbered like chapters. */}
+      <section id="collections" className="scroll-mt-20 bg-surface">
+        <Container className="py-14 md:py-24">
+          <div data-reveal className="max-w-3xl">
+            <p className="eyebrow">The collections</p>
+            <h2 className="heading mt-2 text-fg">
+              Three ways to wear <br className="md:hidden" />
+              Ayyara
+            </h2>
+          </div>
+          <ul data-reveal-stagger className="mt-8 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 lg:grid-cols-3">
+            {collections.map((collection) => (
+              <li key={collection.number}>
+                <Link href={collection.href} className="group flex h-full flex-col">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
+                    <Image src={collection.photo.src} alt={collection.photo.alt} fill sizes="(min-width: 1024px) 33vw, 100vw" quality={85} placeholder="blur" className={`object-cover ${collection.photo.position} transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]`} />
+                  </div>
+                  <div className="mt-4 flex items-baseline gap-3 sm:gap-4">
+                    <span className="text-xs tracking-[0.14em] text-gold tabular-nums">{collection.number}</span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-display text-lg leading-tight tracking-[0.02em] whitespace-nowrap text-fg min-[400px]:text-xl md:text-2xl lg:text-xl">{collection.title}</h3>
+                      <p className="mt-1 text-xs text-mute text-nowrap">{collection.line}</p>
+                    </div>
+                    <span className={`${exploreLink} shrink-0 gap-1.5! text-[0.625rem]! lg:hidden! xl:inline-flex!`}>
+                      <span className="border-b border-fg pb-0.5">Explore</span>
+                      <Icon name="arrowRight" strokeWidth={1.5} className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
       {/* Best sellers: a heading row above the product tiles. */}
       <section>
         <Container className="py-14 md:py-24">
@@ -169,41 +204,6 @@ export default async function HomePage() {
             </div>
           </div>
           <FilmGrid films={films} frameClassName="aspect-[3/4]" className="hidden grid-cols-3 gap-8 lg:grid" />
-        </Container>
-      </section>
-
-      {/* Collections: three photos side by side on laptops, numbered like chapters. */}
-      <section id="collections" className="scroll-mt-20 bg-surface">
-        <Container className="py-14 md:py-24">
-          <div data-reveal className="max-w-3xl">
-            <p className="eyebrow">The collections</p>
-            <h2 className="heading mt-2 text-fg">
-              Three ways to wear <br className="md:hidden" />
-              Ayyara
-            </h2>
-          </div>
-          <ul data-reveal-stagger className="mt-8 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 lg:grid-cols-3">
-            {collections.map((collection) => (
-              <li key={collection.number}>
-                <Link href={collection.href} className="group flex h-full flex-col">
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
-                    <Image src={collection.photo.src} alt={collection.photo.alt} fill sizes="(min-width: 1024px) 33vw, 100vw" quality={85} placeholder="blur" className={`object-cover ${collection.photo.position} transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]`} />
-                  </div>
-                  <div className="mt-4 flex items-baseline gap-3 sm:gap-4">
-                    <span className="text-xs tracking-[0.14em] text-gold tabular-nums">{collection.number}</span>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-display text-lg leading-tight tracking-[0.02em] whitespace-nowrap text-fg min-[400px]:text-xl md:text-2xl lg:text-xl">{collection.title}</h3>
-                      <p className="mt-1 text-xs text-mute text-nowrap">{collection.line}</p>
-                    </div>
-                    <span className={`${exploreLink} shrink-0 gap-1.5! text-[0.625rem]! lg:hidden! xl:inline-flex!`}>
-                      <span className="border-b border-fg pb-0.5">Explore</span>
-                      <Icon name="arrowRight" strokeWidth={1.5} className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
         </Container>
       </section>
 
