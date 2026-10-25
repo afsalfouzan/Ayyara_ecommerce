@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Poppins } from 'next/font/google';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { MobileTabBar } from '@/components/layout/MobileTabBar';
+import { ScrollEffects } from '@/components/layout/ScrollEffects';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { isLiveSite, site } from '@/lib/site';
 import './globals.css';
@@ -37,9 +38,18 @@ export const viewport: Viewport = {
   colorScheme: 'light',
 };
 
+/*
+ * Runs before the page paints: switches on the fade-in hiding of ScrollReveal (unless reduced motion is asked for),
+ * and switches it off again after 3 seconds if the page's scripts never load, so nothing stays hidden.
+ */
+const revealScript = `(function(){var r=document.documentElement;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('js-reveal');setTimeout(function(){if(!r.classList.contains('reveal-ready'))r.classList.remove('js-reveal')},3000)})()`;
+
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en-IN" className={`${poppins.variable} antialiased`}>
+    <html lang="en-IN" className={`${poppins.variable} antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: revealScript }} />
+      </head>
       {/* The extra space at the bottom on phones keeps the footer clear of the fixed bar of shortcuts. */}
       <body className="flex min-h-dvh flex-col pb-[calc(4rem+env(safe-area-inset-bottom,0px))] font-sans text-fg antialiased md:pb-0">
         <a
@@ -54,6 +64,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         </main>
         <SiteFooter />
         <MobileTabBar />
+        <ScrollEffects />
       </body>
     </html>
   );

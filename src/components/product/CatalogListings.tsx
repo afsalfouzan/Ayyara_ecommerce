@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Listing } from '@/lib/catalog';
 import { ProductCard } from './ProductCard';
 
@@ -11,6 +11,9 @@ import { ProductCard } from './ProductCard';
  */
 export function CatalogListings({ listings, empty }: { listings: Listing[]; empty: ReactNode }) {
   const [size, setSize] = useState('all');
+  // Next.js keeps a page alive (hidden) after you leave it, so a chosen size would still be
+  // applied on your return. Clear it on leaving, so a shop page always opens on every size.
+  useEffect(() => () => setSize('all'), []);
 
   const sizes = [...new Set(listings.map((listing) => listing.variant.sizeMl))].sort((a, b) => a - b);
   const shown = listings.filter((listing) => size === 'all' || String(listing.variant.sizeMl) === size);

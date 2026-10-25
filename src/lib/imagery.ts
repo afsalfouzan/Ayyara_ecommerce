@@ -1,3 +1,4 @@
+import filmAura from '@/assets/home/film-aura.jpg';
 import filmLegacy from '@/assets/home/film-legacy.jpg';
 import filmOne from '@/assets/home/film-one.jpg';
 import hero from '@/assets/home/hero.jpg';
@@ -55,4 +56,17 @@ export const legacyFilm = {
   poster: filmLegacy,
   posterAlt: 'A bottle of LEGACY by Ayyara Rebirth, filled with blue perfume, against a dark teal background',
   title: 'LEGACY by Ayyara Rebirth',
+} as const;
+
+/**
+ * The AURA campaign film, as supplied (portrait, 576 × 1024, about 10 seconds, with sound),
+ * shown after LEGACY in the film slider. The poster is the frame at 4.5 seconds, with the bottle in view.
+ */
+export const auraFilm = {
+  src: '/media/ayyara-aura-film.mp4',
+  width: 576,
+  height: 1024,
+  poster: filmAura,
+  posterAlt: 'A bottle of AURA by Ayyara Rebirth, 50 ml, with a pink label, against a soft pink background',
+  title: 'AURA by Ayyara Rebirth',
 } as const;

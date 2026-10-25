@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getProducts().catch(() => []);
   // The shop pages change whenever a perfume does, so they carry the newest product's date.
   const catalogueUpdated = products.reduce<string>((latest, product) => (product.updatedAt > latest ? product.updatedAt : latest), CONTENT_UPDATED);
-  const cataloguePages = ['/', '/shop', ...collections.map((collection) => `/shop/${collection.slug}`), '/offers'];
+  const cataloguePages = ['/', '/shop', ...collections.map((collection) => `/shop/${collection.slug}`)];
 
   return [
     ...cataloguePages.map((path) => ({

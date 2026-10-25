@@ -10,7 +10,7 @@ import { Icon, type IconName } from '@/components/ui/icons';
 const tabs: { href: string; label: string; icon: IconName; matches: (path: string) => boolean }[] = [
   { href: '/', label: 'Home', icon: 'home', matches: (path) => path === '/' },
   { href: '/shop', label: 'Shop', icon: 'grid', matches: (path) => path.startsWith('/shop') || path.startsWith('/products') },
-  { href: '/offers', label: 'Offers', icon: 'tag', matches: (path) => path.startsWith('/offers') },
+  { href: '/contact', label: 'Contact', icon: 'phone', matches: (path) => path.startsWith('/contact') },
   { href: '/cart', label: 'Bag', icon: 'bag', matches: (path) => path.startsWith('/cart') || path.startsWith('/checkout') },
 ];
 

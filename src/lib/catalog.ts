@@ -88,42 +88,51 @@ export function isOnOffer(listing: Listing) {
   return listing.variant.mrpPaise > listing.variant.pricePaise;
 }
 
-/** Sizes ranked by units sold (online + offline, net of returns), best first. */
-export async function getBestSellerIds(): Promise<number[]> {
+/** Best-seller ranking, most sold first (online + offline, net of returns): single sizes, and perfumes by all their sizes together. */
+export type BestSellerRanking = { variantIds: number[]; productIds: number[] };
+
+export async function getBestSellerRanking(): Promise<BestSellerRanking> {
   'use cache';
   cacheLife('minutes');
   cacheTag('products', 'bestsellers');
   try {
-    const { items } = await storeApi<{ items: { variantId: number }[] }>('/store/bestsellers?limit=8');
-    return items.map((item) => item.variantId);
+    const { items, products } = await storeApi<{ items: { variantId: number }[]; products?: { productId: number }[] }>('/store/bestsellers?limit=12');
+    return { variantIds: items.map((item) => item.variantId), productIds: products?.map((item) => item.productId) ?? [] };
   } catch {
     // Ranking is a nice-to-have; the section still renders from the catalogue.
-    return [];
+    return { variantIds: [], productIds: [] };
   }
 }
 
 /**
- * Home-page best sellers: at most two perfumes, one card each. A perfume is
- * shown in its best-selling size, never twice. Top sellers that can still be
- * bought come first, then sold-out top sellers; if fewer than two perfumes have
- * sold yet, other in-stock perfumes fill the gap.
+ * Home-page best sellers: every perfume, one card each, most units sold first.
+ * Perfumes that can still be bought come first, then any not sold yet, then
+ * sold-out ones last. Each card shows the perfume's best-selling size that is
+ * in stock. Capped at `max` so the section stays a short list as the shop grows.
  */
-export function bestSellerListings(products: Product[], rankedIds: number[], { max = 2 } = {}) {
-  const all = listingsOf(products);
-  const byId = new Map(all.map((listing) => [listing.variant.id, listing]));
-  const ranked = rankedIds.flatMap((id) => byId.get(id) ?? []);
-  const inStock = (listing: Listing) => listing.variant.stockStatus !== 'out_of_stock';
-  const candidates = [...ranked.filter(inStock), ...ranked.filter((l) => !inStock(l)), ...all.filter(inStock), ...all];
+export function bestSellerListings(products: Product[], { variantIds, productIds }: BestSellerRanking, { max = 6 } = {}) {
+  const inStock = (variant: Product['variants'][number]) => variant.stockStatus !== 'out_of_stock';
+  const sizeRank = (id: number) => {
+    const at = variantIds.indexOf(id);
+    return at === -1 ? Infinity : at;
+  };
+  // An older API sends no perfume ranking; fall back to the order of their best size.
+  const perfumeRank = (product: Product) => {
+    const at = productIds.indexOf(product.id);
+    if (at !== -1) return at;
+    if (productIds.length > 0) return Infinity;
+    return Math.min(...product.variants.map((v) => sizeRank(v.id)));
+  };
 
-  const picked: Listing[] = [];
-  const perfumes = new Set<number>();
-  for (const listing of candidates) {
-    if (perfumes.has(listing.product.id)) continue;
-    perfumes.add(listing.product.id);
-    picked.push(listing);
-    if (picked.length === max) break;
-  }
-  return picked;
+  return products
+    .map((product, index) => {
+      const sizes = [...product.variants].sort((a, b) => Number(inStock(b)) - Number(inStock(a)) || sizeRank(a.id) - sizeRank(b.id));
+      return { listing: { product, variant: sizes[0]! }, soldOut: isSoldOut(product), rank: perfumeRank(product), index };
+    })
+    .filter(({ listing }) => listing.variant)
+    .sort((a, b) => Number(a.soldOut) - Number(b.soldOut) || a.rank - b.rank || a.index - b.index)
+    .slice(0, max)
+    .map(({ listing }) => listing);
 }
 
 /** Case-insensitive match on the perfume's name, tagline and description. */

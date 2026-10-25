@@ -40,7 +40,6 @@ export async function GET() {
     '',
     `- [All perfumes](${absoluteUrl('/shop')})`,
     ...collections.map((collection) => `- [${collection.title}](${absoluteUrl(`/shop/${collection.slug}`)}): ${collection.line}`),
-    `- [Offers](${absoluteUrl('/offers')})`,
     '',
     ...(products.length ? ['## Perfumes', '', ...products.map(productLine), ''] : []),
     ...(articles.length ? ['## Journal', '', `- [All articles](${absoluteUrl('/journal')})`, ...articles.map((post) => `- [${post.title}](${absoluteUrl(`/journal/${post.slug}`)}): ${post.description}`), ''] : []),

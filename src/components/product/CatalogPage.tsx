@@ -16,7 +16,7 @@ export const SHOP_HEADING = {
   intro: 'Fine fragrances for modern you, each composed to be worn as a signature.',
 };
 
-/** Shared layout for the shop, collection, offers and search pages: a heading, the collection tabs, then the perfumes. */
+/** Shared layout for the shop, collection and search pages: a heading, the collection tabs, then the perfumes. */
 export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, empty, children }: { eyebrow: string; title: string; intro?: string; listings: Listing[]; current?: string; crumbs: { name: string; href: string }[]; empty: ReactNode; children?: ReactNode }) {
   return (
     <Container className="pt-5 pb-16 sm:pt-8 md:pb-24">

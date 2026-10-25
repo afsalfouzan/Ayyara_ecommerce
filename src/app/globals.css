@@ -276,6 +276,39 @@
   }
 }
 
+/* Lenis glides the page itself, so the browser's own smooth scrolling would fight it. */
+html.lenis {
+  scroll-behavior: auto;
+}
+
+/*
+ * Fade-in on scroll (see ScrollEffects). Marked things wait a little lower and
+ * see-through, then rise into place; a stagger's children follow one another.
+ */
+html.js-reveal [data-reveal],
+html.js-reveal [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease-luxe),
+    transform 0.9s var(--ease-luxe);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.js-reveal [data-reveal][data-revealed],
+html.js-reveal [data-reveal-stagger][data-revealed] > * {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal-stagger] > :nth-child(2) {
+  --reveal-delay: 120ms;
+}
+[data-reveal-stagger] > :nth-child(3) {
+  --reveal-delay: 240ms;
+}
+[data-reveal-stagger] > :nth-child(n + 4) {
+  --reveal-delay: 360ms;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

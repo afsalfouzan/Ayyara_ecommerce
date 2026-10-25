@@ -24,7 +24,7 @@ export default function NotFound() {
           Browse the collections
         </h2>
         <ul className="mt-5 flex flex-wrap justify-center gap-x-8 gap-y-3">
-          {[...collections.map((collection) => ({ href: `/shop/${collection.slug}`, label: collection.title })), { href: '/offers', label: 'Offers' }].map((link) => (
+          {collections.map((collection) => ({ href: `/shop/${collection.slug}`, label: collection.title })).map((link) => (
             <li key={link.href}>
               <Link href={link.href} className="text-sm font-medium tracking-[0.12em] text-fg uppercase underline-offset-4 hover:underline">
                 {link.label}

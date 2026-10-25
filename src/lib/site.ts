@@ -78,7 +78,6 @@ export type CollectionSlug = (typeof collections)[number]['slug'];
 export const mainNav = [
   { href: '/', label: 'Home' },
   { href: '/our-story', label: 'About' },
-  { href: '/offers', label: 'Offers' },
   {
     href: '/shop',
     label: 'Products',

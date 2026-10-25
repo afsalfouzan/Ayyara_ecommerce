@@ -122,6 +122,8 @@ const nextConfig: NextConfig = {
       to('/product/legacy', '/products/ayyara-legacy'),
       to('/product/:slug', '/products/:slug'),
       to('/product', '/shop'),
+      // The offers page was removed on 25 Oct 2026; its old address goes to the shop.
+      to('/offers', '/shop'),
 
       // Collections and category pages.
       to('/product-category/men/:path*', '/shop/men'),
