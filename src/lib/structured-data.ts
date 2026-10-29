@@ -1,5 +1,5 @@
 import { cheapestVariant, paragraphs } from './catalog';
-import { profileRows } from './fragrance';
+import { notesFromDescription, profileRows } from './fragrance';
 import { toRupeeString } from './format';
 import { absoluteUrl, site, socialProfiles } from './site';
 import type { Product } from './types';
@@ -120,13 +120,20 @@ export function productJsonLd(product: Product, description: string) {
   const profileProperties = profileRows(product)
     .filter((row) => row.label !== 'Made for')
     .map((row) => ({ '@type': 'PropertyValue', name: row.label, value: row.value }));
+  // Notes only when the description states them.
+  const found = notesFromDescription(product.description);
+  const noteProperties = found
+    ? ([['Top notes', found.notes.top], ['Heart notes', found.notes.heart], ['Base notes', found.notes.base]] as const)
+        .filter(([, list]) => list.length > 0)
+        .map(([name, list]) => ({ '@type': 'PropertyValue', name, value: list.join(', ') }))
+    : [];
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
     '@id': `${url}#product`,
     name: product.name,
-    description: description || paragraphs(product.description)[0] || product.name,
+    description: description || paragraphs((found ? found.rest : product.description))[0] || product.name,
     url,
     ...(product.images.length ? { image: product.images.map((image) => image.src) } : {}),
     ...(cheapest ? { sku: `AR-${cheapest.id}` } : {}),
@@ -135,6 +142,7 @@ export function productJsonLd(product: Product, description: string) {
     audience: { '@type': 'PeopleAudience', suggestedGender: AUDIENCE[product.gender] },
     additionalProperty: [
       ...profileProperties,
+      ...noteProperties,
       ...product.variants.map((variant) => ({ '@type': 'PropertyValue', name: 'Volume', value: variant.sizeMl, unitCode: 'MLT', unitText: 'ml' })),
     ],
     offers: product.variants.map((variant) => ({
@@ -154,6 +162,18 @@ export function productJsonLd(product: Product, description: string) {
       shippingDetails: shippingDetails(),
       hasMerchantReturnPolicy: returnPolicy(),
     })),
+  };
+}
+
+/** A list of perfumes on a shop page, in the order shown. Each perfume is listed once, however many sizes it has. */
+export function itemListJsonLd(name: string, path: string, products: Pick<Product, 'slug' | 'name'>[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    url: absoluteUrl(path),
+    numberOfItems: products.length,
+    itemListElement: products.map((product, index) => ({ '@type': 'ListItem', position: index + 1, name: product.name, url: absoluteUrl(`/products/${product.slug}`) })),
   };
 }
 
@@ -210,6 +230,17 @@ export function profilePageJsonLd(author: { name: string; slug: string; role: st
       worksFor: { '@type': 'Organization', '@id': ORGANIZATION_ID, name: site.name },
       ...(author.profiles.length ? { sameAs: author.profiles } : {}),
     },
+  };
+}
+
+/** The contact page, pointing at the shop's own Organization data (address, phone, email and hours are published there). */
+export function contactPageJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    url: absoluteUrl('/contact'),
+    name: `Contact ${site.name}`,
+    mainEntity: { '@id': ORGANIZATION_ID },
   };
 }
 

@@ -12,6 +12,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/icons";
 import {
+  cheapestVariant,
   getProductBySlug,
   getProducts,
   getRelatedProducts,
@@ -19,8 +20,9 @@ import {
   paragraphs,
   PLACEHOLDER_SLUG,
 } from "@/lib/catalog";
+import { formatPrice } from "@/lib/format";
 import { collections, site } from "@/lib/site";
-import { faqText, productFaqs, profileRows } from "@/lib/fragrance";
+import { faqText, keyFacts, notesFromDescription, notesText, PERFUME_OIL, productFaqs } from "@/lib/fragrance";
 import { faqJsonLd, productJsonLd } from "@/lib/structured-data";
 import type { Product } from "@/lib/types";
 import { clip, DESCRIPTION_MAX, shareMeta, TITLE_MAX, twitterMeta } from "@/lib/seo";
@@ -54,12 +56,19 @@ function seoTitle(product: Product) {
   return clip(full.length <= TITLE_ROOM || product.seo.title ? full : `${product.name} ${product.concentration}`, TITLE_ROOM);
 }
 
-/** The admin's SEO description if set, otherwise the first paragraph of the description. */
+/**
+ * The admin's SEO description when it is a good one (120–160 characters, says "perfume"),
+ * otherwise one built from the perfume's facts: name, size, oil strength, notes and price.
+ */
 function seoDescription(product: Product) {
-  return clip(
-    product.seo.description || paragraphs(product.description)[0] || `${product.name} ${product.concentration} by ${site.name}.`,
-    DESCRIPTION_MAX,
-  );
+  const own = product.seo.description;
+  if (own && own.length >= 120 && own.length <= 160 && /perfume/i.test(own)) return own;
+  const sizes = product.variants.map((v) => `${v.sizeMl} ml`).join(" / ");
+  const cheapest = cheapestVariant(product);
+  const found = notesFromDescription(product.description);
+  const notes = found ? ` ${notesText(found.notes)}` : "";
+  const price = cheapest ? ` Order online from ${formatPrice(cheapest.pricePaise)} with free delivery within ${site.policies.deliveryArea}.` : "";
+  return clip(`${product.name} extrait de parfum by ${site.name}, ${sizes}, ${PERFUME_OIL} perfume oil.${notes}${price}`, DESCRIPTION_MAX);
 }
 
 /** The collection a perfume belongs to, for its breadcrumb. */
@@ -99,8 +108,9 @@ export default async function ProductPage({
   const collection = collectionOf(product);
   const suggestions = await getRelatedProducts(product, 4);
   const related = listingsOf(suggestions.products).slice(0, 4);
-  const description = paragraphs(product.description);
-  const rows = profileRows(product);
+  const found = notesFromDescription(product.description);
+  const description = paragraphs(found ? found.rest : product.description);
+  const rows = keyFacts(product);
   const faqs = productFaqs(product);
 
   return (
@@ -130,6 +140,9 @@ export default async function ProductPage({
             <h1 className="heading mt-2 text-fg">
               {product.name}
             </h1>
+            <p className="mt-2 text-sm font-medium tracking-[0.08em] text-fg-soft uppercase">
+              {product.concentration} · {product.variants.map((variant) => `${variant.sizeMl} ml`).join(" / ")}
+            </p>
             {product.tagline && (
               <p className="mt-2 text-base text-fg-soft">{product.tagline}</p>
             )}
@@ -145,15 +158,6 @@ export default async function ProductPage({
             )}
 
             <div className="mt-6 border-t border-line">
-              {description.length > 1 && (
-                <Disclosure title="Description" defaultOpen>
-                  {description.slice(1).map((paragraph) => (
-                    <p key={paragraph.slice(0, 32)} className="mb-3 last:mb-0">
-                      {paragraph}
-                    </p>
-                  ))}
-                </Disclosure>
-              )}
               <Disclosure title="Delivery and returns">
                 <p>
                   Free delivery within {site.policies.deliveryArea}. Dispatched within{" "}
@@ -173,11 +177,46 @@ export default async function ProductPage({
           </div>
         </div>
 
+        {(description.length > 1 || found) && (
+          <div className="mt-10 grid grid-cols-1 gap-12 border-t border-line pt-10 md:mt-16 md:pt-16 lg:grid-cols-2 lg:gap-16">
+            {description.length > 1 && (
+              <section aria-labelledby="about-heading">
+                <h2 id="about-heading" className="heading text-fg">
+                  About {product.name}
+                </h2>
+                <div className="mt-6 space-y-3 text-[15px] leading-relaxed text-fg-soft">
+                  {description.slice(1).map((paragraph) => (
+                    <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+                  ))}
+                </div>
+              </section>
+            )}
+            {found && (
+              <section aria-labelledby="notes-heading">
+                <h2 id="notes-heading" className="heading text-fg">
+                  Fragrance notes
+                </h2>
+                {/* Server-rendered text, not an image, so search engines and AI answers can read the notes. */}
+                <dl className="mt-6 divide-y divide-line border-y border-line">
+                  {([["Top", found.notes.top], ["Heart", found.notes.heart], ["Base", found.notes.base]] as const)
+                    .filter(([, list]) => list.length > 0)
+                    .map(([label, list]) => (
+                      <div key={label} className="grid grid-cols-[8.5rem_1fr] gap-4 py-3.5 text-[15px] sm:grid-cols-[11rem_1fr]">
+                        <dt className="text-mute">{label} notes</dt>
+                        <dd className="text-fg">{list.join(", ")}</dd>
+                      </div>
+                    ))}
+                </dl>
+              </section>
+            )}
+          </div>
+        )}
+
         {/* The facts buyers ask about, as text (not icons) so search engines and AI answers can read them. */}
         <div className="mt-10 grid grid-cols-1 gap-12 md:mt-16 lg:grid-cols-2 lg:gap-16">
           <section aria-labelledby="profile-heading">
             <h2 id="profile-heading" className="heading text-fg">
-              Fragrance profile
+              Key facts
             </h2>
             <dl className="mt-6 divide-y divide-line border-y border-line">
               {rows.map((row) => (
@@ -241,7 +280,7 @@ export default async function ProductPage({
         </section>
       )}
 
-      <JsonLd data={productJsonLd(product, seoDescription(product))} />
+      <JsonLd data={productJsonLd(product, [...description, found ? notesText(found.notes) : ""].filter(Boolean).join(" ") || seoDescription(product))} />
       {/* The same questions and answers the page shows above. */}
       {faqs.length > 0 && <JsonLd data={faqJsonLd(faqs.map((faq) => ({ question: faq.question, answer: faqText(faq) })))} />}
     </>
