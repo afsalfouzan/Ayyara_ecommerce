@@ -5,7 +5,8 @@ import { isVisible } from '@/lib/drafts';
  * (hidden on the live site) until the real, approved wording replaces it.
  *
  * TODO(client data): where the ingredients come from, and how and where each
- * perfume is made (blending, maturing, filling, quality checks).
+ * perfume is made (blending, maturing, filling, quality checks), who manufactures
+ * or packs them, the IFRA compliance statement, and batch or lot information.
  */
 export const aboutSections: { id: string; title: string; body: string[]; draft: boolean }[] = [
   {
@@ -18,6 +19,12 @@ export const aboutSections: { id: string; title: string; body: string[]; draft: 
     id: 'craft',
     title: 'How each perfume is made',
     body: ['DRAFT: where the perfumes are composed, blended, matured and bottled, how long each step takes, and the checks every batch goes through. To be supplied by the client.'],
+    draft: true,
+  },
+  {
+    id: 'compliance',
+    title: 'Ingredients, safety and batch information',
+    body: ['DRAFT: the full ingredient list, who manufactures or packs the perfumes (name and address), the IFRA compliance statement, and how to find the batch or lot number on a bottle. To be supplied by the client.'],
     draft: true,
   },
 ];

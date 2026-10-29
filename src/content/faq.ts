@@ -1,5 +1,6 @@
 import { findPost } from '@/content/journal/posts';
 import { isVisible } from '@/lib/drafts';
+import { PERFUME_OIL } from '@/lib/fragrance';
 import { site } from '@/lib/site';
 
 /*
@@ -16,11 +17,20 @@ const { dispatchWindow, deliveryWindow, deliveryArea, returnWindowDays } = site.
 
 export const faqGroups: { title: string; items: Faq[] }[] = [
   {
+    title: 'About extrait de parfum',
+    items: [
+      { id: 'what-is-extrait', question: 'What is extrait de parfum?', answer: `Extrait de parfum is the most concentrated form of perfume. Every Ayyara Rebirth perfume is an extrait de parfum, made with ${PERFUME_OIL} perfume oil.`, link: { href: '/journal/edp-vs-edt-vs-parfum', label: 'EDP vs EDT vs Parfum' } },
+      { id: 'extrait-vs-edp', question: 'How is extrait de parfum different from eau de parfum?', answer: `The difference is the amount of perfume oil. Eau de toilette has 5–15%, eau de parfum 15–20% and parfum 20–30%, while Ayyara Rebirth perfumes have ${PERFUME_OIL}.` },
+      { id: 'sprays', question: 'How many sprays should I use?', answer: 'DRAFT: the number of sprays the perfumer recommends for a 40–50% extrait, to be confirmed by the shop.', draft: true },
+    ],
+  },
+  {
     title: 'Delivery',
     items: [
       { id: 'delivery-time', question: 'How long does delivery take?', answer: `Orders are packed and dispatched within ${dispatchWindow} from our atelier in Kerala and delivered in ${deliveryWindow}. You receive the courier’s tracking number by email when your parcel leaves.` },
       { id: 'delivery-cost', question: 'How much does delivery cost?', answer: `Delivery is free on every order within ${deliveryArea}.` },
       { id: 'tracking', question: 'How do I track my order?', answer: 'When your parcel leaves, we email you the courier’s name and tracking number. The link in your order confirmation email also shows the latest status.' },
+      { id: 'cash-on-delivery', question: 'Do you offer cash on delivery?', answer: 'DRAFT: whether cash on delivery is offered, to be confirmed by the shop. Until then the site states only online payment.', draft: true },
       { id: 'delivery-area', question: `Do you deliver outside ${deliveryArea}?`, answer: `Not yet. For now we deliver only to addresses within ${deliveryArea}.` },
     ],
   },
@@ -52,6 +62,10 @@ export const faqGroups: { title: string; items: Faq[] }[] = [
       { id: 'samples', question: 'Do you offer samples or testers?', answer: 'DRAFT: to be confirmed by the shop (whether samples are sold or included, and how to get one).', draft: true },
       { id: 'choosing', question: 'How do I choose a perfume online?', answer: 'Each perfume page lists its concentration, notes and who it is made for. Start from the scent families you already like, and contact us if you would like help choosing.', link: { href: '/journal/how-to-choose-your-signature-scent', label: 'How to choose your signature scent' } },
     ],
+  },
+  {
+    title: 'Contact',
+    items: [{ id: 'customer-care', question: 'How do I contact customer care?', answer: `Call ${site.contact.phone} or email ${site.contact.email}. We are available ${site.contact.hours}.`, link: { href: '/contact', label: 'Contact us' } }],
   },
   {
     title: 'Payment',
