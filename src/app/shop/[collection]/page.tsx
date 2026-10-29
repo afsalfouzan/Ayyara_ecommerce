@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: PageProps<'/shop/[collection]
   const collection = find((await params).collection);
   if (!collection) return {};
   const title = `${collection.searchName} | ${collection.title}`;
-  const description = clip(`${collection.line} Shop ${collection.searchName.toLowerCase()} by Ayyara Rebirth online, with free delivery within ${site.policies.deliveryArea}.`, DESCRIPTION_MAX);
+  const description = clip(`${collection.line} Shop ${collection.searchName.toLowerCase()} by Ayyara Rebirth online, extrait de parfum with 40–50% perfume oil and free delivery within ${site.policies.deliveryArea}.`, DESCRIPTION_MAX);
   return {
     title,
     description,
@@ -33,6 +33,8 @@ export default async function CollectionPage({ params }: PageProps<'/shop/[colle
   return (
     <CatalogPage
       {...SHOP_HEADING}
+      about={collection.about}
+      listName={collection.searchName}
       listings={listings}
       current={`/shop/${collection.slug}`}
       crumbs={[{ name: 'Shop', href: '/shop' }]}

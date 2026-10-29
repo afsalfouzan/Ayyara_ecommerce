@@ -6,7 +6,9 @@ import { Container } from '@/components/ui/Container';
 import { Icon, type IconName } from '@/components/ui/icons';
 import { site } from '@/lib/site';
 import { faqsById, liveLink } from '@/content/faq';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { shareMeta } from '@/lib/seo';
+import { contactPageJsonLd } from '@/lib/structured-data';
 
 /*
  * Contact page: the ways to reach the shop, a message form that emails the
@@ -14,7 +16,7 @@ import { shareMeta } from '@/lib/seo';
  */
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Get in touch with Ayyara Rebirth client care for help with fragrances and orders.',
+  description: 'Contact Ayyara Rebirth client care in Malappuram, Kerala, for help choosing a perfume or with an order. Call, email or send a message, Monday to Saturday.',
   alternates: { canonical: '/contact' },
   openGraph: shareMeta('/contact'),
 };
@@ -123,6 +125,7 @@ export default function ContactPage() {
           .
         </p>
       </section>
+      <JsonLd data={contactPageJsonLd()} />
     </Container>
   );
 }

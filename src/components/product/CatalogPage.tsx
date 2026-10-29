@@ -4,7 +4,9 @@ import type { ReactNode } from 'react';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Container } from '@/components/ui/Container';
 import type { Listing } from '@/lib/catalog';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { collections } from '@/lib/site';
+import { itemListJsonLd } from '@/lib/structured-data';
 import { CatalogListings } from './CatalogListings';
 
 const TABS = [{ href: '/shop', label: 'All' }, ...collections.map((c) => ({ href: `/shop/${c.slug}`, label: c.title }))];
@@ -17,7 +19,7 @@ export const SHOP_HEADING = {
 };
 
 /** Shared layout for the shop, collection and search pages: a heading, the collection tabs, then the perfumes. */
-export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, empty, children }: { eyebrow: string; title: string; intro?: string; listings: Listing[]; current?: string; crumbs: { name: string; href: string }[]; empty: ReactNode; children?: ReactNode }) {
+export function CatalogPage({ eyebrow, title, intro, about, listName, listings, current, crumbs, empty, children }: { eyebrow: string; title: string; intro?: string; about?: string; listName?: string; listings: Listing[]; current?: string; crumbs: { name: string; href: string }[]; empty: ReactNode; children?: ReactNode }) {
   return (
     <Container className="pt-5 pb-16 sm:pt-8 md:pb-24">
       <Breadcrumbs items={[{ name: 'Home', href: '/' }, ...crumbs]} />
@@ -26,6 +28,7 @@ export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, 
         <p className="eyebrow">{eyebrow}</p>
         <h1 className="heading mt-2 text-fg">{title}</h1>
         {intro && <p className="lede mt-3 leading-relaxed text-fg-soft">{intro}</p>}
+        {about && <p className="mt-3 text-[15px] leading-relaxed text-fg-soft">{about}</p>}
       </header>
 
       {children}
@@ -48,6 +51,9 @@ export function CatalogPage({ eyebrow, title, intro, listings, current, crumbs, 
       )}
 
       <CatalogListings listings={listings} empty={empty} />
+      {listName && current !== undefined && listings.length > 0 && (
+        <JsonLd data={itemListJsonLd(listName, current, [...new Map(listings.map((listing) => [listing.product.slug, listing.product])).values()])} />
+      )}
     </Container>
   );
 }
