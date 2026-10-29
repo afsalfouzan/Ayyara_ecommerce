@@ -1,5 +1,6 @@
 import { cacheLife, cacheTag } from 'next/cache';
 import { storeApi, StoreApiError } from './api';
+import { toPlainText } from './text';
 import type { Product } from './types';
 
 /*
@@ -13,7 +14,20 @@ import type { Product } from './types';
  * at 40–50% perfume oil they sit above parfum, so the standard name is extrait de parfum.
  */
 export const CONCENTRATION = 'Extrait de Parfum';
-const withConcentration = (product: Product): Product => ({ ...product, concentration: CONCENTRATION });
+/**
+ * Product text is typed into the admin, often in Unicode "fancy" letters copied from social media
+ * (𝑳𝑬𝑮𝑨𝑪𝒀). Search engines and AI crawlers read those as symbols, not words, so the text is
+ * turned back into plain letters here, once, for every page, tag and structured-data block.
+ */
+const withConcentration = (product: Product): Product => ({
+  ...product,
+  concentration: CONCENTRATION,
+  name: toPlainText(product.name),
+  tagline: toPlainText(product.tagline),
+  description: toPlainText(product.description),
+  seo: { title: product.seo.title && toPlainText(product.seo.title), description: product.seo.description && toPlainText(product.seo.description) },
+  images: product.images.map((image) => ({ ...image, alt: toPlainText(image.alt) })),
+});
 
 export async function getProducts(): Promise<Product[]> {
   'use cache';
