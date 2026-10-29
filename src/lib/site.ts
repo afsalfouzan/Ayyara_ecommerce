@@ -19,7 +19,7 @@ export const site = {
   shortName: 'Ayyara',
   tagline: 'Fine fragrances for modern you',
   description:
-    'Ayyara Rebirth crafts refined perfumes for those who wear fragrance as a signature. Discover the collection and shop securely online.',
+    'Ayyara Rebirth crafts extrait de parfum perfumes with 40–50% perfume oil, made to be worn as a signature. Shop securely online with free delivery within Kerala.',
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, ''),
   locale: 'en_IN',
   currency: 'INR',
@@ -68,9 +68,9 @@ export const site = {
 
 /** Collections customers can browse; each has its own page under /shop. */
 export const collections = [
-  { slug: 'men', label: 'Men', title: 'For Him', searchName: "Men's Perfumes", line: 'Strength and refinement, captured in a bottle.', sub: 'Discover the scent that speaks for you' },
-  { slug: 'women', label: 'Women', title: 'For Her', searchName: "Women's Perfumes", line: 'Delicate power that lingers from day to night.', sub: 'The perfect scent to complement your aura' },
-  { slug: 'unisex', label: 'Unisex', title: 'Unisex', searchName: 'Unisex Perfumes', line: 'Fragrances made to be shared.', sub: 'Worn your way, by anyone' },
+  { slug: 'men', label: 'Men', title: 'For Him', searchName: "Men's Perfumes", about: 'Our men’s collection brings together extrait de parfum fragrances made for him. Each one carries 40–50% perfume oil, far more than a typical eau de parfum, so a little goes a long way. Each perfume page lists its concentration, sizes and price. Browse the perfumes below, compare sizes and prices, and order online with free delivery within Kerala and returns on unopened bottles within 7 days.', line: 'Strength and refinement, captured in a bottle.', sub: 'Discover the scent that speaks for you' },
+  { slug: 'women', label: 'Women', title: 'For Her', searchName: "Women's Perfumes", about: 'Our women’s collection brings together extrait de parfum fragrances made for her. Each one carries 40–50% perfume oil, far more than a typical eau de parfum, so a little goes a long way. Each perfume page lists its concentration, sizes and price. Browse the perfumes below, compare sizes and prices, and order online with free delivery within Kerala and returns on unopened bottles within 7 days.', line: 'Delicate power that lingers from day to night.', sub: 'The perfect scent to complement your aura' },
+  { slug: 'unisex', label: 'Unisex', title: 'Unisex', searchName: 'Unisex Perfumes', about: 'Our unisex collection brings together extrait de parfum fragrances made to be worn by anyone. Each one carries 40–50% perfume oil, far more than a typical eau de parfum, so a little goes a long way. Each perfume page lists its concentration, sizes and price. Browse the perfumes below, compare sizes and prices, and order online with free delivery within Kerala and returns on unopened bottles within 7 days.', line: 'Fragrances made to be shared.', sub: 'Worn your way, by anyone' },
 ] as const;
 
 export type CollectionSlug = (typeof collections)[number]['slug'];

@@ -75,7 +75,7 @@ export default async function HomePage() {
           <div className="absolute inset-x-0 bottom-0 z-10 px-5 pb-7 text-white sm:px-8 sm:pb-10 lg:static lg:order-1 lg:col-span-6 lg:p-0">
             <p className="eyebrow text-white/85!">{site.name}</p>
             <h1 className="mt-3 text-[2.35rem] tracking-[0.02em] whitespace-nowrap sm:text-6xl lg:mt-4 lg:text-[3.25rem] xl:text-[4rem]">
-              Fine Fragrance
+              Fine Fragrances
               <br />
               <span className="text-[1.875rem] sm:text-6xl lg:text-[3.25rem] xl:text-[4rem]">For Modern You</span>
             </h1>

@@ -8,12 +8,13 @@ const PRIVATE = ['/cart', '/checkout', '/order/', '/invoice/', '/account', '/api
  * AI and search crawlers named outright, so the welcome is explicit. A crawler
  * obeys only the group that names it, so each repeats the private pages.
  *   GPTBot, OAI-SearchBot, ChatGPT-User  OpenAI: training, ChatGPT search, and pages a ChatGPT user opens
- *   ClaudeBot                            Anthropic
+ *   ClaudeBot, Claude-SearchBot          Anthropic: training, and Claude's search results
  *   PerplexityBot                        Perplexity
  *   Google-Extended                      Gemini and Google's AI features
+ *   Applebot-Extended                    Apple's AI features
  *   Bingbot                              Bing, which also feeds ChatGPT search and Copilot
  */
-const NAMED_CRAWLERS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot', 'Google-Extended', 'Bingbot'];
+const NAMED_CRAWLERS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bingbot'];
 
 export default function robots(): MetadataRoute.Robots {
   // Staging and preview copies must never compete with the real site in search results.

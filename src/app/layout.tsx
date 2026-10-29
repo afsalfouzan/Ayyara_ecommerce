@@ -18,7 +18,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} | Fine Fragrances For Modern You`,
+    default: `${site.name} | Extrait de Parfum Perfumes Online in Kerala`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     locale: site.locale,
   },
   twitter: { card: 'summary_large_image' },
-  robots: isLiveSite ? { index: true, follow: true } : { index: false, follow: false },
+  robots: isLiveSite ? { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } } : { index: false, follow: false },
   formatDetection: { telephone: false },
 };
 

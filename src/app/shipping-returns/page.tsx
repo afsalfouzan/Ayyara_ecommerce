@@ -7,7 +7,7 @@ import { shareMeta } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Delivery & Returns',
-  description: 'Where we deliver, delivery times, dispatch and the return policy for Ayyara Rebirth orders.',
+  description: 'Where Ayyara Rebirth delivers (Kerala), how long delivery takes, when orders are dispatched, and how to return an unopened perfume within 7 days.',
   alternates: { canonical: '/shipping-returns' },
   openGraph: shareMeta('/shipping-returns'),
 };
