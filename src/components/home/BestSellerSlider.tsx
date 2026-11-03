@@ -6,7 +6,7 @@ import { InfiniteBelt } from './InfiniteBelt';
 /**
  * The best sellers. On phones and tablets they sit on a belt that keeps moving left and can be swiped either way:
  * two cards in view on small phones, three on large phones and four on tablets.
- * On laptops (lg and up) they are simply listed, each perfume once, five to a row, starting from the left.
+ * On laptops (lg and up) they are simply listed, each perfume once, four to a row across the full width.
  */
 export function BestSellerSlider({ children, className = '', style, 'data-reveal': reveal }: { children: ReactNode; className?: string; style?: CSSProperties; 'data-reveal'?: boolean }) {
   const slides = Children.toArray(children);
@@ -24,9 +24,9 @@ export function BestSellerSlider({ children, className = '', style, 'data-reveal
           ))
         }
       />
-      <ul aria-label="Best sellers" className="hidden flex-wrap gap-6 lg:flex">
+      <ul aria-label="Best sellers" className="hidden gap-x-6 gap-y-10 lg:grid lg:grid-cols-4">
         {slides.map((slide, index) => (
-          <li key={index} className="w-[calc((100%-6rem)/5)] [&_h3]:text-lg">
+          <li key={index} className="min-w-0 [&_h3]:text-lg">
             {slide}
           </li>
         ))}

@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cart, useCart } from '@/components/cart/cart-store';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/icons';
@@ -23,6 +23,16 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
   const firstAvailable = product.variants.find((v) => v.stockStatus !== 'out_of_stock') ?? product.variants[0]!;
   const [variantId, setVariantId] = useState(firstAvailable.id);
   const [quantity, setQuantity] = useState(1);
+  // On phones the bar fixed to the bottom of the screen steps aside while the main buttons are on screen.
+  const buttons = useRef<HTMLDivElement>(null);
+  const [buttonsInView, setButtonsInView] = useState(false);
+  useEffect(() => {
+    const element = buttons.current;
+    if (!element) return;
+    const watcher = new IntersectionObserver(([entry]) => setButtonsInView(Boolean(entry?.isIntersecting)));
+    watcher.observe(element);
+    return () => watcher.disconnect();
+  }, []);
 
   const variant = product.variants.find((v) => v.id === variantId) ?? firstAvailable;
   const inBag = items.find((item) => item.variantId === variant.id)?.quantity ?? 0;
@@ -56,28 +66,30 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
     router.push('/checkout');
   }
 
-  const stepper = 'flex h-11 w-10 items-center justify-center text-lg text-fg transition-colors hover:bg-surface disabled:opacity-35';
+  const stepper = 'flex h-full w-11 items-center justify-center text-lg font-light text-fg transition-colors duration-300 hover:bg-surface disabled:opacity-35';
+  /** Each group of the buy box rises in one after another when the page opens (see .pdp-rise). */
+  const rise = (delay: number) => ({ '--rise-delay': `${delay}ms` }) as React.CSSProperties;
 
   return (
-    <div data-purchase-bar className="flex flex-col gap-6">
-      <div>
+    <div data-purchase-bar className="flex flex-col gap-8">
+      <div className="pdp-rise" style={rise(120)}>
         <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           {percentOff > 0 && <span className="sr-only">Now </span>}
           <span className="text-2xl font-medium text-fg">{formatPrice(variant.pricePaise)}</span>
           {percentOff > 0 && (
             <>
               <span className="sr-only">MRP </span>
-              <span className="text-base text-mute line-through">{formatPrice(variant.mrpPaise)}</span>
-              <span className="text-sm font-medium text-sale">{percentOff}% off</span>
+              <span className="text-base font-light text-fg/40 line-through decoration-fg/30">{formatPrice(variant.mrpPaise)}</span>
+              <span className="rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-xs font-medium tracking-[0.06em] text-[color-mix(in_srgb,var(--color-gold)_62%,#000)]">{percentOff}% off</span>
             </>
           )}
         </p>
-        <p className="mt-1 text-xs text-mute">Inclusive of all taxes. Free delivery within {site.policies.deliveryArea}.</p>
+        <p className="mt-2.5 text-xs text-mute">Inclusive of all taxes. Free delivery within {site.policies.deliveryArea}.</p>
       </div>
 
-      <fieldset>
-        <legend className="mb-2.5 text-[13px] font-medium text-fg">
-          Size: <span className="font-normal text-mute">{variant.sizeMl} ml</span>
+      <fieldset className="pdp-rise" style={rise(200)}>
+        <legend className="mb-3 text-[11px] font-medium tracking-[0.14em] text-mute uppercase">
+          Size
         </legend>
         <div className="flex flex-wrap gap-2">
           {product.variants.map((option) => {
@@ -92,41 +104,44 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
                   setVariantId(option.id);
                   setQuantity(1);
                 }}
-                className={clsx('min-w-20 rounded-[2px] border px-4 py-2.5 text-left text-sm transition-colors', selected ? 'border-fg bg-fg text-white' : 'border-line bg-canvas text-fg hover:border-fg', out && !selected && 'text-mute line-through')}
+                className={clsx('inline-flex items-baseline gap-2 rounded-full border px-4 py-1.5 text-[13px] transition-colors duration-300', selected ? 'border-fg bg-surface text-fg' : 'border-line bg-transparent text-fg hover:border-fg/60', out && !selected && 'text-mute line-through')}
               >
-                <span className="block font-medium">{option.sizeMl} ml</span>
-                <span className={clsx('block text-xs', selected ? 'text-white/80' : 'text-mute')}>{out ? 'Sold out' : formatPrice(option.pricePaise)}</span>
+                <span className="font-medium">{option.sizeMl} ml</span>
+                {/* A size that can't be bought says so; the price is shown once, above. */}
+                {out && <span className="text-xs text-mute">Sold out</span>}
               </button>
             );
           })}
         </div>
       </fieldset>
 
-      <div className="flex flex-col gap-3">
-        <div className="flex items-stretch gap-3">
-          <div role="group" aria-label="Quantity" className="flex items-center rounded-[2px] border border-line">
-            <button type="button" aria-label="Decrease quantity" disabled={!canDecrease} onClick={decrease} className={stepper}>
-              −
-            </button>
-            <span className="w-8 text-center text-sm font-medium text-fg tabular-nums" aria-live="polite">
-              {shownCount}
-            </span>
-            <button type="button" aria-label="Increase quantity" disabled={!canIncrease} onClick={increase} className={stepper}>
-              +
-            </button>
-          </div>
-          {inBagNotFull ? (
-            <Button onClick={() => router.push('/cart')} className="h-auto min-h-11 flex-1">
-              View bag
-            </Button>
-          ) : (
-            <Button onClick={() => add()} disabled={blocked} className="h-auto min-h-11 flex-1">
-              {addLabel}
-            </Button>
-          )}
+      <div className="pdp-rise" style={rise(260)}>
+        <p className="mb-3 text-[11px] font-medium tracking-[0.14em] text-mute uppercase">Quantity</p>
+        <div role="group" aria-label="Quantity" className="flex h-12 w-fit items-center rounded-[2px] border border-line bg-transparent">
+          <button type="button" aria-label="Decrease quantity" disabled={!canDecrease} onClick={decrease} className={stepper}>
+            −
+          </button>
+          <span className="w-12 text-center text-sm font-medium text-fg tabular-nums" aria-live="polite">
+            {shownCount}
+          </span>
+          <button type="button" aria-label="Increase quantity" disabled={!canIncrease} onClick={increase} className={stepper}>
+            +
+          </button>
         </div>
+      </div>
+
+      <div ref={buttons} className="pdp-rise flex flex-col gap-3" style={rise(320)}>
+        {inBagNotFull ? (
+          <Button variant="outline" size="lg" onClick={() => router.push('/cart')} className="w-full duration-500!">
+            View bag
+          </Button>
+        ) : (
+          <Button variant="outline" size="lg" onClick={() => add()} disabled={blocked} className="w-full duration-500!">
+            {addLabel}
+          </Button>
+        )}
         {!soldOut && (
-          <Button variant="outline" onClick={buyNow} className="w-full">
+          <Button size="lg" onClick={buyNow} className="w-full duration-500!">
             Buy now
           </Button>
         )}
@@ -156,7 +171,7 @@ export function VariantPicker({ product }: { product: Pick<Product, 'id' | 'slug
       </div>
 
       {/* Phones: the price and Add to bag stay in reach at the bottom of the screen. */}
-      <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-line bg-canvas/95 px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur-md md:hidden">
+      <div inert={buttonsInView} aria-hidden={buttonsInView} className={clsx('fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-line bg-canvas/95 px-5 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] backdrop-blur-md transition-transform duration-300 ease-out md:hidden', buttonsInView && 'translate-y-full')}>
         <div className="flex min-w-0 flex-col">
           <span className="truncate text-xs text-mute">
             {product.name} · {variant.sizeMl} ml

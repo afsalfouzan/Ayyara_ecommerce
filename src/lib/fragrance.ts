@@ -1,5 +1,5 @@
 import { site } from './site';
-import type { Product } from './types';
+import type { FragranceNotes, Product } from './types';
 
 /*
  * The facts every perfume page shows: its "Key facts" list, fragrance notes and
@@ -35,7 +35,7 @@ export function keyFacts(product: Product) {
   ].filter((row) => row.value);
 }
 
-export type Notes = { top: string[]; heart: string[]; base: string[] };
+export type Notes = FragranceNotes;
 
 const NOTE_LABEL = /\b(top|head|heart|mid|middle|base)\s*(?:notes?)?\s*[:\-–]\s*([^/\n|;]+)/gi;
 

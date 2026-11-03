@@ -133,6 +133,11 @@
 }
 
 @layer components {
+  /* Perfume pages: white instead of ivory. Only the page colour changes; every other colour stays. */
+  .theme-white {
+    --color-canvas: #ffffff;
+  }
+
   /* The site header is black: the palette is flipped inside it so its text, icons, menus and search bar follow. */
   .theme-black {
     --color-canvas: #000000;
@@ -354,7 +359,49 @@ html.js-reveal [data-reveal-stagger][data-revealed] > * {
   }
 }
 
+/* Product page: the text groups rise in one after another, a changed photo fades in, and the accordion glides open. */
+@keyframes pdp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pdp-image-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pdp-rise {
+  animation: pdp-rise 0.4s ease-out both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+.disclosure {
+  interpolate-size: allow-keywords;
+}
+.disclosure::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 0.45s var(--ease-luxe),
+    content-visibility 0.45s allow-discrete;
+}
+.disclosure[open]::details-content {
+  block-size: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .pdp-rise {
+    animation: none !important;
+  }
   .hero-rise,
   .hero-scroll-line,
   video {

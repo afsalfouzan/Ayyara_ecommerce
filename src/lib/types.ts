@@ -1,4 +1,4 @@
-/** Money is always integer paise (₹1 = 100 paise) to avoid floating-point errors. */
+/** Money is always integer paise (Rs. 1 = 100 paise) to avoid floating-point errors. */
 export type Paise = number;
 
 export type StockStatus = 'in_stock' | 'low_stock' | 'out_of_stock';
@@ -16,8 +16,24 @@ export type Variant = {
   purchasableQuantity: number;
 };
 
+/** Fragrance notes by tier. */
+export type FragranceNotes = { top: string[]; heart: string[]; base: string[] };
+
+/**
+ * Optional extra copy for a perfume's page. Each section appears only when it has content, so nothing is
+ * shown until the shop supplies it (see product-content.ts). The API may send these too, once the admin holds them.
+ */
+export type ProductExtras = {
+  /** Top, heart and base notes. When empty, notes written into the description are used instead. */
+  fragranceNotes?: FragranceNotes | null;
+  /** "Who it's for": a short paragraph. */
+  whoItsFor?: string | null;
+  /** "Longevity & Projection": a short paragraph. */
+  longevityProjection?: string | null;
+};
+
 /** Public product shape from the storefront API. Never contains cost data. */
-export type Product = {
+export type Product = ProductExtras & {
   id: number;
   slug: string;
   name: string;

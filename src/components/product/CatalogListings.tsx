@@ -47,7 +47,7 @@ export function CatalogListings({ listings, empty }: { listings: Listing[]; empt
       {shown.length === 0 ? (
         <p className="py-20 text-center text-sm text-mute">No perfumes match these filters.</p>
       ) : (
-        <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4">
+        <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4 lg:gap-x-6">
           {shown.map((listing, index) => (
             <li key={listing.variant.id}>
               <ProductCard listing={listing} priority={index < 2} headingLevel="h2" />

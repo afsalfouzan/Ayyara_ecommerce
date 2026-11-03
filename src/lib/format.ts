@@ -2,9 +2,9 @@ import type { Paise, StockStatus } from './types';
 
 const rupees = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
 
-/** Prices as shown across the site: "₹999", or "₹999.50" when there are paise. */
+/** Prices as shown across the site: "Rs. 999", or "Rs. 999.50" when there are paise. */
 export function formatPrice(paise: Paise) {
-  return `₹${rupees.format(paise / 100)}`;
+  return `Rs. ${rupees.format(paise / 100)}`;
 }
 
 /** The same format, under the name the shop cards use. */
@@ -35,7 +35,7 @@ export function artFor(slug: string) {
   return PALETTES[hash % PALETTES.length]!;
 }
 
-/** Whole-number discount from MRP, e.g. 10 for ₹5,000 → ₹4,500. */
+/** Whole-number discount from MRP, e.g. 10 for Rs. 5,000 → Rs. 4,500. */
 export function discountPercent(mrp: Paise, price: Paise) {
   if (mrp <= price) return 0;
   return Math.round(((mrp - price) / mrp) * 100);

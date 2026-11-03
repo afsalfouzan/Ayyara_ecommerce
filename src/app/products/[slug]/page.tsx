@@ -6,6 +6,8 @@ import type { ReactNode } from "react";
 import oilConcentration from "@/assets/product/oil-concentration.jpg";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
+import { ShareLink } from "@/components/product/ShareLink";
+import { StickyPanel } from "@/components/product/StickyPanel";
 import { VariantPicker } from "@/components/product/VariantPicker";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -23,6 +25,7 @@ import {
 import { formatPrice } from "@/lib/format";
 import { collections, site } from "@/lib/site";
 import { faqText, keyFacts, notesFromDescription, notesText, PERFUME_OIL, productFaqs } from "@/lib/fragrance";
+import { extrasOf } from "@/lib/product-content";
 import { faqJsonLd, productJsonLd } from "@/lib/structured-data";
 import type { Product } from "@/lib/types";
 import { clip, DESCRIPTION_MAX, shareMeta, TITLE_MAX, twitterMeta } from "@/lib/seo";
@@ -71,6 +74,27 @@ function seoDescription(product: Product) {
   return clip(`${product.name} extrait de parfum by ${site.name}, ${sizes}, ${PERFUME_OIL} perfume oil.${notes}${price}`, DESCRIPTION_MAX);
 }
 
+/** The two columns of the page on laptops (photo about 55%, details 45%). Every section uses them, so their edges line up. */
+const columns = "lg:grid-cols-[11fr_9fr] lg:gap-14";
+
+/** Starts a group's fade-and-rise a moment after the one before it (see .pdp-rise in globals.css). */
+const rise = (delay: number) => ({ "--rise-delay": `${delay}ms` }) as React.CSSProperties;
+
+/** Text where **a key phrase** between double asterisks is set in bold (so the shop can mark one in a description). */
+function Emphasis({ text }: { text: string }) {
+  return text.split("**").map((part, index) => (index % 2 === 1 ? <strong key={index} className="font-medium text-fg">{part}</strong> : part));
+}
+
+/** One of the hairline-separated sections under the buying controls: a small heading and a short paragraph. */
+function InfoSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <section className="border-b border-line py-6">
+      <h2 className="text-base font-medium text-fg">{title}</h2>
+      <div className="mt-3 text-[15px] leading-relaxed text-fg-soft">{children}</div>
+    </section>
+  );
+}
+
 /** The collection a perfume belongs to, for its breadcrumb. */
 function collectionOf(product: Product) {
   return collections.find((collection) => collection.slug === product.gender);
@@ -111,6 +135,9 @@ export default async function ProductPage({
   const found = notesFromDescription(product.description);
   const description = paragraphs(found ? found.rest : product.description);
   const rows = keyFacts(product);
+  // Notes the shop has supplied win; otherwise notes written into the description. Each section shows only when it has content.
+  const extras = extrasOf(product);
+  const notes = extras.fragranceNotes ?? found?.notes ?? null;
   const faqs = productFaqs(product);
 
   return (
@@ -125,39 +152,41 @@ export default async function ProductPage({
           ]}
         />
 
-        <div className="mt-5 grid grid-cols-1 gap-8 md:mt-8 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <div className="-mx-5 sm:mx-0 lg:sticky lg:top-28 lg:self-start">
+        <div className={`mt-5 grid grid-cols-1 gap-10 md:mt-8 ${columns}`}>
+          {/* Phones: one photo with arrows. Tablets and laptops: a lookbook, the photos scrolling past while the details beside them stay in view. */}
+          <div>
             <ProductGallery product={product} />
           </div>
 
-          <div className="lg:py-2">
-            <p className="eyebrow">
-              {product.concentration}
-              {product.gender !== "unisex"
-                ? ` · For ${product.gender === "men" ? "him" : "her"}`
-                : " · Unisex"}
-            </p>
-            <h1 className="heading mt-2 text-fg">
-              {product.name}
-            </h1>
-            <p className="mt-2 text-sm font-medium tracking-[0.08em] text-fg-soft uppercase">
-              {product.concentration} · {product.variants.map((variant) => `${variant.sizeMl} ml`).join(" / ")}
-            </p>
-            {product.tagline && (
-              <p className="mt-2 text-base text-fg-soft">{product.tagline}</p>
-            )}
+          <StickyPanel>
+            <div className="pdp-rise" style={rise(0)}>
+              <p className="eyebrow">
+                {product.concentration}
+                {product.gender !== "unisex"
+                  ? ` · For ${product.gender === "men" ? "him" : "her"}`
+                  : " · Unisex"}
+              </p>
+              <h1 className="heading mt-2 text-fg">
+                {product.name}
+              </h1>
+              <p className="mt-3 text-sm font-normal tracking-[0.08em] text-mute uppercase">
+                {product.concentration} · {product.variants.map((variant) => `${variant.sizeMl} ml`).join(" / ")}
+              </p>
+              {product.tagline && (
+                <p className="mt-2 text-base text-fg-soft">{product.tagline}</p>
+              )}
+            </div>
 
-            <div className="mt-6">
+            <div className="mt-8 border-t border-line pt-8">
               <VariantPicker product={product} />
             </div>
 
             {description[0] && (
-              <p className="mt-2 border-t border-line pt-6 text-[15px] leading-relaxed text-fg-soft">
-                {description[0]}
+              <p className="pdp-rise mt-10 text-[15px] leading-relaxed text-fg-soft" style={rise(380)}>
+                <Emphasis text={description[0]} />
               </p>
             )}
-
-            <div className="mt-6 border-t border-line">
+            <div className="pdp-rise mt-8 border-t border-line" style={rise(420)}>
               <Disclosure title="Delivery and returns">
                 <p>
                   Free delivery within {site.policies.deliveryArea}. Dispatched within{" "}
@@ -173,47 +202,32 @@ export default async function ProductPage({
                   </Link>
                 </p>
               </Disclosure>
+
+              {/* Server-rendered text, not an image, so search engines and AI answers can read it. */}
+              {notes && (
+                <InfoSection title="Fragrance Notes">
+                  <dl className="space-y-2">
+                    {([["Top", notes.top], ["Heart", notes.heart], ["Base", notes.base]] as const)
+                      .filter(([, list]) => list.length > 0)
+                      .map(([label, list]) => (
+                        <div key={label} className="grid grid-cols-[5.5rem_1fr] gap-3">
+                          <dt className="text-mute">{label}</dt>
+                          <dd className="text-fg">{list.join(", ")}</dd>
+                        </div>
+                      ))}
+                  </dl>
+                </InfoSection>
+              )}
+              {extras.whoItsFor && <InfoSection title="Who It’s For"><p>{extras.whoItsFor}</p></InfoSection>}
+              {extras.longevityProjection && <InfoSection title="Longevity & Projection"><p>{extras.longevityProjection}</p></InfoSection>}
+
+              <ShareLink title={product.name} />
             </div>
-          </div>
+          </StickyPanel>
         </div>
 
-        {(description.length > 1 || found) && (
-          <div className="mt-10 grid grid-cols-1 gap-12 border-t border-line pt-10 md:mt-16 md:pt-16 lg:grid-cols-2 lg:gap-16">
-            {description.length > 1 && (
-              <section aria-labelledby="about-heading">
-                <h2 id="about-heading" className="heading text-fg">
-                  About {product.name}
-                </h2>
-                <div className="mt-6 space-y-3 text-[15px] leading-relaxed text-fg-soft">
-                  {description.slice(1).map((paragraph) => (
-                    <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-                  ))}
-                </div>
-              </section>
-            )}
-            {found && (
-              <section aria-labelledby="notes-heading">
-                <h2 id="notes-heading" className="heading text-fg">
-                  Fragrance notes
-                </h2>
-                {/* Server-rendered text, not an image, so search engines and AI answers can read the notes. */}
-                <dl className="mt-6 divide-y divide-line border-y border-line">
-                  {([["Top", found.notes.top], ["Heart", found.notes.heart], ["Base", found.notes.base]] as const)
-                    .filter(([, list]) => list.length > 0)
-                    .map(([label, list]) => (
-                      <div key={label} className="grid grid-cols-[8.5rem_1fr] gap-4 py-3.5 text-[15px] sm:grid-cols-[11rem_1fr]">
-                        <dt className="text-mute">{label} notes</dt>
-                        <dd className="text-fg">{list.join(", ")}</dd>
-                      </div>
-                    ))}
-                </dl>
-              </section>
-            )}
-          </div>
-        )}
-
         {/* The facts buyers ask about, as text (not icons) so search engines and AI answers can read them. */}
-        <div className="mt-10 grid grid-cols-1 gap-12 md:mt-16 lg:grid-cols-2 lg:gap-16">
+        <div className={`mt-10 grid grid-cols-1 gap-12 md:mt-16 ${columns}`}>
           <section aria-labelledby="profile-heading">
             <h2 id="profile-heading" className="heading text-fg">
               Key facts
@@ -236,6 +250,19 @@ export default async function ProductPage({
             />
           </section>
 
+          <div className="space-y-12 md:space-y-16">
+            {description.length > 1 && (
+              <section aria-labelledby="about-heading">
+                <h2 id="about-heading" className="heading text-fg">
+                  About {product.name}
+                </h2>
+                <div className="mt-6 space-y-3 text-[15px] leading-relaxed text-fg-soft">
+                  {description.slice(1).map((paragraph) => (
+                    <p key={paragraph.slice(0, 32)}><Emphasis text={paragraph} /></p>
+                  ))}
+                </div>
+              </section>
+            )}
           <section aria-labelledby="questions-heading">
             <h2 id="questions-heading" className="heading text-fg">
               Questions about {product.name}
@@ -250,6 +277,7 @@ export default async function ProductPage({
               ))}
             </div>
           </section>
+          </div>
         </div>
       </Container>
 
@@ -259,7 +287,7 @@ export default async function ProductPage({
             <div className="flex items-end justify-between gap-4">
               <div>
                 <h2 id="related-heading" className="heading mt-1 text-fg">
-                  Related fragrances
+                  You may also like
                 </h2>
               </div>
               <Link
@@ -269,9 +297,10 @@ export default async function ProductPage({
                 Shop all
               </Link>
             </div>
-            <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-5 md:mt-8 lg:grid-cols-4">
+            {/* The same cards as the home page best sellers, on every screen. */}
+            <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-5 md:mt-8 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-10">
               {related.map((listing) => (
-                <li key={listing.variant.id} className="bg-canvas p-3 sm:p-4">
+                <li key={listing.variant.id} className="min-w-0">
                   <ProductCard listing={listing} />
                 </li>
               ))}
@@ -297,16 +326,16 @@ function Disclosure({
   defaultOpen?: boolean;
 }) {
   return (
-    <details className="group border-b border-line" open={defaultOpen}>
-      <summary className="flex cursor-pointer items-center justify-between gap-4 py-4 text-sm font-medium text-fg">
+    <details className="disclosure group border-b border-line" open={defaultOpen}>
+      <summary className="flex cursor-pointer items-center justify-between gap-4 py-5 text-sm font-medium text-fg marker:content-none">
         {title}
         <Icon
           name="chevronDown"
-          strokeWidth={1.8}
-          className="h-4 w-4 shrink-0 text-mute transition-transform duration-300 group-open:rotate-180"
+          strokeWidth={1.4}
+          className="h-4 w-4 shrink-0 text-mute transition-transform duration-500 ease-out group-open:rotate-180"
         />
       </summary>
-      <div className="pb-5 text-sm leading-relaxed text-fg-soft">
+      <div className="pb-6 text-sm leading-relaxed text-fg-soft">
         {children}
       </div>
     </details>

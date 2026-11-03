@@ -70,7 +70,7 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<{
   return { products };
 }
 
-/** Lowest-priced size, used for "From ₹…" on cards and in structured data. */
+/** Lowest-priced size, used for "From Rs. …" on cards and in structured data. */
 export function cheapestVariant(product: Product) {
   return [...product.variants].sort((a, b) => a.pricePaise - b.pricePaise)[0];
 }
