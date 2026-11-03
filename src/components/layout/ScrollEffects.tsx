@@ -25,10 +25,11 @@ export function ScrollEffects() {
       virtualScroll: ({ deltaX, deltaY }) => Math.abs(deltaY) >= Math.abs(deltaX),
     });
 
-    // The phone menu locks the page by hiding the body's overflow; hold still while it does.
-    const syncLock = () => (document.body.style.overflow === 'hidden' ? lenis.stop() : lenis.start());
+    // The phone menu locks the page by hiding the overflow of <html>; hold still while it does.
+    const root = document.documentElement;
+    const syncLock = () => (root.style.overflow === 'hidden' ? lenis.stop() : lenis.start());
     const lock = new MutationObserver(syncLock);
-    lock.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+    lock.observe(root, { attributes: true, attributeFilter: ['style'] });
 
     return () => {
       lock.disconnect();

@@ -34,15 +34,14 @@ export function SiteHeader() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Prevent background scrolling when mobile menu is open
+  // Prevent background scrolling when mobile menu is open. The lock goes on <html>, not <body>: the gliding
+  // scroll (ScrollEffects) also clips <html> while it is paused, and if <body> were the one hidden it would become
+  // its own scroll box at the top of the page, pulling this sticky header out of view.
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    const root = document.documentElement;
+    root.style.overflow = open ? 'hidden' : '';
     return () => {
-      document.body.style.overflow = '';
+      root.style.overflow = '';
     };
   }, [open]);
 
@@ -69,20 +68,20 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center lg:h-full">
           <Link href="/" aria-label="Ayyara Rebirth — home" className="inline-flex lg:hidden" onClick={close}>
             <Logo variant="wordmark" />
           </Link>
-          <nav aria-label="Primary" className="hidden items-center space-x-9 text-xs font-medium tracking-[0.12em] uppercase lg:flex">
+          <nav aria-label="Primary" className="hidden items-center space-x-9 text-xs font-medium tracking-[0.12em] uppercase lg:flex lg:h-full">
             {mainNav.map((item) =>
               'children' in item ? (
-                // Opens on hover and on keyboard focus.
-                <div key={item.label} className="group relative inline-flex cursor-pointer items-center">
+                // Opens on hover and on keyboard focus. The item is as tall as the header, so the menu opens right at its bottom edge.
+                <div key={item.label} className="group relative inline-flex h-full cursor-pointer items-center">
                   <NavLink href={item.href} aria-haspopup="true" className="inline-flex items-center space-x-1 text-fg-soft transition-colors hover:text-fg">
                     <span>{item.label}</span>
                     <Icon name="chevronDown" strokeWidth={2} className="h-3.5 w-3.5 text-mute" />
                   </NavLink>
-                  <div className="invisible absolute top-full left-1/2 z-50 -translate-x-1/2 pt-5 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                  <div className="invisible absolute top-full left-1/2 z-50 -translate-x-1/2 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                     <ul className="min-w-48 border border-line bg-canvas py-1.5 shadow-lg">
                       {item.children.map((child) => (
                         <li key={child.href}>

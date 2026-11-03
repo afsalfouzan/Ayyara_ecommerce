@@ -61,26 +61,32 @@ export default async function HomePage() {
        * Hero banner: the campaign film, playing silently on a loop.
        * Phone and tablet: the film fills the screen between the header and the bar of shortcuts (4rem each),
        * with the words laid over its foot.
-       * Laptop: a full-width dark banner. The film is portrait, so it stands sharp as a tall panel on the right,
-       * over a blurred, darkened frame of itself that fills the width; the words sit on the left.
+       * Laptop: the banner fills the screen under the header. The film is a full-height panel on the right whose
+       * left edge melts into the black; the words sit on the left, on the same grid as the header logo, centred
+       * vertically. A faint vignette, a soft glow behind the words and a gold hairline add depth.
        */}
       <section className="relative overflow-hidden bg-black">
-        <div aria-hidden className="absolute inset-0 hidden lg:block">
-          <Image src={heroFilm.poster} alt="" fill sizes="50vw" quality={40} className="scale-110 object-cover opacity-60 blur-2xl" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
+          {/* Warm champagne glow behind the headline, and a cool steel-blue one by the film. */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_48%_52%_at_24%_50%,rgba(214,186,140,0.07),rgba(214,186,140,0.03)_45%,transparent_75%),radial-gradient(ellipse_30%_55%_at_52%_55%,rgba(110,150,190,0.045),transparent_75%)]" />
+          {/* Soft vignette, stronger toward the left and bottom edges. */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.55)_100%),linear-gradient(to_right,rgba(0,0,0,0.5),transparent_22%),linear-gradient(to_top,rgba(0,0,0,0.5),transparent_25%)]" />
+          {/* Fine film grain. */}
+          <div className="hero-grain absolute inset-0" />
         </div>
-        <div className="lg:relative lg:mx-auto lg:grid lg:h-[min(calc(100svh-5rem),760px)] lg:min-h-[600px] lg:max-w-7xl lg:grid-cols-12 lg:items-center lg:gap-12 lg:px-12">
-          <HeroVideo src={heroFilm.src} poster={heroFilm.poster} label={heroFilm.label} className="relative h-[calc(100svh-8rem-env(safe-area-inset-bottom,0px))] min-h-[480px] w-full overflow-hidden bg-raised lg:order-2 lg:col-span-5 lg:col-start-8 lg:aspect-[9/16] lg:h-[calc(min(calc(100svh-5rem),760px)-6rem)] lg:min-h-[500px] lg:w-auto lg:justify-self-center lg:bg-black lg:shadow-2xl lg:shadow-black/50" />
+        <div className="lg:mx-auto lg:flex lg:min-h-[max(600px,calc(100svh-5rem))] lg:max-w-7xl lg:items-center lg:px-12">
+          <HeroVideo src={heroFilm.src} poster={heroFilm.poster} label={heroFilm.label} className="relative h-[calc(100svh-8rem-env(safe-area-inset-bottom,0px))] min-h-[480px] w-full overflow-hidden bg-raised lg:absolute lg:inset-y-0 lg:right-0 lg:left-auto lg:h-auto lg:min-h-0 lg:w-1/2 lg:bg-black lg:[mask-image:linear-gradient(to_right,transparent_0%,rgba(0,0,0,0.03)_5%,rgba(0,0,0,0.12)_11%,rgba(0,0,0,0.3)_17%,rgba(0,0,0,0.55)_23%,rgba(0,0,0,0.78)_29%,rgba(0,0,0,0.93)_36%,#000_44%)] xl:w-[54%] min-[1700px]:w-1/2 lg:[&>video]:object-[50%_55%] lg:[&>video]:animate-[hero-drift_30s_ease-out_both]" />
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent lg:hidden" />
-          <div className="absolute inset-x-0 bottom-0 z-10 px-5 pb-7 text-white sm:px-8 sm:pb-10 lg:static lg:order-1 lg:col-span-6 lg:p-0">
-            <p className="eyebrow text-white/85!">{site.name}</p>
-            <h1 className="mt-3 text-[2.35rem] tracking-[0.02em] whitespace-nowrap sm:text-6xl lg:mt-4 lg:text-[3.25rem] xl:text-[4rem]">
+          <div className="absolute inset-x-0 bottom-0 z-10 px-5 pb-7 text-white sm:px-8 sm:pb-10 lg:static lg:w-1/2 lg:py-16 lg:pr-0 lg:pl-0">
+            <span aria-hidden className="hero-rise mb-6 hidden h-px w-14 bg-gold/80 lg:block" style={{ '--rise-delay': '100ms' } as React.CSSProperties} />
+            <p className="eyebrow hero-rise text-white/85!" style={{ '--rise-delay': '200ms' } as React.CSSProperties}>{site.name}</p>
+            <h1 className="hero-rise mt-3 text-[2.35rem] tracking-[0.02em] whitespace-nowrap sm:text-6xl lg:mt-4 lg:text-[3.25rem] xl:text-[4rem]" style={{ '--rise-delay': '350ms' } as React.CSSProperties}>
               Fine Fragrances
               <br />
               <span className="text-[1.875rem] sm:text-6xl lg:text-[3.25rem] xl:text-[4rem]">For Modern You</span>
             </h1>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed tracking-[0.03em] text-white/85 lg:mt-5 lg:text-base">Discover a fragrance that expresses your individuality.</p>
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row lg:mt-9">
+            <p className="hero-rise mt-3 max-w-sm text-sm leading-relaxed tracking-[0.03em] text-white/85 lg:mt-5 lg:text-base" style={{ '--rise-delay': '500ms' } as React.CSSProperties}>Discover a fragrance that expresses your individuality.</p>
+            <div className="hero-rise mt-5 flex flex-col gap-3 sm:flex-row lg:mt-9" style={{ '--rise-delay': '650ms' } as React.CSSProperties}>
               <ButtonLink href="/shop" size="lg" className="w-full bg-white! text-fg! hover:bg-white/90! sm:w-auto">
                 Explore fragrances
               </ButtonLink>
@@ -90,6 +96,9 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
+        <a href="#collections" aria-label="Scroll to the collections" className="hero-scroll absolute bottom-6 left-1/2 z-20 hidden h-12 w-6 -translate-x-1/2 justify-center lg:flex">
+          <span aria-hidden className="hero-scroll-line block h-full w-px bg-white/25" />
+        </a>
       </section>
 
       {/* Collections: three photos side by side on laptops, numbered like chapters. */}
